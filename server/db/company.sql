@@ -37,3 +37,5 @@ VALUES (9, 'QA Wolf', 'careers.qawolf.com');
 
 INSERT INTO _COMPANY (ID, COMPANYNAME, WEBSITE)
 VALUES (10, 'Rumble', 'careers.rumble.com');
+
+

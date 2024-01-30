@@ -1,8 +1,8 @@
-const pg = require("pg");
-const client = new pg.Client("postgres://localhost/jsadb");
+const pg = require('pg');
+const client = new pg.Client('postgres://localhost/jsadb');
 
 const getUsers = (request, response) => {
-  client.query("SELECT * FROM _USER ORDER BY id ASC", (error, results) => {
+  client.query('SELECT * FROM _USER ORDER BY id ASC', (error, results) => {
     if (error) {
       throw error;
     }
