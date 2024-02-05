@@ -19,7 +19,7 @@ CREATE TABLE _AppliedCompany(
 --    REFERENCES _USER(user_id);
 
 INSERT INTO _AppliedCompany(ID, company_id, user_id)
-VALUES (1, 1, (SELECT user_id FROM _USER WHERE FIRST_NAME = 'Stephen'));
+VALUES (1, 1, (SELECT ID FROM _USER WHERE FIRST_NAME = 'Stephen'));
 
 
 -- INSERT INTO _AppliedCompany(ID, company_id, user_id)
