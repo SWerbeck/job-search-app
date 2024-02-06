@@ -1,37 +1,45 @@
 const router = require('express').Router();
-const client = require('../../db/db.js');
+const { client } = require('../../db/db.js');
 
-router.get('/', (request, response) => {
-  response.json({ info: 'Got the routes!!!' });
-});
-// const getUsers = (request, response) => {
-//   client.query('SELECT * FROM _USER ORDER BY id ASC', (error, results) => {
-//     if (error) {
-//       throw error;
-//     }
-//     response.status(200).json(results.rows);
+// const getUsers = () => {
+//   return new Promise((resolve, reject) => {
+//     client.query(
+//       'SELECT * FROM _USER ORDER BY USER_ID ASC',
+//       (error, results) => {
+//         if (error) {
+//           throw error;
+//         }
+//         return resolve(results.rows);
+//       }
+//     );
 //   });
 // };
 
-// router.get('/users', (req, res, next) => {
-//   const getUsers = client.query(
-//     'SELECT * FROM _USER ORDER BY id ASC',
-//     (error, res) => {
-//       if (error) {
-//         throw error;
-//       }
-//       res.status(200).json(res.rows);
-//     }
-//   );
+// router.get('/', async (request, response) => {
+//   try {
+//     const users = await getUsers();
+//     response.send(users);
+//   } catch (error) {
+//     console.log(error);
+//   }
 // });
 
-// const getUsers = (request, response) => {
-//   client.query('SELECT * FROM _USER ORDER BY id ASC', (error, results) => {
-//     if (error) {
-//       throw error;
-//     }
-//     response.status(200).json(results.rows);
-//   });
-// };
+// ABOVE WORKS - Stephen and I figured this out on monday 2/5.
+
+// Below also works. Concerning to me that there is no async/await
+// or any types of promises needing to be used.
+
+const allUsers = 'SELECT * FROM _USER ORDER BY USER_ID ASC';
+
+const getUsers = (request, response) => {
+  client.query(allUsers, (error, results) => {
+    if (error) {
+      throw error;
+    }
+    response.status(200).json(results.rows);
+  });
+};
+
+router.get('/', getUsers);
 
 module.exports = router;
