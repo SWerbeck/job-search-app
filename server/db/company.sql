@@ -1,40 +1,40 @@
 DROP TABLE IF EXISTS _COMPANY;
 
 CREATE TABLE _COMPANY(
-  ID INT PRIMARY KEY NOT NULL,
+  company_id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   COMPANYNAME VARCHAR(255) NOT NULL UNIQUE,
   WEBSITE VARCHAR(255) NOT NULL UNIQUE,
   CHECK (WEBSITE LIKE '%.com%'));
 
-INSERT INTO _COMPANY (ID, COMPANYNAME, WEBSITE)
-VALUES (1, 'GOOGLE', 'careers.google.com');
+INSERT INTO _COMPANY (COMPANYNAME, WEBSITE)
+VALUES ('GOOGLE', 'careers.google.com');
 
-INSERT INTO _COMPANY (ID, COMPANYNAME, WEBSITE)
-VALUES (2, 'JP Morgan', 'careers.jpmorgan.com');
+INSERT INTO _COMPANY (COMPANYNAME, WEBSITE)
+VALUES ('JP Morgan', 'careers.jpmorgan.com');
 
-INSERT INTO _COMPANY (ID, COMPANYNAME, WEBSITE)
-VALUES (3, 'Spotify', 'careers.spotify.com');
+INSERT INTO _COMPANY (COMPANYNAME, WEBSITE)
+VALUES ('Spotify', 'careers.spotify.com');
 
-INSERT INTO _COMPANY (ID, COMPANYNAME, WEBSITE)
-VALUES (4, 'Data-Dog', 'careers.datadog.com');
+INSERT INTO _COMPANY (COMPANYNAME, WEBSITE)
+VALUES ('Data-Dog', 'careers.datadog.com');
 
-INSERT INTO _COMPANY (ID, COMPANYNAME, WEBSITE)
-VALUES (5, 'X', 'careers.x.com');
+INSERT INTO _COMPANY (COMPANYNAME, WEBSITE)
+VALUES ('X', 'careers.x.com');
 
-INSERT INTO _COMPANY (ID, COMPANYNAME, WEBSITE)
-VALUES (6, 'META', 'careers.meta.com');
+INSERT INTO _COMPANY (COMPANYNAME, WEBSITE)
+VALUES ('META', 'careers.meta.com');
 
-INSERT INTO _COMPANY (ID, COMPANYNAME, WEBSITE)
-VALUES (7, 'Shopify', 'careers.shopify.com');
+INSERT INTO _COMPANY (COMPANYNAME, WEBSITE)
+VALUES ('Shopify', 'careers.shopify.com');
 
-INSERT INTO _COMPANY (ID, COMPANYNAME, WEBSITE)
-VALUES (8, 'Pinterest', 'careers.pinterest.com');
+INSERT INTO _COMPANY (COMPANYNAME, WEBSITE)
+VALUES ('Pinterest', 'careers.pinterest.com');
 
-INSERT INTO _COMPANY (ID, COMPANYNAME, WEBSITE)
-VALUES (9, 'QA Wolf', 'careers.qawolf.com');
+INSERT INTO _COMPANY (COMPANYNAME, WEBSITE)
+VALUES ('QA Wolf', 'careers.qawolf.com');
 
-INSERT INTO _COMPANY (ID, COMPANYNAME, WEBSITE)
-VALUES (10, 'Rumble', 'careers.rumble.com');
+INSERT INTO _COMPANY (COMPANYNAME, WEBSITE)
+VALUES ('Rumble', 'careers.rumble.com');
 
 
 
