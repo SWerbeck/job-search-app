@@ -106,7 +106,7 @@ router.put('/:id', updateUser)
 
 
 const deleteUser = (req, res) => {
-  const { id } = req.params.id;
+  const id  = req.params.id;
 
   client.query(
     "DELETE FROM _USER WHERE user_id = $1",
