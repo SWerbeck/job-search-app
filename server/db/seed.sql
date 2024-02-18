@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS _AppliedCompany;
 
 CREATE TABLE _AppliedCompany(
  applied_id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+ creation_date TIMESTAMPTZ DEFAULT Now(),
+ last_updated TIMESTAMPTZ DEFAULT Now(),
  company_id uuid NOT NULL,
  user_id uuid NOT NULL,
  FOREIGN KEY (company_id) REFERENCES _COMPANY(company_id)
