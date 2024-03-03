@@ -1,17 +1,20 @@
 DROP TABLE IF EXISTS _APPLICATION;
 
+CREATE TYPE application_stat AS ENUM ('active', 'closed', 'interviewing');
+
+
 CREATE TABLE _APPLICATION(
  applied_id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
  creation_date TIMESTAMPTZ DEFAULT Now(),
  last_updated TIMESTAMPTZ DEFAULT Now(),
  company_id uuid NOT NULL,
  user_id uuid NOT NULL,
+ application_info VARCHAR(8000)DEFAULT '::no info::',
+ application_status application_stat NOT NULL DEFAULT 'active',
  FOREIGN KEY (company_id) REFERENCES _COMPANY(company_id)
  ON DELETE CASCADE,
  FOREIGN KEY (user_id) REFERENCES _USER(user_id)
- ON DELETE CASCADE,
- application_info VARCHAR(MAX),
- application_status ENUM('active', 'closed', 'interviewing') NOT NULL, DEFAULT 'active'
+ ON DELETE CASCADE
 );
  
 -- ALTER TABLE _AppliedCompany
