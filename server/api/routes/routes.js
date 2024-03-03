@@ -5,7 +5,7 @@ router.use('/users', require('./user'));
 
 router.use('/companies', require('./company'));
 
-router.use('/appliedcompanies', require('./appliedcompanies'));
+router.use('/appliedcompanies', require('./application'));
 
 
 router.use((req, res, next) => {
