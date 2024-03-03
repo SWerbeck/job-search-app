@@ -4,14 +4,14 @@ const { client } = require("../../db/db.js");
 
 
 // get all applied companies associations
-const allAppliedComapnies = "SELECT * FROM _AppliedCompany ORDER BY USER_ID ASC";
+const allAppliedComapnies = "SELECT * FROM _APPLICATION ORDER BY USER_ID ASC";
 
 const getAppliedCompanies = (req, res) => {
   client.query(allAppliedComapnies, (error, results) => {
     if (error) {
       throw error;
     }
-    res.status(200).json(results.rows);
+    res.status(200).json(results.rows); 
   });
 };
 
@@ -23,7 +23,7 @@ router.get("/", getAppliedCompanies);
 
 
 
-const usersCompanies = "SELECT * FROM _AppliedCompany WHERE USER_ID = $1";
+const usersCompanies = "SELECT * FROM _APPLICATION WHERE USER_ID = $1";
 
 const getUsersCompanies = (req, res) => {
   const id = req.params.id;
@@ -47,7 +47,7 @@ const createApplied = (req, res) => {
     const { user_id, company_id } = req.body;
   
     client.query(
-      "INSERT INTO _AppliedCompany (user_id, company_id) VALUES ($1, $2) RETURNING *",
+      "INSERT INTO _APPLICATION (user_id, company_id) VALUES ($1, $2) RETURNING *",
       [user_id, company_id],
       (error, results) => {
         if (error) {
@@ -70,7 +70,7 @@ const createApplied = (req, res) => {
     const id  = req.params.id;
   
     client.query(
-      "DELETE FROM _AppliedCompany WHERE applied_id = $1",
+      "DELETE FROM _APPLICATION WHERE applied_id = $1",
       [id],
       (error, results) => {
         if (error) {
