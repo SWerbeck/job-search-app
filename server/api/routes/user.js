@@ -1,91 +1,81 @@
 const router = require('express').Router();
-const { client } = require('../../db/db.js');
+const { pool } = require('../../db/db.js');
 
-const allUsers = 'SELECT * FROM _USER ORDER BY USER_ID ASC';
-
-const getUsers = (req, res) => {
-  client.query(allUsers, (error, results) => {
-    if (error) {
-      throw error;
-    }
-    res.status(200).json(results.rows);
-  });
-};
-
-router.get('/', getUsers);
+// Get all users
+router.get('/', async (req, res) => {
+  try {
+    const users = await pool.query('SELECT * FROM _user');
+    res.json({ users: users.rows });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // Get user by id
-const singleUser = 'SELECT * FROM _USER WHERE USER_ID = $1';
+router.get('/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const singleUser = await pool.query(
+      'SELECT * FROM _USER WHERE USER_ID = $1',
+      [id]
+    );
+    res.json({ users: singleUser.rows });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
-const getUserById = (req, res) => {
-  const id = req.params.id;
-
-  client.query(singleUser, [id], (error, results) => {
-    if (error) {
-      throw error;
-    }
-    res.status(200).json(results.rows);
-  });
-};
-router.get('/:id', getUserById);
-
-// Post user
-const postUser =
-  'INSERT INTO _USER (FIRST_NAME, LAST_NAME, User_email, UserName ) VALUES ($1, $2, $3, $4) RETURNING *';
-
-const createUser = (req, res) => {
-  const { firstName, lastName, email, userName } = req.body;
-
-  client.query(
-    postUser,
-    [firstName, lastName, email, userName],
-    (error, results) => {
-      if (error) {
-        throw error;
-      }
-      res.status(201).send(`User added with username: ${userName}`);
-    }
-  );
-};
-
-router.post('/', createUser);
+// post new user
+router.post('/', async (req, res) => {
+  try {
+    const { firstName, lastName, email, userName } = req.body;
+    //hashed pw function
+    //const hashedPassword = await bcrypt.hash(req.body.user_password, 10);
+    const newUser = await pool.query(
+      'INSERT INTO _USER (FIRST_NAME, LAST_NAME, User_email, UserName ) VALUES ($1, $2, $3, $4) RETURNING *',
+      [firstName, lastName, email, userName]
+    );
+    res.json({ users: newUser.rows[0] });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 //PUT route
-const putUser =
-  'UPDATE _USER SET FIRST_NAME = $1, LAST_NAME = $2, User_email = $3, UserName = $4  WHERE user_id = $5';
+router.put('/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { firstName, lastName, email, userName } = req.body;
+    //hashed pw function
+    //const hashedPassword = await bcrypt.hash(req.body.user_password, 10);
+    const updatedUser = await pool.query(
+      'UPDATE _USER SET FIRST_NAME = $1, LAST_NAME = $2, User_email = $3, UserName = $4 WHERE user_id = $5',
+      [firstName, lastName, email, userName, id]
+    );
+    res.status(200).send(`Updated info for: ${userName}`);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
-const updateUser = (req, res) => {
-  const id = req.params.id;
-  const { firstName, lastName, email, userName } = req.body;
-
-  client.query(
-    putUser,
-    [firstName, lastName, email, userName, id],
-    (error, results) => {
-      if (error) {
-        throw error;
-      }
-      res.status(200).send(`User modified with ID: ${id}`);
+// delete route
+router.delete('/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const singleUser = await pool.query(
+      'SELECT USER_ID FROM _USER WHERE USER_ID = $1',
+      [id]
+    );
+    if (singleUser.rows[0].user_id === id) {
+      const deleteSingleUser = await pool.query(
+        'DELETE FROM _USER WHERE user_id = $1',
+        [id]
+      );
+      res.status(200).send(`User deleted with ID: ${id}`);
     }
-  );
-};
-
-router.put('/:id', updateUser);
-
-//Delete user route
-const deleteSingleUser = 'DELETE FROM _USER WHERE user_id = $1';
-
-const deleteUser = (req, res) => {
-  const id = req.params.id;
-
-  client.query(deleteSingleUser, [id], (error, results) => {
-    if (error) {
-      throw error;
-    }
-    res.status(200).send(`User deleted with ID: ${id}`);
-  });
-};
-
-router.delete('/:id', deleteUser);
+  } catch (error) {
+    res.status(500).json({ error: 'no user in db with this id' });
+  }
+});
 
 module.exports = router;
