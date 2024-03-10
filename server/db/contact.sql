@@ -17,8 +17,8 @@ CREATE TABLE _CONTACT(
   CONTACT_EMAIL VARCHAR(255) UNIQUE,
   reply_status reply_stat NOT NULL DEFAULT 'has not replied',
   FOLLOWUP BOOLEAN,
-  CHECK (User_email LIKE '%.com%'),
-  CHECK (ONTACT_LINKEDIN LIKE '%.com%'),
+  CHECK (CONTACT_EMAIL LIKE '%.com%'),
+  CHECK (CONTACT_LINKEDIN LIKE '%.com%'),
    FOREIGN KEY (company_id) REFERENCES _COMPANY(company_id)
  ON DELETE CASCADE,
  FOREIGN KEY (user_id) REFERENCES _USER(user_id)
