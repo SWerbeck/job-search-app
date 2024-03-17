@@ -1,5 +1,7 @@
-const router = require('express').Router();
-const { pool } = require('../../db/db.js');
+import express from 'express';
+import pool from '../../db/db.js';
+
+const router = express.Router();
 
 // Get all users
 router.get('/', async (req, res) => {
@@ -78,4 +80,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

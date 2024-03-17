@@ -1,13 +1,4 @@
-// const pg = require('pg');
-// const client = new pg.Client('postgres://localhost/jsadb');
-
-// client.connect();
-
-// module.exports = {
-//   client,
-// };
-
-const pg = require('pg');
+import pg from 'pg';
 const { Pool } = pg;
 
 let localPoolConfig = {
@@ -26,6 +17,4 @@ let poolConfig = process.env.DATABASE_URL
 
 const pool = new Pool(poolConfig);
 
-module.exports = {
-  pool,
-};
+export default pool;

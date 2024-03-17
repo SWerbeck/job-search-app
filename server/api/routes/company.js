@@ -1,85 +1,84 @@
-const router = require('express').Router();
-const { client } = require('../../db/db.js');
+import express from 'express';
+import pool from '../../db/db.js';
 
-//Get route for all companies
-const allCompanies = 'SELECT * FROM _COMPANY ORDER BY company_id ASC';
+const router = express.Router();
 
-const getCompanies = (req, res) => {
-  client.query(allCompanies, (error, results) => {
-    if (error) {
-      throw error;
-    }
-    res.status(200).json(results.rows);
-  });
-};
+// Get all companies
+router.get('/', async (req, res) => {
+  try {
+    const companies = await pool.query(
+      'SELECT * FROM _COMPANY ORDER BY company_id ASC'
+    );
+    res.json({ companies: companies.rows });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
-router.get('/', getCompanies);
-
-// Get route for single company by id
-const singleCompany = 'SELECT * FROM _COMPANY WHERE company_id = $1';
-
-const getCompanyById = (req, res) => {
-  const id = req.params.id;
-
-  client.query(singleCompany, [id], (error, results) => {
-    if (error) {
-      throw error;
-    }
-    res.status(200).json(results.rows);
-  });
-};
-router.get('/:id', getCompanyById);
+// Get company by id
+router.get('/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const singleCompany = await pool.query(
+      'SELECT * FROM _COMPANY WHERE company_id = $1',
+      [id]
+    );
+    res.json({ users: singleCompany.rows });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // Post Company
-const postCompany =
-  'INSERT INTO _COMPANY (COMPANYNAME, WEBSITE) VALUES ($1, $2) RETURNING *';
-
-const createCompany = (req, res) => {
-  const { companyName, website } = req.body;
-
-  client.query(postCompany, [companyName, website], (error, results) => {
-    if (error) {
-      throw error;
-    }
-    res.status(201).send(`Company added with Name: ${companyName}`);
-  });
-};
-
-router.post('/', createCompany);
-
+router.post('/', async (req, res) => {
+  try {
+    const { companyName, website } = req.body;
+    const newUser = await pool.query(
+      'INSERT INTO _COMPANY (COMPANYNAME, WEBSITE ) VALUES ($1, $2) RETURNING *',
+      [companyName, website]
+    );
+    res.json({ users: newUser.rows[0] });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 // Put Company
-const putCompany =
-  'UPDATE _COMPANY SET COMPANYNAME = $1, WEBSITE = $2 WHERE company_id = $3';
-
-const updateCompany = (req, res) => {
-  const id = req.params.id;
-  const { companyName, website } = req.body;
-
-  client.query(putCompany, [companyName, website, id], (error, results) => {
-    if (error) {
-      throw error;
-    }
-    res.status(200).send(`User modified with ID: ${id}`);
-  });
-};
-
-router.put('/:id', updateCompany);
+router.put('/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { companyName, website } = req.body;
+    const updatedCompany = await pool.query(
+      'UPDATE _COMPANY SET COMPANYNAME = $1, WEBSITE = $2 WHERE company_id = $3',
+      [companyName, website, id]
+    );
+    res.status(200).send(`Updated info for: ${companyName}`);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 //Delete Company
-
-const deleteSingleCompany = 'DELETE FROM _COMPANY WHERE company_id = $1';
-
-const deleteCompany = (req, res) => {
-  const id = req.params.id;
-
-  client.query(deleteSingleCompany, [id], (error, results) => {
-    if (error) {
-      throw error;
+router.delete('/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    //query to get id passed from req.params.id
+    const singleCompanyQuery = await pool.query(
+      'SELECT COMPANY_ID FROM _COMPANY WHERE company_ID = $1',
+      [id]
+    );
+    //getting that value and storing it into a variable
+    const singleCompanyId = singleCompanyQuery.rows[0].company_id;
+    //check if the query matches the req.params.id || if so delete that company
+    if (singleCompanyId === id) {
+      const deleteSingleCompany = await pool.query(
+        'DELETE FROM _COMPANY WHERE company_id = $1',
+        [id]
+      );
+      res.status(200).send(`company deleted with ID: ${id}`);
     }
-    res.status(200).send(`Company deleted with ID: ${id}`);
-  });
-};
+  } catch (error) {
+    res.status(500).json({ error: 'no company in db with this id' });
+  }
+});
 
-router.delete('/:id', deleteCompany);
-
-module.exports = router;
+export default router;
