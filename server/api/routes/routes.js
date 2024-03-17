@@ -1,14 +1,20 @@
-const router = require("express").Router();
-module.exports = router;
+import express from 'express';
+import userRouter from './user.js';
+import companyRouter from './company.js';
+//import applicationRouter from './application.js';
 
-router.use("/users", require("./user"));
+const router = express.Router();
 
-router.use("/companies", require("./company"));
+router.use('/users', userRouter);
 
-router.use("/applications", require("./application"));
+router.use('/companies', companyRouter);
+
+//router.use('/applications', applicationRouter);
 
 router.use((req, res, next) => {
-  const error = new Error("Not Found");
+  const error = new Error('Not Found');
   error.status = 404;
   next(error);
 });
+
+export default router;

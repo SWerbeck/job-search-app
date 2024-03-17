@@ -1,21 +1,20 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+import express from 'express';
+import router from './routes/routes.js';
 const app = express();
-const db = require('../db/db.js');
 const port = 3000;
 
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(
-  bodyParser.urlencoded({
+  express.urlencoded({
     extended: true,
   })
 );
 
-app.get('/', (request, response) => {
-  response.json({ info: 'Node.js, Express, and Postgres API' });
+app.get('/', (req, res) => {
+  res.json({ info: 'Node.js, Express, and Postgres API' });
 });
 
-app.use('/api', require('./routes/routes.js'));
+app.use('/api', router);
 //app.get('/users', db.getUsers);
 
 app.listen(port, () => {
