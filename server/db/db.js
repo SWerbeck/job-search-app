@@ -1,11 +1,11 @@
-import pg from 'pg';
+import pg from "pg";
 const { Pool } = pg;
 
 let localPoolConfig = {
   //user: 'postgres',
-  host: 'localhost',
-  port: '5432',
-  database: 'jsadb',
+  host: "localhost",
+  port: "5432",
+  database: "jsadb",
 };
 
 let poolConfig = process.env.DATABASE_URL
