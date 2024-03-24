@@ -62,6 +62,33 @@ router.get("/user/:id", async (req, res) => {
 
   /////////////////////////////////////////////////////////////////////////////////////////
 
+// create application
+router.post("/", async (req, res) => {
+    try {
+        const { company_id, user_id, application_info, application_status} = req.body;
+      const newApplication = await pool.query(
+        "INSERT INTO _APPLICATION (company_id, user_id, application_info, application_status ) VALUES ($1, $2, $3, $4) RETURNING *",
+        [company_id, user_id, application_info, application_status ]
+      );
+      res.json({ newApp: newApplication.rows[0] });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////
+
+
+
   //update application info
 
 router.put("/:id", async (req, res) => {
@@ -94,9 +121,9 @@ router.delete("/:id", async (req, res) => {
       );
       //getting that value and storing it into a variable
       const toDeleteApplication = singleApplication.rows[0].applied_id;
-      //check if the query matches the req.params.id || if so delete that company
+      //check if the query matches the req.params.id || if so delete that application
       if (singleApplication === id) {
-        const deleteSingleCompany = await pool.query(
+        const toDeleteApplication = await pool.query(
           "DELETE FROM _APPLICATION WHERE applied_id = $1",
           [id]
         );
