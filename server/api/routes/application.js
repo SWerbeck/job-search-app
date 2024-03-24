@@ -1,78 +1,110 @@
-// const router = require("express").Router();
-// const { client } = require("../../db/db.js");
+import express from "express";
+import pool from "../../db/db.js";
 
-// // get all applied companies associations
-// const allAppliedComapnies = "SELECT * FROM _APPLICATION ORDER BY USER_ID ASC";
+const router = express.Router();
 
-// const getAppliedCompanies = (req, res) => {
-//   client.query(allAppliedComapnies, (error, results) => {
-//     if (error) {
-//       throw error;
-//     }
-//     res.status(200).json(results.rows);
-//   });
-// };
 
-// router.get("/", getAppliedCompanies);
 
-// ////////////////////////////////////////////////////////////////////////////////////////////////
 
-// //get all companies specific user applied to
+// Get all applications
+router.get("/", async (req, res) => {
+    try {
+      const applications = await pool.query(
+        "SELECT * FROM _APPLICATION ORDER BY user_id ASC"
+      );
+      res.json({ applications: applications.rows });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
 
-// const usersCompanies = "SELECT * FROM _APPLICATION WHERE USER_ID = $1";
+////////////////////////////////////////////////////////////////////////////////////////////////
 
-// const getUsersCompanies = (req, res) => {
-//   const id = req.params.id;
 
-//   client.query(usersCompanies, [id], (error, results) => {
-//     if (error) {
-//       throw error;
-//     }
-//     res.status(200).json(results.rows);
-//   });
-// };
-// router.get("/:id", getUsersCompanies);
 
-// ////////////////////////////////////////////////////////////////////////////////////////////
 
-// //create new association between user and company
+// Get application by id application id
+router.get("/:id", async (req, res) => {
+    try {
+      const id = req.params.id;
+      const singleApplication = await pool.query(
+        "SELECT * FROM _APPLICATION WHERE applied_id = $1",
+        [id]
+      );
+      res.json({ application: singleApplication.rows });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
 
-// const createApplied = (req, res) => {
-//     const { user_id, company_id } = req.body;
 
-//     client.query(
-//       "INSERT INTO _APPLICATION (user_id, company_id) VALUES ($1, $2) RETURNING *",
-//       [user_id, company_id],
-//       (error, results) => {
-//         if (error) {
-//           throw error;
-//         }
-//         res.status(201).send(`User Applied to Company added with ID: ${results.rows[0].id}`);
-//       }
-//     );
-//   };
 
-//   router.post("/", createApplied);
 
-//   ///////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
 
-//   // delete application from user
 
-//   const deleteApplied = (req, res) => {
-//     const id  = req.params.id;
+//Get all applications for user by user id
 
-//     client.query(
-//       "DELETE FROM _APPLICATION WHERE applied_id = $1",
-//       [id],
-//       (error, results) => {
-//         if (error) {
-//           throw error;
-//         }
-//         res.status(200).send(`User Applied to Company deleted with ID: ${id}`);
-//       }
-//     );
-//   };
+router.get("/user/:id", async (req, res) => {
+    try {
+      const id = req.params.id;
+      const allUserApplications = await pool.query(
+        "SELECT * FROM _APPLICATION WHERE user_id = $1",
+        [id]
+      );
+      res.json({ userapplications: allUserApplications.rows });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
 
-//   router.delete("/:id", deleteApplied);
 
-// module.exports = router;
+
+  /////////////////////////////////////////////////////////////////////////////////////////
+
+  //update application info
+
+router.put("/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { company_id, application_info,  application_status} = req.body;
+    const updatedApplication = await pool.query(
+      "UPDATE _APPLICATION SET company_id = $1, application_info = $2, application_status = $3, WHERE applied_id = $4",
+      [company_id, application_info, application_status, id]
+    );
+    res.status(200).send(`Updated info for: ${updatedApplication}`);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+  //Delete Application by application id
+router.delete("/:id", async (req, res) => {
+    try {
+      const id = req.params.id;
+      //query to get id passed from req.params.id
+      const singleApplication = await pool.query(
+        "SELECT applied_id FROM _APPLICATION WHERE applied_id = $1",
+        [id]
+      );
+      //getting that value and storing it into a variable
+      const toDeleteApplication = singleApplication.rows[0].applied_id;
+      //check if the query matches the req.params.id || if so delete that company
+      if (singleApplication === id) {
+        const deleteSingleCompany = await pool.query(
+          "DELETE FROM _APPLICATION WHERE applied_id = $1",
+          [id]
+        );
+        res.status(200).send(`Application deleted with ID: ${id}`);
+      }
+    } catch (error) {
+      res.status(500).json({ error: "no application in db with this id" });
+    }
+  });
+
+  export default router;
