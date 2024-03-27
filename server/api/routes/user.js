@@ -1,4 +1,5 @@
 import express from 'express';
+import bcrypt from 'bcrypt';
 import pool from '../../db/db.js';
 
 const router = express.Router();
@@ -30,12 +31,12 @@ router.get('/:id', async (req, res) => {
 // post new user
 router.post('/', async (req, res) => {
   try {
-    const { firstName, lastName, email, userName } = req.body;
+    const { firstName, lastName, user_password, email, userName } = req.body;
     //hashed pw function
-    //const hashedPassword = await bcrypt.hash(req.body.user_password, 10);
+    const hashedPassword = await bcrypt.hash(user_password, 10);
     const newUser = await pool.query(
-      'INSERT INTO _USER (FIRST_NAME, LAST_NAME, User_email, UserName ) VALUES ($1, $2, $3, $4) RETURNING *',
-      [firstName, lastName, email, userName]
+      'INSERT INTO _USER (FIRST_NAME, LAST_NAME, USER_PASSWORD, User_email, UserName ) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [firstName, lastName, hashedPassword, email, userName]
     );
     res.json({ users: newUser.rows[0] });
   } catch (error) {
