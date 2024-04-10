@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Users from './components/Userscomponent';
 import './App.css';
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
 
   return (
     <>
+      <Users />
       <div>
         {users.map((user) => {
           return (

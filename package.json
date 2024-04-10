@@ -12,6 +12,7 @@
     "seed": "psql -d jsadb -a -f ./server/db/user.sql && psql -d jsadb -a -f ./server/db/company.sql && psql -d jsadb -a -f ./server/db/application.sql && psql -d jsadb -a -f ./server/db/contact.sql"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.2.3",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
@@ -19,7 +20,9 @@
     "nodemon": "^3.0.3",
     "pg": "^8.11.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-redux": "^9.1.0",
+    "react-router-dom": "^6.22.3"
   },
   "devDependencies": {
     "@types/node": "^20.11.28",
