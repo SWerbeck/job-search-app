@@ -39,7 +39,9 @@ router.get("/user/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const allUserApplications = await pool.query(
-      "SELECT * FROM _APPLICATION WHERE user_id = $1",
+      // "SELECT  _APPLICATION.creation_date as Applied_Date, COMPANYNAME as company, CONTACTNAME as contacts FROM _APPLICATION JOIN _COMPANY ON _APPLICATION.company_id = _COMPANY.company_id LEFT JOIN _CONTACT ON _COMPANY.company_id = _CONTACT.company_id WHERE _APPLICATION.user_id = $1 AND _CONTACT.user_id = $1",
+      // [id]
+      "SELECT _APPLICATION.creation_date as Applied_Date, COMPANYNAME as company, CASE WHEN _CONTACT.company_id = _APPLICATION.company_id AND _CONTACT.user_id = $1 THEN _CONTACT.CONTACTNAME ELSE null end AS contacts FROM _APPLICATION JOIN _COMPANY ON _APPLICATION.company_id = _COMPANY.company_id JOIN _CONTACT ON _APPLICATION.company_id = _CONTACT.company_id WHERE _APPLICATION.user_id = $1",
       [id]
     );
     res.json({ userapplications: allUserApplications.rows });
