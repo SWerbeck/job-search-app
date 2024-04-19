@@ -6,6 +6,7 @@ CREATE TYPE reply_stat AS ENUM ('replied', 'has not replied');
 CREATE TABLE _CONTACT(
   contact_id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   company_id uuid NOT NULL,
+  applied_id uuid,
   user_id uuid NOT NULL,
   creation_date TIMESTAMPTZ DEFAULT Now(),
   last_updated TIMESTAMPTZ DEFAULT Now(),
@@ -22,20 +23,23 @@ CREATE TABLE _CONTACT(
    FOREIGN KEY (company_id) REFERENCES _COMPANY(company_id)
  ON DELETE CASCADE,
  FOREIGN KEY (user_id) REFERENCES _USER(user_id)
+ ON DELETE CASCADE,
+ FOREIGN KEY (applied_id) REFERENCES _APPLICATION(applied_id)
  ON DELETE CASCADE
   );
 
-INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
-VALUES ('James Smith',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123') );
 
-INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
-VALUES ('Frank Jones',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123') );
+INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id, applied_id)
+VALUES ('James Smith',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'), (SELECT applied_id FROM _APPLICATION WHERE company_id = (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE') AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123')) );
 
-INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
-VALUES ('Sara Jackson',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb') );
+INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id, applied_id)
+VALUES ('Frank Jones',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'), (SELECT applied_id FROM _APPLICATION WHERE company_id = (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify') AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123')));
 
-INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
-VALUES ('Dave Lee',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb') );
+INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id, applied_id)
+VALUES ('Sara Jackson',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'), (SELECT applied_id FROM _APPLICATION WHERE company_id = (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest') AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'SWerb')) );
 
-INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
-VALUES ('Bob Davis',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb') );
+INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id, applied_id)
+VALUES ('Dave Lee',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'), (SELECT applied_id FROM _APPLICATION WHERE company_id = (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble') AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'SWerb')) );
+
+INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id, applied_id)
+VALUES ('Bob Davis',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'), (SELECT applied_id FROM _APPLICATION WHERE company_id = (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble') AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'SWerb')) );

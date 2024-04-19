@@ -25,7 +25,7 @@ CREATE TABLE _APPLICATION(
 --    FOREIGN KEY (user_id) 
 --    REFERENCES _USER(user_id);
 
-INSERT INTO _APPLICATION(company_id, user_id, application_info, application_status )
+INSERT INTO _APPLICATION(company_id, user_id )
 VALUES ((SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123') );
 
 INSERT INTO _APPLICATION(company_id, user_id)
@@ -41,7 +41,7 @@ INSERT INTO _APPLICATION(company_id, user_id)
 VALUES ((SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'));
 
 INSERT INTO _APPLICATION(company_id, user_id)
-VALUES ((SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Shopify'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'));
+VALUES ((SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'));
 
 INSERT INTO _APPLICATION(company_id, user_id)
 VALUES ((SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'));
