@@ -43,3 +43,23 @@ VALUES ('Dave Lee',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'
 
 INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id, applied_id)
 VALUES ('Bob Davis',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'), (SELECT applied_id FROM _APPLICATION WHERE company_id = (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble') AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'SWerb')) );
+
+INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id, applied_id)
+VALUES ('Bob Davis',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'guest'), (SELECT applied_id FROM _APPLICATION WHERE company_id = (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble') AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'guest')) );
+
+
+
+
+
+
+INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id, applied_id)
+VALUES ('James Smith',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'guest'), (SELECT applied_id FROM _APPLICATION WHERE company_id = (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE') AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'guest')) );
+
+INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id, applied_id)
+VALUES ('Frank Jones',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify'), (SELECT user_id FROM _USER WHERE UserName = 'guest'), (SELECT applied_id FROM _APPLICATION WHERE company_id = (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify') AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'guest')));
+
+INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id, applied_id)
+VALUES ('Sara Jackson',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest'), (SELECT user_id FROM _USER WHERE UserName = 'guest'), (SELECT applied_id FROM _APPLICATION WHERE company_id = (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest') AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'guest')) );
+
+INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id, applied_id)
+VALUES ('Dave Lee',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'guest'), (SELECT applied_id FROM _APPLICATION WHERE company_id = (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble') AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'guest')) );

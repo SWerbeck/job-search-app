@@ -25,3 +25,6 @@ INSERT INTO _USER (FIRST_NAME, LAST_NAME, USER_PASSWORD, User_email, UserName)
 VALUES ('Stephen', 'Werbeck', '123', 'steve@gmail.com', 'SWerb');
 
 
+INSERT INTO _USER (FIRST_NAME, LAST_NAME, USER_PASSWORD, User_email, UserName)
+VALUES ('guest', 'guest', '123', 'guest@guestmail.com', 'guest');
+
