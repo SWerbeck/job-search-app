@@ -36,3 +36,9 @@ VALUES ('Sara Jackson',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pin
 
 INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
 VALUES ('Dave Lee',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb') );
+
+INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
+VALUES ('Sam Frankle',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb') );
+
+INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
+VALUES ('Kim Possible',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb') );
