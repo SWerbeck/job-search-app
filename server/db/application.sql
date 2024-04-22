@@ -49,3 +49,21 @@ VALUES ((SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT 
 
 INSERT INTO _APPLICATION(company_id, user_id)
 VALUES ((SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'));
+
+INSERT INTO _APPLICATION(company_id, user_id)
+VALUES ((SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+
+INSERT INTO _APPLICATION(company_id, user_id)
+VALUES ((SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'X'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+
+INSERT INTO _APPLICATION(company_id, user_id)
+VALUES ((SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+
+INSERT INTO _APPLICATION(company_id, user_id)
+VALUES ((SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+
+INSERT INTO _APPLICATION(company_id, user_id)
+VALUES ((SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+
+INSERT INTO _APPLICATION(company_id, user_id)
+VALUES ((SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'META'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
