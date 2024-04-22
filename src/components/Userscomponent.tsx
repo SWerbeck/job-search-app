@@ -1,22 +1,19 @@
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import { setUsers } from '../store/userSlice';
 import { RootState } from '../store';
 
-
 const Users = () => {
-
   const dispatch = useDispatch();
-  const usersList  = useSelector((state: RootState) => state.users.users);
-  const [isLoaded, setIsLoaded] = useState(false)
+  const usersList = useSelector((state: RootState) => state.users.users);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const fetchUsers = async () => {
     try {
-      
       const fetchedUsers = await axios.get('http://localhost:3000/api/users');
       dispatch(setUsers(fetchedUsers.data.users));
-      setIsLoaded(true)
+      setIsLoaded(true);
     } catch (err) {
       console.log(err);
     }
@@ -24,11 +21,11 @@ const Users = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  });
 
-  if (!isLoaded){
-  return <div>loading</div>
-}
+  if (!isLoaded) {
+    return <div>loading</div>;
+  }
   return (
     <div>
       <div>

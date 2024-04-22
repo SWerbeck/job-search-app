@@ -1,14 +1,14 @@
-import express from "express";
-import pool from "../../db/db.js";
+import express from 'express';
+import pool from '../../db/db.js';
 
 const router = express.Router();
 
 //get all contacts
 
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const contacts = await pool.query(
-      "SELECT * FROM _CONTACT ORDER BY user_id ASC"
+      'SELECT * FROM _CONTACT ORDER BY user_id ASC'
     );
     res.json({ contacts: contacts.rows });
   } catch (error) {
@@ -19,11 +19,11 @@ router.get("/", async (req, res) => {
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Get contact by contact id
-router.get("/:id", async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const id = req.params.id;
     const singleContact = await pool.query(
-      "SELECT * FROM _CONTACT WHERE contact_id = $1",
+      'SELECT * FROM _CONTACT WHERE contact_id = $1',
       [id]
     );
     res.json({ contact: singleContact.rows });
@@ -36,7 +36,7 @@ router.get("/:id", async (req, res) => {
 
 //Get all contacts for user by user id
 
-router.get("/user/:id", async (req, res) => {
+router.get('/user/:id', async (req, res) => {
   try {
     const id = req.params.id;
     const allUserContacts = await pool.query(
@@ -79,7 +79,7 @@ router.get("/user/:id", async (req, res) => {
 /////////////////////////////////////////////////////////////////////////////////////////
 
 // create contact information
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const {
       company_id,
@@ -90,9 +90,10 @@ router.post("/", async (req, res) => {
       CONTACT_EMAIL,
       reply_status,
       FOLLOWUP,
+      past_job,
     } = req.body;
     const newContact = await pool.query(
-      "INSERT INTO _CONTACT (company_id, user_id, CONTACTNAME, CONTACT_LINKEDIN,  CONTACT_PHONE, CONTACT_EMAIL, FOLLOWUP) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+      'INSERT INTO _CONTACT (company_id, user_id, CONTACTNAME, CONTACT_LINKEDIN,  CONTACT_PHONE, CONTACT_EMAIL, FOLLOWUP, past_job) VALUES ($1, $2, $3, $4, $5, $6, $7, ARRAY[$8]) RETURNING *',
       [
         company_id,
         user_id,
@@ -101,6 +102,7 @@ router.post("/", async (req, res) => {
         CONTACT_PHONE,
         CONTACT_EMAIL,
         FOLLOWUP,
+        past_job,
       ]
     );
     res.json({ newCont: newContact.rows[0] });
@@ -113,7 +115,7 @@ router.post("/", async (req, res) => {
 
 //update contact info
 
-router.put("/:id", async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const id = req.params.id;
     const {
@@ -124,9 +126,11 @@ router.put("/:id", async (req, res) => {
       CONTACT_EMAIL,
       reply_status,
       FOLLOWUP,
+      past_job,
     } = req.body;
+
     const updatedContact = await pool.query(
-      "UPDATE _CONTACT SET company_id = $1, CONTACTNAME = $2, CONTACT_LINKEDIN = $3, CONTACT_PHONE = $4, CONTACT_EMAIL = $5, reply_status = $6, FOLLOWUP = $7 WHERE contact_id = $8",
+      'UPDATE _CONTACT SET company_id = $1, CONTACTNAME = $2, CONTACT_LINKEDIN = $3, CONTACT_PHONE = $4, CONTACT_EMAIL = $5, reply_status = $6, FOLLOWUP = $7, past_job = ARRAY[$8] WHERE contact_id = $9',
       [
         company_id,
         CONTACTNAME,
@@ -135,6 +139,7 @@ router.put("/:id", async (req, res) => {
         CONTACT_EMAIL,
         reply_status,
         FOLLOWUP,
+        past_job,
         id,
       ]
     );
@@ -147,12 +152,12 @@ router.put("/:id", async (req, res) => {
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 //Delete constact by contact id
-router.delete("/:id", async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const id = req.params.id;
     //query to get id passed from req.params.id
     const singleContact = await pool.query(
-      "SELECT contact_id FROM _CONTACT WHERE contact_id = $1",
+      'SELECT contact_id FROM _CONTACT WHERE contact_id = $1',
       [id]
     );
     //getting that value and storing it into a variable
@@ -160,13 +165,13 @@ router.delete("/:id", async (req, res) => {
     //check if the query matches the req.params.id || if so delete that contat
     if (toDeleteContact === id) {
       const toDeleteContact = await pool.query(
-        "DELETE FROM _CONTACT WHERE contact_id = $1",
+        'DELETE FROM _CONTACT WHERE contact_id = $1',
         [id]
       );
       res.status(200).send(`Contact deleted with ID: ${id}`);
     }
   } catch (error) {
-    res.status(500).json({ error: "no contact in db with this id" });
+    res.status(500).json({ error: 'no contact in db with this id' });
   }
 });
 
