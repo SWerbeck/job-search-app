@@ -39,7 +39,31 @@ router.get("/user/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const allUserApplications = await pool.query(
-      "SELECT * FROM _APPLICATION WHERE user_id = $1",
+      //   `SELECT _APPLICATION.creation_date as Applied_Date,
+      //   COMPANYNAME as company,
+      //  CASE WHEN _CONTACT.company_id = _APPLICATION.company_id
+      //   AND _CONTACT.user_id = _APPLICATION.user_id
+      //   THEN _CONTACT.contactname END as contact
+      //   FROM _APPLICATION
+      //   JOIN _COMPANY ON
+      //   _APPLICATION.company_id = _COMPANY.company_id
+      //   LEFT OUTER JOIN _CONTACT ON
+      //   _APPLICATION.company_id = _CONTACT.company_id
+      //   WHERE _APPLICATION.user_id = $1`,
+
+      `SELECT _COMPANY.companyname as COMPANY,
+      json_agg(DISTINCT jsonb_build_object('Application', _APPLICATION.applied_id, 'Applied_Date', _APPLICATION.creation_date)) as APPLICAITONS,
+      CASE WHEN _CONTACT.company_id = _COMPANY.company_id AND _CONTACT.user_id = $1
+      THEN json_agg(DISTINCT jsonb_build_object('CONTACT_ID', _CONTACT.contact_id, 'CONTACT_NAME', _CONTACT.contactname)) END as CONTACTS 
+      FROM _COMPANY
+      JOIN _APPLICATION ON
+      _APPLICATION.company_id = _COMPANY.company_id
+      LEFT JOIN _CONTACT ON
+      _COMPANY.company_id = _CONTACT.company_id
+      WHERE _APPLICATION.user_id = $1
+      GROUP BY _COMPANY.company_id, _CONTACT.company_id, _CONTACT.user_id
+      `,
+
       [id]
     );
     res.json({ userapplications: allUserApplications.rows });

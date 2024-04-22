@@ -1,4 +1,5 @@
 import Users from './components/Userscomponent';
+import Companies from './components/Companiescomponent';
 import './App.css';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
   return (
     <>
       <Users />
+      <Companies />
     </>
   );
 }
