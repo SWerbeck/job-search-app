@@ -25,6 +25,7 @@ CREATE TABLE _APPLICATION(
 --    FOREIGN KEY (user_id) 
 --    REFERENCES _USER(user_id);
 
+
 INSERT INTO _APPLICATION(company_id, user_id )
 VALUES ((SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123') );
 
