@@ -40,7 +40,34 @@ router.get("/user/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const allUserContacts = await pool.query(
-      "SELECT * FROM _CONTACT WHERE user_id = $1",
+      // `SELECT _COMPANY.companyname as COMPANY,
+      // json_agg(DISTINCT jsonb_build_object('Application', _APPLICATION.applied_id, 'Applied_Date', _APPLICATION.creation_date)) as APPLICAITONS,
+      // CASE WHEN _CONTACT.company_id = _COMPANY.company_id AND _CONTACT.user_id = $1
+      // THEN json_agg(DISTINCT jsonb_build_object('CONTACT_ID', _CONTACT.contact_id, 'CONTACT_NAME', _CONTACT.contactname)) END as CONTACTS
+      // FROM _COMPANY
+      // JOIN _APPLICATION ON
+      // _APPLICATION.company_id = _COMPANY.company_id
+      // LEFT JOIN _CONTACT ON
+      // _COMPANY.company_id = _CONTACT.company_id
+      // WHERE _APPLICATION.user_id = $1
+      // GROUP BY _COMPANY.company_id, _CONTACT.company_id, _CONTACT.user_id
+      // `,
+      `SELECT _CONTACT.contact_id, _CONTACT.CONTACTNAME as CONTACT_NAME, _CONTACT.contact_email as CONTACT_EMAIL, 
+       _CONTACT.contact_linkedin as CONTACT_LINKEDIN, _CONTACT.contact_phone as CONTACT_PHONE_NUMBER,
+       _COMPANY.companyname as COMPANY,
+       _CONTACT.reply_status as Reply_Status,
+       _CONTACT.last_contacted as LAST_CONTACTED,
+       _CONTACT.followup_reminder as FOLLOW_UP,
+       CASE WHEN _APPLICATION.company_id = _CONTACT.company_id AND _APPLICATION.user_id = _CONTACT.user_id
+       THEN json_agg(DISTINCT jsonb_build_object('APPLICATION_DATE', _APPLICATION.creation_date)) END as APPLICATIONS
+       FROM _CONTACT
+       JOIN _COMPANY
+       ON _COMPANY.company_id = _CONTACT.company_id
+       LEFT JOIN _APPLICATION
+       ON _CONTACT.company_id = _APPLICATION.company_id
+       WHERE _CONTACT.user_id = $1 AND _APPLICATION.user_id = $1
+       GROUP BY _APPLICATION.applied_id, _COMPANY.companyname, _CONTACT.contact_id, _APPLICATION.user_id, _APPLICATION.company_id
+       `,
       [id]
     );
     res.json({ userContacts: allUserContacts.rows });
