@@ -11,7 +11,7 @@ CREATE TABLE _CONTACT(
   last_updated TIMESTAMPTZ DEFAULT Now(),
   last_contacted TIMESTAMPTZ DEFAULT Now(),
   followup_reminder TIMESTAMPTZ,
-  past_job VARCHAR[] DEFAULT null,
+  past_job uuid[] DEFAULT null,
   CONTACTNAME VARCHAR(255) NOT NULL,
   CONTACT_LINKEDIN VARCHAR(255),
   CONTACT_PHONE VARCHAR(255),
@@ -34,7 +34,7 @@ INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
 VALUES ('Frank Jones',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'));
 
 INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id, past_job)
-VALUES ('Judd Paul',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'), ARRAY((SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE')));
+VALUES ('Judd Paul',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'), ARRAY((SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE' OR  COMPANYNAME = 'Pinterest')));
 
 INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
 VALUES ('Sara Jackson',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb') );

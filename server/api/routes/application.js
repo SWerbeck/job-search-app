@@ -56,16 +56,18 @@ router.get('/user/:id', async (req, res) => {
       `SELECT _COMPANY.companyname as COMPANY,
       json_agg(DISTINCT jsonb_build_object('Application', _APPLICATION.applied_id, 'Applied_Date', _APPLICATION.creation_date)) as APPLICAITONS,
       CASE WHEN _CONTACT.company_id = _COMPANY.company_id AND _CONTACT.user_id = $1
-      THEN json_agg(DISTINCT jsonb_build_object('CONTACT_ID', _CONTACT.contact_id, 'CONTACT_NAME', _CONTACT.contactname)) END as CONTACTS
-      CASE WHEN array_contains(_CONTACT.past_job, _APPLICATION.company_id) AND _CONTACT.user_id = $1
-      THEN json_agg(DISTINCT jsonb_build_object('CONTACT_ID', _CONTACT.contact_id, 'CONTACT_NAME', _CONTACT.contactname)) END as PAST_JOB_CONTACTS
+      THEN json_agg(DISTINCT jsonb_build_object('CONTACT_ID', _CONTACT.contact_id, 'CONTACT_NAME', _CONTACT.contactname)) END as CONTACTS,
+      CASE WHEN _APPLICATION.company_id = ANY(con.past_job) AND con.user_id = $1
+      THEN json_agg(DISTINCT jsonb_build_object('CONTACT_ID', con.contact_id, 'CONTACT_NAME', con.contactname)) END as PAST_JOB_CONTACTS
       FROM _COMPANY
       JOIN _APPLICATION ON
       _APPLICATION.company_id = _COMPANY.company_id
-      LEFT JOIN _CONTACT ON
+      LEFT OUTER JOIN _CONTACT ON
       _COMPANY.company_id = _CONTACT.company_id
+      LEFT OUTER JOIN _CONTACT CON 
+      ON _COMPANY.company_id = ANY(con.past_job)
       WHERE _APPLICATION.user_id = $1
-      GROUP BY _COMPANY.company_id, _CONTACT.company_id, _CONTACT.user_id
+      GROUP BY _COMPANY.company_id,  _application.company_id, _CONTACT.company_id, _CONTACT.user_id, con.user_id, con.past_job
       `,
 
       [id]
