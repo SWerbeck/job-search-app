@@ -8,7 +8,9 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const contacts = await pool.query(
-      'SELECT * FROM _CONTACT ORDER BY user_id ASC'
+      `SELECT _CONTACT.CONTACTNAME, CONTACT_PAST_JOB.contact_past_job_id, CONTACT_PAST_JOB.company_id, CONTACT_PAST_JOB.user_id FROM _CONTACT 
+      LEFT JOIN CONTACT_PAST_JOB
+      ON _CONTACT.contact_id = CONTACT_PAST_JOB.contact_id`
     );
     res.json({ contacts: contacts.rows });
   } catch (error) {
