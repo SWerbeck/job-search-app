@@ -7,11 +7,12 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const contacts = await pool.query(
-      `SELECT _CONTACT.CONTACTNAME, CONTACT_PAST_JOB.contact_past_job_id, CONTACT_PAST_JOB.company_id, CONTACT_PAST_JOB.user_id FROM _CONTACT 
-      LEFT JOIN CONTACT_PAST_JOB
-      ON _CONTACT.contact_id = CONTACT_PAST_JOB.contact_id`
-    );
+    const contacts = await pool.query(`SELECT * FROM _CONTACT`);
+    // const contacts = await pool.query(
+    //   `SELECT _CONTACT.CONTACTNAME, CONTACT_PAST_JOB.contact_past_job_id, CONTACT_PAST_JOB.company_id, CONTACT_PAST_JOB.user_id FROM _CONTACT
+    //   LEFT JOIN CONTACT_PAST_JOB
+    //   ON _CONTACT.contact_id = CONTACT_PAST_JOB.contact_id`
+    // );
     res.json({ contacts: contacts.rows });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -54,22 +55,35 @@ router.get('/user/:id', async (req, res) => {
       // WHERE _APPLICATION.user_id = $1
       // GROUP BY _COMPANY.company_id, _CONTACT.company_id, _CONTACT.user_id
       // `,
-      `SELECT _CONTACT.contact_id, _CONTACT.CONTACTNAME as CONTACT_NAME, _CONTACT.contact_email as CONTACT_EMAIL, 
-       _CONTACT.contact_linkedin as CONTACT_LINKEDIN, _CONTACT.contact_phone as CONTACT_PHONE_NUMBER,
-       _COMPANY.companyname as COMPANY,
-       _CONTACT.reply_status as Reply_Status,
-       _CONTACT.last_contacted as LAST_CONTACTED,
-       _CONTACT.followup_reminder as FOLLOW_UP,
-       CASE WHEN _APPLICATION.company_id = _CONTACT.company_id AND _APPLICATION.user_id = _CONTACT.user_id
-       THEN json_agg(DISTINCT jsonb_build_object('APPLICATION_DATE', _APPLICATION.creation_date)) END as APPLICATIONS
-       FROM _CONTACT
-       JOIN _COMPANY
-       ON _COMPANY.company_id = _CONTACT.company_id
-       LEFT JOIN _APPLICATION
-       ON _CONTACT.company_id = _APPLICATION.company_id
-       WHERE _CONTACT.user_id = $1 AND _APPLICATION.user_id = $1
-       GROUP BY _APPLICATION.applied_id, _COMPANY.companyname, _CONTACT.contact_id, _APPLICATION.user_id, _APPLICATION.company_id
-       `,
+
+      // `SELECT _CONTACT.contact_id, _CONTACT.CONTACTNAME as CONTACT_NAME, _CONTACT.contact_email as CONTACT_EMAIL,
+      //  _CONTACT.contact_linkedin as CONTACT_LINKEDIN, _CONTACT.contact_phone as CONTACT_PHONE_NUMBER,
+      //  _COMPANY.companyname as COMPANY,
+      //  _CONTACT.reply_status as Reply_Status,
+      //  _CONTACT.last_contacted as LAST_CONTACTED,
+      //  _CONTACT.followup_reminder as FOLLOW_UP,
+      //  CASE WHEN _APPLICATION.company_id = _CONTACT.company_id AND _APPLICATION.user_id = _CONTACT.user_id
+      //  THEN json_agg(DISTINCT jsonb_build_object('APPLICATION_DATE', _APPLICATION.creation_date)) END as APPLICATIONS
+      //  FROM _CONTACT
+      //  JOIN _COMPANY
+      //  ON _COMPANY.company_id = _CONTACT.company_id
+      //  LEFT JOIN _APPLICATION
+      //  ON _CONTACT.company_id = _APPLICATION.company_id
+      //  WHERE _CONTACT.user_id = $1 AND _APPLICATION.user_id = $1
+      //  GROUP BY _APPLICATION.applied_id, _COMPANY.companyname, _CONTACT.contact_id, _APPLICATION.user_id, _APPLICATION.company_id
+      //  `,
+
+      // I THINK THIS BELOW QUERY IS WORKING??
+      // -------------------------------------
+      // For Louis is returns all 3 contacts - one of them has the contact_past_job_id that we seed in CONTACT_PAST_JOB INSERT
+      // For Stephen it returns all 3 contacts - no past_jobs
+      // For guest it returns all 5 contacts - no past jobs
+
+      `SELECT contact.contactname, contact.contact_id, contact.company_id, past_job.contact_past_job_id
+      FROM _CONTACT AS contact
+      LEFT JOIN CONTACT_PAST_JOB AS past_job 
+      ON contact.contact_id = past_job.contact_id
+      WHERE contact.user_id = $1`,
       [id]
     );
     res.json({ userContacts: allUserContacts.rows });

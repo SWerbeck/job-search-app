@@ -83,18 +83,38 @@ router.get('/user/:id', async (req, res) => {
       // GROUP BY _COMPANY.company_id,  _application.company_id, _CONTACT.company_id, _CONTACT.user_id
       // `
 
-      `SELECT _COMPANY.companyname as COMPANY,
-      json_agg(DISTINCT jsonb_build_object('Application', _APPLICATION.applied_id, 'Applied_Date', _APPLICATION.creation_date)) as APPLICAITONS,
-      json_agg(DISTINCT jsonb_build_object('CONTACT_ID', _CONTACT.contact_id, 'CONTACT_NAME', _CONTACT.contactname)) as CONTACTS
-      FROM _COMPANY
-      JOIN _APPLICATION ON
-      _APPLICATION.company_id = _COMPANY.company_id 
-      LEFT JOIN _CONTACT ON
-      _COMPANY.company_id = _CONTACT.company_id
-      WHERE CASE WHEN _CONTACT.company_id = _COMPANY.company_id AND _CONTACT.user_id = $1 then _CONTACT.user_id = $1 AND _APPLICATION.user_id = $1 ELSE _APPLICATION.user_id = $1 END
-      GROUP BY _COMPANY.company_id,  _application.company_id, _CONTACT.company_id, _CONTACT.user_id
-      `,
+      // `SELECT _COMPANY.companyname as COMPANY,
+      // json_agg(DISTINCT jsonb_build_object('Application', _APPLICATION.applied_id, 'Applied_Date', _APPLICATION.creation_date)) as APPLICAITONS,
+      // json_agg(DISTINCT jsonb_build_object('CONTACT_ID', _CONTACT.contact_id, 'CONTACT_NAME', _CONTACT.contactname)) as CONTACTS
+      // FROM _COMPANY
+      // JOIN _APPLICATION ON
+      // _APPLICATION.company_id = _COMPANY.company_id
+      // LEFT JOIN _CONTACT ON
+      // _COMPANY.company_id = _CONTACT.company_id
+      // WHERE CASE WHEN _CONTACT.company_id = _COMPANY.company_id AND _CONTACT.user_id = $1 then _CONTACT.user_id = $1 AND _APPLICATION.user_id = $1 ELSE _APPLICATION.user_id = $1 END
+      // GROUP BY _COMPANY.company_id,  _application.company_id, _CONTACT.company_id, _CONTACT.user_id
+      // `,
 
+      // should get 4 applications
+
+      // `SELECT contact.contactname, app.application_status, app.company_id
+      // FROM  _CONTACT AS contact
+      // LEFT JOIN _APPLICATION AS app
+      // ON contact.user_id = app.user_id AND contact.company_id = app.company_id
+      // WHERE contact.USER_ID = $1`,
+
+      // Below query works? Returns the right amount of applications. It only will include an additional app if you have more than 1 contact at the company.
+      // Louis has 4 apps and it is returning correctly
+      // Stephen has 4 apps and its return 5 because he has 2 contacts at rumble, Dave Lee and Bob Davis. The applied_ids are the same so this might be ok?
+      // Guest has 6 apps and its return 7 because they have 2 contacts at rumble, Dave Lee and Bob Davis. The applied_ids are the same so this might be ok?
+      // ---------------------------------------------
+      `SELECT app.applied_id, contact.contactname, company.companyname 
+      FROM _APPLICATION AS app
+      LEFT JOIN _CONTACT AS contact
+      ON contact.user_id = app.user_id AND contact.company_id = app.company_id
+      JOIN _COMPANY AS company
+      ON app.company_id = company.company_id
+      WHERE app.USER_ID = $1`,
       [id]
     );
     res.json({ userapplications: allUserApplications.rows });
