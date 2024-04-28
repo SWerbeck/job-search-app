@@ -39,61 +39,30 @@ router.get('/user/:id', async (req, res) => {
   try {
     const id = req.params.id;
     const allUserApplications = await pool.query(
-      // `SELECT _APPLICATION.creation_date as Applied_Date,
-      //   COMPANYNAME as company,
-      //  CASE WHEN _CONTACT.company_id = _APPLICATION.company_id
-      //   AND _CONTACT.user_id = _APPLICATION.user_id
-      //   THEN _CONTACT.contactname END as contact
-      //   FROM _APPLICATION
-      //   JOIN _COMPANY ON
-      //   _APPLICATION.company_id = _COMPANY.company_id
-      //   LEFT OUTER JOIN _CONTACT ON
-      //   _APPLICATION.company_id = _CONTACT.company_id
-      //   WHERE _APPLICATION.user_id = $1`,
+ 
 
       // fix getting past jobs
 
-      // `SELECT _COMPANY.companyname as COMPANY,
-      // json_agg(DISTINCT jsonb_build_object('Application', _APPLICATION.applied_id, 'Applied_Date', _APPLICATION.creation_date)) as APPLICAITONS,
-      // CASE WHEN _CONTACT.company_id = _COMPANY.company_id AND _CONTACT.user_id = $1
-      // THEN json_agg(DISTINCT jsonb_build_object('CONTACT_ID', _CONTACT.contact_id, 'CONTACT_NAME', _CONTACT.contactname)) END as CONTACTS,
-      // CASE WHEN _APPLICATION.company_id = ANY(con.past_job) AND con.user_id = $1
-      // THEN json_agg(DISTINCT jsonb_build_object('CONTACT_ID', con.contact_id, 'CONTACT_NAME', con.contactname)) END as PAST_JOB_CONTACTS
-      // FROM _COMPANY
-      // JOIN _APPLICATION ON
-      // _APPLICATION.company_id = _COMPANY.company_id
-      // LEFT OUTER JOIN _CONTACT ON
-      // _COMPANY.company_id = _CONTACT.company_id
-      // LEFT OUTER JOIN _CONTACT CON
-      // ON _COMPANY.company_id = ANY(con.past_job)
-      // WHERE _APPLICATION.user_id = $1
-      // GROUP BY _COMPANY.company_id,  _application.company_id, _CONTACT.company_id, _CONTACT.user_id, con.user_id, con.past_job
-      // `,
+      `SELECT _COMPANY.companyname as COMPANY,
+      json_agg(DISTINCT jsonb_build_object('Application', _APPLICATION.applied_id, 'Applied_Date', _APPLICATION.creation_date)) as APPLICAITONS,
+      CASE WHEN _CONTACT.company_id = _COMPANY.company_id AND _CONTACT.user_id = $1
+      THEN json_agg(DISTINCT jsonb_build_object('CONTACT_ID', _CONTACT.contact_id, 'CONTACT_NAME', _CONTACT.contactname)) END as CONTACTS,
+      CASE WHEN CONTACT_PAST_JOB.company_id = _COMPANY.company_id AND CONTACT_PAST_JOB.user_id = $1
+      THEN json_agg(DISTINCT jsonb_build_object('CONTACT_ID', _CONTACT.contactname)) END as Past_Job_Contacts
+      FROM _COMPANY
+      JOIN _APPLICATION ON
+      _APPLICATION.company_id = _COMPANY.company_id
+      LEFT JOIN _CONTACT ON
+      _COMPANY.company_id = _CONTACT.company_id
+      LEFT JOIN CONTACT_PAST_JOB ON
+      _CONTACT.contact_id = CONTACT_PAST_JOB.contact_id
+      WHERE CASE WHEN _CONTACT.company_id = _APPLICATION.company_id THEN _APPLICATION.user_id = $1 AND _CONTACT.user_id = $1
+      ELSE _APPLICATION.user_id = $1 END
+      GROUP BY _COMPANY.company_id,  _application.company_id, _contact.company_id, _contact.user_id, contact_past_job.company_id, contact_past_job.user_id
+      `,
 
-      // `SELECT _COMPANY.companyname as COMPANY,
-      // json_agg(DISTINCT jsonb_build_object('Application', _APPLICATION.applied_id, 'Applied_Date', _APPLICATION.creation_date)) as APPLICAITONS,
-      // CASE WHEN _CONTACT.company_id = _COMPANY.company_id AND _CONTACT.user_id = $1
-      // THEN json_agg(DISTINCT jsonb_build_object('CONTACT_ID', _CONTACT.contact_id, 'CONTACT_NAME', _CONTACT.contactname)) END as CONTACTS
-      // FROM _COMPANY
-      // JOIN _APPLICATION ON
-      // _APPLICATION.company_id = _COMPANY.company_id
-      // LEFT OUTER JOIN _CONTACT ON
-      // _COMPANY.company_id = _CONTACT.company_id
-      // WHERE _APPLICATION.user_id = $1
-      // GROUP BY _COMPANY.company_id,  _application.company_id, _CONTACT.company_id, _CONTACT.user_id
-      // `
-
-      // `SELECT _COMPANY.companyname as COMPANY,
-      // json_agg(DISTINCT jsonb_build_object('Application', _APPLICATION.applied_id, 'Applied_Date', _APPLICATION.creation_date)) as APPLICAITONS,
-      // json_agg(DISTINCT jsonb_build_object('CONTACT_ID', _CONTACT.contact_id, 'CONTACT_NAME', _CONTACT.contactname)) as CONTACTS
-      // FROM _COMPANY
-      // JOIN _APPLICATION ON
-      // _APPLICATION.company_id = _COMPANY.company_id
-      // LEFT JOIN _CONTACT ON
-      // _COMPANY.company_id = _CONTACT.company_id
-      // WHERE CASE WHEN _CONTACT.company_id = _COMPANY.company_id AND _CONTACT.user_id = $1 then _CONTACT.user_id = $1 AND _APPLICATION.user_id = $1 ELSE _APPLICATION.user_id = $1 END
-      // GROUP BY _COMPANY.company_id,  _application.company_id, _CONTACT.company_id, _CONTACT.user_id
-      // `,
+   
+  
 
       // should get 4 applications
 
@@ -108,13 +77,18 @@ router.get('/user/:id', async (req, res) => {
       // Stephen has 4 apps and its return 5 because he has 2 contacts at rumble, Dave Lee and Bob Davis. The applied_ids are the same so this might be ok?
       // Guest has 6 apps and its return 7 because they have 2 contacts at rumble, Dave Lee and Bob Davis. The applied_ids are the same so this might be ok?
       // ---------------------------------------------
-      `SELECT app.applied_id, contact.contactname, company.companyname 
-      FROM _APPLICATION AS app
-      LEFT JOIN _CONTACT AS contact
-      ON contact.user_id = app.user_id AND contact.company_id = app.company_id
-      JOIN _COMPANY AS company
-      ON app.company_id = company.company_id
-      WHERE app.USER_ID = $1`,
+      
+      
+      
+      // `SELECT app.applied_id, contact.contactname, company.companyname 
+      // FROM _APPLICATION AS app
+      // LEFT JOIN _CONTACT AS contact
+      // ON contact.user_id = app.user_id AND contact.company_id = app.company_id
+      // JOIN _COMPANY AS company
+      // ON app.company_id = company.company_id
+      // WHERE app.USER_ID = $1`,
+
+
       [id]
     );
     res.json({ userapplications: allUserApplications.rows });
