@@ -9,7 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "start": "nodemon server/api",
-    "seed": "psql -d jsadb -a -f ./server/db/user.sql && psql -d jsadb -a -f ./server/db/company.sql && psql -d jsadb -a -f ./server/db/application.sql && psql -d jsadb -a -f ./server/db/contact.sql && psql -d jsadb -a -f ./server/db/contactpastjob.sql"
+    "seed": "psql -d jsadb -a -f ./server/db/user.sql && psql -d jsadb -a -f ./server/db/company.sql && psql -d jsadb -a -f ./server/db/contact.sql && psql -d jsadb -a -f ./server/db/application.sql && psql  -d jsadb -a -f ./server/db/contactpastjob.sql"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.3",

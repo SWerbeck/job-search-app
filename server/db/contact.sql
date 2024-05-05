@@ -17,6 +17,7 @@ CREATE TABLE _CONTACT(
   CONTACT_EMAIL VARCHAR(255),
   reply_status reply_stat NOT NULL DEFAULT 'has not replied',
   FOLLOWUP BOOLEAN DEFAULT 'false',
+  isprimary BOOLEAN DEFAULT 'false',
   CHECK (CONTACT_EMAIL LIKE '%.com%'),
   CHECK (CONTACT_LINKEDIN LIKE '%.com%'),
    FOREIGN KEY (company_id) REFERENCES _COMPANY(company_id)
@@ -25,37 +26,37 @@ CREATE TABLE _CONTACT(
  ON DELETE CASCADE
   );
 
-INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
-VALUES ('James Smith',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123') );
+INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
+VALUES ('James Smith', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123') );
 
-INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
-VALUES ('Frank Jones',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'));
+INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
+VALUES ('Frank Jones', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'));
 
-INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
-VALUES ('Judd Paul',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'));
+INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
+VALUES ('Judd Paul', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'));
 
-INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
-VALUES ('Sara Jackson',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb') );
+INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
+VALUES ('Sara Jackson', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb') );
 
-INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
-VALUES ('Dave Lee',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb') );
+INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
+VALUES ('Dave Lee', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb') );
 
-INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
-VALUES ('Bob Davis',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'));
+INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
+VALUES ('Bob Davis', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'));
 
-INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
-VALUES ('Bob Davis',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
+VALUES ('Bob Davis', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 
-INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
-VALUES ('James Smith',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'guest') );
+INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
+VALUES ('James Smith', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'guest') );
 
-INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
-VALUES ('Frank Jones',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify'), (SELECT user_id FROM _USER WHERE UserName = 'guest') );
+INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
+VALUES ('Frank Jones', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify'), (SELECT user_id FROM _USER WHERE UserName = 'guest') );
 
-INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
-VALUES ('Sara Jackson',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
+VALUES ('Sara Jackson', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
-INSERT INTO _CONTACT (CONTACTNAME, company_id, user_id)
-VALUES ('Dave Lee',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
+VALUES ('Dave Lee', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 

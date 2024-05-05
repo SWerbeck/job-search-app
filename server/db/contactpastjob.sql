@@ -15,6 +15,7 @@ CREATE TABLE CONTACT_PAST_JOB(
   ON DELETE CASCADE
   );
 
+
  INSERT INTO CONTACT_PAST_JOB (contact_id, company_id, user_id, CONTACTNAME)
  VALUES ((SELECT contact_id FROM _CONTACT WHERE CONTACTNAME in ('Judd Paul') AND user_id in (SELECT user_id FROM _USER WHERE UserName in ('louisiscool123'))), (SELECT company_id FROM _COMPANY WHERE COMPANYNAME in ('GOOGLE')), (SELECT user_id FROM _USER WHERE UserName in ('louisiscool123')), 'Judd Paul');
 
