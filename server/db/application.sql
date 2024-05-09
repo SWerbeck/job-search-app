@@ -10,7 +10,7 @@ CREATE TABLE _APPLICATION(
  last_updated TIMESTAMPTZ DEFAULT Now(),
  company_id uuid NOT NULL,
  user_id uuid NOT NULL,
- application_info VARCHAR(8000)DEFAULT '::no info::',
+ application_info VARCHAR(8000)DEFAULT NULL,
  application_status application_stat DEFAULT 'active',
  FOREIGN KEY (company_id) REFERENCES _COMPANY(company_id)
  ON DELETE CASCADE,
