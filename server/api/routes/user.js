@@ -1,13 +1,21 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import pool from '../../db/db.js';
+import {
+  deleteUserById,
+  editUserById,
+  postNewUser,
+  selectAllUsers,
+  selectSingleUserId,
+  selectUserById,
+} from './queries/userqueries.js';
 
 const router = express.Router();
 
 // Get all users
 router.get('/', async (req, res) => {
   try {
-    const users = await pool.query('SELECT * FROM _user');
+    const users = await pool.query(selectAllUsers);
     res.json({ users: users.rows });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -18,62 +26,63 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const id = req.params.id;
-    const singleUser = await pool.query(
-      'SELECT * FROM _USER WHERE USER_ID = $1',
-      [id]
-    );
+    const singleUser = await pool.query(selectUserById, [id]);
     res.json({ users: singleUser.rows });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// post new user
+// post new user to database
 router.post('/', async (req, res) => {
   try {
     const { firstName, lastName, user_password, email, userName } = req.body;
     //hashed pw function
     const hashedPassword = await bcrypt.hash(user_password, 10);
-    const newUser = await pool.query(
-      'INSERT INTO _USER (FIRST_NAME, LAST_NAME, USER_PASSWORD, User_email, UserName ) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [firstName, lastName, hashedPassword, email, userName]
-    );
+    const newUser = await pool.query(postNewUser, [
+      firstName,
+      lastName,
+      hashedPassword,
+      email,
+      userName,
+    ]);
     res.json({ users: newUser.rows[0] });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-//PUT route
+// PUT route edit user already in database
 router.put('/:id', async (req, res) => {
   try {
     const id = req.params.id;
     const { firstName, lastName, email, userName } = req.body;
     //hashed pw function
     //const hashedPassword = await bcrypt.hash(req.body.user_password, 10);
-    const updatedUser = await pool.query(
-      'UPDATE _USER SET FIRST_NAME = $1, LAST_NAME = $2, User_email = $3, UserName = $4 WHERE user_id = $5',
-      [firstName, lastName, email, userName, id]
-    );
+    const updatedUser = await pool.query(editUserById, [
+      firstName,
+      lastName,
+      email,
+      userName,
+      id,
+    ]);
     res.status(200).send(`Updated info for: ${userName}`);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// delete route
+// delete user route
 router.delete('/:id', async (req, res) => {
   try {
     const id = req.params.id;
-    const singleUser = await pool.query(
-      'SELECT USER_ID FROM _USER WHERE USER_ID = $1',
-      [id]
-    );
-    if (singleUser.rows[0].user_id === id) {
-      const deleteSingleUser = await pool.query(
-        'DELETE FROM _USER WHERE user_id = $1',
-        [id]
-      );
+    //query to get id passed from req.params.id
+    const singleUserQuery = await pool.query(selectSingleUserId, [id]);
+    //getting that value and storing it into a variable
+    const singleUser = singleUserQuery.rows[0].user_id;
+    //check if the query matches the req.params.id || if so delete that user
+    if (singleUser === id) {
+      await pool.query(deleteUserById, [id]);
       res.status(200).send(`User deleted with ID: ${id}`);
     }
   } catch (error) {
