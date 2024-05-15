@@ -1,6 +1,10 @@
 import express from 'express';
 import router from './routes/routes.js';
 import cors from 'cors';
+import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+
+dotenv.config();
 
 const app = express();
 const port = 3000;
@@ -11,7 +15,14 @@ app.use(
     extended: true,
   })
 );
-app.use(cors());
+
+const corsOptions = {
+  credentials: true,
+  origin: process.env.URL || '*',
+};
+
+app.use(cors(corsOptions));
+app.use(cookieParser());
 
 app.get('/', (req, res) => {
   res.json({ info: 'Node.js, Express, and Postgres API' });

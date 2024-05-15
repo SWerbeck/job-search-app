@@ -15,7 +15,7 @@ router.use('/applications', applicationRouter);
 
 router.use('/contacts', contactRouter);
 
-router.use('/login', authRouter);
+router.use('/auth', authRouter);
 
 router.use((req, res, next) => {
   const error = new Error('Not Found');
