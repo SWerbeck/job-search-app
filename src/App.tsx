@@ -1,6 +1,7 @@
 import Users from './components/Userscomponent';
 import Companies from './components/Companiescomponent';
 import './App.css';
+import Navbar from './components/Navbar';
 
 function App() {
   
@@ -23,8 +24,12 @@ function App() {
 
   return (
     <>
+    <Navbar />
+   
+    <>
       <Users />
       <Companies />
+    </>
     </>
   );
 }

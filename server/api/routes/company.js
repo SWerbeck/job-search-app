@@ -35,8 +35,8 @@ router.get('/:id', async (req, res) => {
 // Post new company to database
 router.post('/', async (req, res) => {
   try {
-    const { companyName, website } = req.body;
-    const newUser = await pool.query(postNewCompany, [companyName, website]);
+    const { companyName } = req.body;
+    const newUser = await pool.query(postNewCompany, [companyName]);
     res.json({ users: newUser.rows[0] });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -47,8 +47,8 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const id = req.params.id;
-    const { companyName, website } = req.body;
-    await pool.query(editCompanyById, [companyName, website, id]);
+    const { companyName } = req.body;
+    await pool.query(editCompanyById, [companyName, id]);
     res.status(200).send(`Updated info for: ${companyName}`);
   } catch (error) {
     res.status(500).json({ error: error.message });

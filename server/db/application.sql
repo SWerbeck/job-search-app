@@ -12,6 +12,7 @@ CREATE TABLE _APPLICATION(
  user_id uuid NOT NULL,
  application_info VARCHAR(8000)DEFAULT NULL,
  application_status application_stat DEFAULT 'active',
+ WEBSITE VARCHAR(255),
  FOREIGN KEY (company_id) REFERENCES _COMPANY(company_id)
  ON DELETE CASCADE,
  FOREIGN KEY (user_id) REFERENCES _USER(user_id)
