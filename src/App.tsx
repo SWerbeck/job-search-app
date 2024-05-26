@@ -2,9 +2,9 @@ import Users from './components/Userscomponent';
 import Companies from './components/Companiescomponent';
 import './App.css';
 import Navbar from './components/Navbar';
+import Login from './components/Login';
 
 function App() {
-  
   // const fetchCompanys = async () => {
   //   try {
   //     const fetchedCompanys = await axios.get(
@@ -24,12 +24,13 @@ function App() {
 
   return (
     <>
-    <Navbar />
-   
-    <>
-      <Users />
-      <Companies />
-    </>
+      <Navbar />
+
+      <>
+        <Login />
+        <Users />
+        <Companies />
+      </>
     </>
   );
 }

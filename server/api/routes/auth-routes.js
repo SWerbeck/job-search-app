@@ -39,7 +39,8 @@ router.post('/login', async (req, res) => {
         httpOnly: true,
       });
       //for debugging the below line is returning the tokens
-      return res.json(tokens);
+      //return res.json(users);
+      return res.json({ token: tokens, id: users.rows[0].user_id });
       // when app is in prod we will want this line below instead to just say success
       //return res.status(200).json('Success');
     }
