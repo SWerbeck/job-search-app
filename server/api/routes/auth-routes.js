@@ -15,7 +15,12 @@ router.post('/login', async (req, res) => {
     );
 
     if (users.rows.length === 0) {
-      return res.status(401).json({ error: 'Email is incorrect' });
+      return res
+        .status(401)
+        .json({
+          error:
+            'Email not found. Please check that the email is correct or create an account to login',
+        });
     }
 
     let validPassword = await bcrypt.compare(
