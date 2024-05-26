@@ -1,19 +1,29 @@
 import axios from 'axios';
 import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
 
   const login = async () => {
-    const loggedInUser = await axios.post(
-      'http://localhost:3000/api/auth/login',
-      {
-        email: email,
-        user_password: password,
-      }
-    );
-    console.log(loggedInUser);
+    try {
+      const loggedInUser = await axios.post(
+        'http://localhost:3000/api/auth/login',
+        {
+          email: email,
+          user_password: password,
+        }
+      );
+      navigate(`/home/${loggedInUser.data.id}`);
+      console.log(loggedInUser);
+    } catch (error) {
+      setEmailError(error.response.data.error);
+      console.log(error.response.data.error);
+    }
   };
 
   const logout = async () => {
@@ -40,6 +50,7 @@ const Login = () => {
       />
       <button onClick={login}>Log in</button>
       <button onClick={logout}>Log out</button>
+      {emailError.length ? <p>{emailError}</p> : <p></p>}
     </div>
   );
 };

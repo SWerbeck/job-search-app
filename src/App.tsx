@@ -6,6 +6,8 @@ import Navbar from './components/Navbar';
 import Login from './components/Login';
 
 import Applications from './components/Applicationscomponent';
+import HomePage from './components/Homepage';
+import { Route, Routes } from 'react-router-dom';
 
 function App() {
   // const fetchCompanys = async () => {
@@ -28,12 +30,12 @@ function App() {
   return (
     <>
       <Navbar />
-      <>
-        <Login />
-        <Users />
-        <Companies />
-        <Applications />
-      </>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/home/:user_id" element={<HomePage />} />
+        {/* <Applications />
+        <HomePage /> */}
+      </Routes>
     </>
   );
 }
