@@ -28,7 +28,7 @@ const Companies = () => {
   }, []);
 console.log("companies ", companiesList)
   if (!isLoaded){
-  return <div>loading</div>
+  return <div>LOADING...</div>
 }
   return (
     <div>

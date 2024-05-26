@@ -2,6 +2,7 @@ import Users from './components/Userscomponent';
 import Companies from './components/Companiescomponent';
 import './App.css';
 import Navbar from './components/Navbar';
+import Applications from './components/Applicationscomponent';
 
 function App() {
   
@@ -27,8 +28,10 @@ function App() {
     <Navbar />
    
     <>
-      <Users />
-      <Companies />
+    <Applications />
+    
+      {/* <Users />
+      <Companies /> */}
     </>
     </>
   );
