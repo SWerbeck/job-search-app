@@ -6,6 +6,7 @@ function authenticateToken(req, res, next) {
   // why does only 2 == work but 3 === doesn't?
   if (token == null) return res.status(401).json({ error: 'No token' });
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, user) => {
+    req.authenticated = true;
     if (error) return res.status(403).json({ error: error.message });
     req.user = user;
     next();

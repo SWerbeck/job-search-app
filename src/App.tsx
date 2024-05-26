@@ -2,10 +2,12 @@ import Users from './components/Userscomponent';
 import Companies from './components/Companiescomponent';
 import './App.css';
 import Navbar from './components/Navbar';
+
+import Login from './components/Login';
+
 import Applications from './components/Applicationscomponent';
 
 function App() {
-  
   // const fetchCompanys = async () => {
   //   try {
   //     const fetchedCompanys = await axios.get(
@@ -25,14 +27,13 @@ function App() {
 
   return (
     <>
-    <Navbar />
-   
-    <>
-    <Applications />
-    
-      {/* <Users />
-      <Companies /> */}
-    </>
+      <Navbar />
+      <>
+        <Login />
+        <Users />
+        <Companies />
+        <Applications />
+      </>
     </>
   );
 }
