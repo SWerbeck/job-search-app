@@ -2,7 +2,10 @@ import Users from './components/Userscomponent';
 import Companies from './components/Companiescomponent';
 import './App.css';
 import Navbar from './components/Navbar';
+
 import Login from './components/Login';
+
+import Applications from './components/Applicationscomponent';
 
 function App() {
   // const fetchCompanys = async () => {
@@ -25,11 +28,11 @@ function App() {
   return (
     <>
       <Navbar />
-
       <>
         <Login />
         <Users />
         <Companies />
+        <Applications />
       </>
     </>
   );
