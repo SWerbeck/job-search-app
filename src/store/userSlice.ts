@@ -7,7 +7,6 @@ export interface usersInitialStateType {
       user_id: string;
       first_name: string;
       last_name: string;
-      USER_PASSWORD: string;
       User_email: string;
       username: string;
     }
@@ -19,7 +18,6 @@ const initialState: usersInitialStateType = {
   user_id: "",
   first_name: "",
   last_name: "",
-  USER_PASSWORD: "",
   User_email:  "",
   username:  "",
 }   
@@ -39,7 +37,6 @@ export const userSlice = createSlice({
           user_id: "",
           first_name: "",
           last_name: "",
-          USER_PASSWORD: "",
           User_email:  "",
           username:  "",
         }   
