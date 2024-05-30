@@ -19,7 +19,7 @@ const Login = () => {
         }
       );
       navigate(`/home/${loggedInUser.data.id}`);
-      console.log(loggedInUser);
+      //console.log(loggedInUser);
     } catch (error) {
       setEmailError(error.response.data.error);
       console.log(error.response.data.error);

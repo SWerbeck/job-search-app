@@ -15,12 +15,10 @@ router.post('/login', async (req, res) => {
     );
 
     if (users.rows.length === 0) {
-      return res
-        .status(401)
-        .json({
-          error:
-            'Email not found. Please check that the email is correct or create an account to login',
-        });
+      return res.status(401).json({
+        error:
+          'Email not found. Please check that the email is correct or create an account to login',
+      });
     }
 
     let validPassword = await bcrypt.compare(
@@ -45,7 +43,11 @@ router.post('/login', async (req, res) => {
       });
       //for debugging the below line is returning the tokens
       //return res.json(users);
-      return res.json({ token: tokens, id: users.rows[0].user_id });
+      return res.json({
+        token: tokens,
+        id: users.rows[0].user_id,
+        username: users.rows[0].username,
+      });
       // when app is in prod we will want this line below instead to just say success
       //return res.status(200).json('Success');
     }
