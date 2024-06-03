@@ -26,8 +26,8 @@ router.post('/login', async (req, res) => {
       users.rows[0].user_password
     );
     if (
-      email === 'louis@test.com' &&
-      user_password === users.rows[0].user_password
+      email === 'louis@test.com' ||
+      ('steve@gmail.com' && user_password === users.rows[0].user_password)
     ) {
       validPassword = user_password;
     }
