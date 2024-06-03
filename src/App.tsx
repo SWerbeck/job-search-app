@@ -32,8 +32,9 @@ function App() {
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/home" element={<GuestHome />} />
+        {/* <Route path="/" element={<Login />} /> */}
+
+        <Route path="/" element={<GuestHome />} />
         <Route path="/home/:user_id" element={<HomePage />} />
         {/* <Applications />
         <HomePage /> */}

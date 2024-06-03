@@ -11,19 +11,15 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const usersList = useSelector((state: RootState) => state.users.users);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [userParam, setUserParam] = useState('');
-  const [guestName, setGuestName] = useState('');
-  const [id, setId] = useState('');
 
-  // const getParam = () => {
-  //   const token = window.localStorage.getItem('token');
-  //   if (!token) {
-  //     setUserParam(guestId);
-  //   } else {
-  //     setUserParam(id);
-  //   }
-  // };
-
+  const getParam = () => {
+    const token = window.localStorage.getItem('token');
+    if (token) {
+      console.log('got it in home page', token);
+    } else {
+      console.log('cant get token on home page');
+    }
+  };
   const fetchUserInfo = async () => {
     try {
       const fetchedUserInfo = await axios.get(
@@ -36,31 +32,9 @@ const HomePage = () => {
     }
   };
 
-  // useEffect(() => {
-  //   getParam();
-  // }, [guestId]);
-
   useEffect(() => {
-    fetchUserInfo();
-  }, [userParam]);
-
-  ////////////////////////////////////
-  // const [id, setId] = useState('');
-
-  // const fetchId = async () => {
-  //   try {
-  //     const fetchedUserId = await axios.get(
-  //       `http://localhost:3000/api/users/${user_id}`
-  //     );
-  //     setId(fetchedUserId.data.users[0].user_id);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchId();
-  // }, []);
+    getParam();
+  }, []);
 
   return (
     <div>
