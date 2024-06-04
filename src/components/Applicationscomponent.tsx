@@ -3,14 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { RootState } from '../store';
 import { setUserApps } from '../store/userAppsSlice';
+import { setUsers } from '../store/userSlice';
 
 const Applications = () => {
   const dispatch = useDispatch();
+  const usersList = useSelector((state: RootState) => state.users.users);
   const userApplications = useSelector(
     (state: RootState) => state.userApps.userApps
   );
   const [isLoaded, setIsLoaded] = useState(false);
   const userId = '42f3b132-dd24-4e6f-a65d-c9216a5d056a';
+
+  console.log('userLise from applications', usersList);
 
   const fetchApplications = async () => {
     try {

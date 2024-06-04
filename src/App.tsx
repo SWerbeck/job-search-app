@@ -36,8 +36,7 @@ function App() {
 
         <Route path="/" element={<GuestHome />} />
         <Route path="/home/:user_id" element={<HomePage />} />
-        {/* <Applications />
-        <HomePage /> */}
+        <Route path="/home/:user_id" element={<Applications />} />
       </Routes>
     </>
   );
