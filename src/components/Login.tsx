@@ -1,13 +1,21 @@
 import axios from 'axios';
-import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
+import useAuth from '../custom-hooks/useAuth';
 
 const Login = () => {
+  const { setAuth } = useAuth();
+
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || '/login';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
+
+  //const token = window.localStorage.getItem('token');
 
   const login = async () => {
     try {
@@ -16,12 +24,19 @@ const Login = () => {
         {
           email: email,
           user_password: password,
-          withCredentials: true,
+          headers: { 'Content-Type': 'application/json' },
+          //withCredentials: true,
         }
       );
-      window.localStorage.setItem('token', loggedInUser.data.token.accessToken);
-      console.log('token login form', loggedInUser.data.token);
-      navigate(`/home/${loggedInUser.data.id}`);
+      const accessToken = loggedInUser?.data?.token?.accessToken;
+      const refreshToken = loggedInUser?.data?.token?.refreshToken;
+      setAuth({ email, password, accessToken, refreshToken });
+      //window.localStorage.setItem('token', loggedInUser.data.token.accessToken);
+      console.log(
+        'LOGGED IN USER DATA',
+        loggedInUser?.data?.token?.accessToken
+      );
+      navigate(`/home/${loggedInUser?.data?.id}`);
     } catch (error) {
       setEmailError(error.response.data.error);
       console.log(error.response.data.error);
@@ -29,33 +44,35 @@ const Login = () => {
   };
 
   const logout = async () => {
-    const token = window.localStorage.getItem('token');
     const loggedOut = await axios.delete(
       'http://localhost:3000/api/auth/logout'
     );
-    window.localStorage.removeItem('token');
-    navigate('/');
+    //window.localStorage.removeItem('token');
+    navigate('/login');
     console.log(loggedOut.data.message);
   };
+
   return (
-    <div>
-      <h1>Login page</h1>
-      <input
-        type="text"
-        onChange={(event) => {
-          setEmail(event.target.value);
-        }}
-      />
-      <input
-        type="password"
-        onChange={(event) => {
-          setPassword(event.target.value);
-        }}
-      />
-      <button onClick={login}>Log in</button>
+    <>
+      <>
+        <h1>Login page</h1>
+        <input
+          type="text"
+          onChange={(event) => {
+            setEmail(event.target.value);
+          }}
+        />
+        <input
+          type="password"
+          onChange={(event) => {
+            setPassword(event.target.value);
+          }}
+        />
+        <button onClick={login}>Log in</button>
+        {emailError.length ? <p>{emailError}</p> : <p></p>}
+      </>
       <button onClick={logout}>Log out</button>
-      {emailError.length ? <p>{emailError}</p> : <p></p>}
-    </div>
+    </>
   );
 };
 

@@ -7,8 +7,10 @@ import Login from './components/Login';
 
 import Applications from './components/Applicationscomponent';
 import HomePage from './components/Homepage';
-import { Route, Routes } from 'react-router-dom';
 import GuestHome from './components/GuestHome';
+import Layout from './components/Layout';
+import RequireAuth from './components/RequireAuth';
+import { Route, Routes } from 'react-router-dom';
 
 function App() {
   // const fetchCompanys = async () => {
@@ -32,11 +34,12 @@ function App() {
     <>
       <Navbar />
       <Routes>
-        {/* <Route path="/" element={<Login />} /> */}
-
-        <Route path="/" element={<GuestHome />} />
-        <Route path="/home/:user_id" element={<HomePage />} />
-        <Route path="/home/:user_id" element={<Applications />} />
+        <Route path="/" element={<Layout />} />
+        <Route path="/login" element={<Login />} />
+        {/* These are protected routes */}
+        <Route element={<RequireAuth />}>
+          <Route path="/home/:user_id" element={<HomePage />} />
+        </Route>
       </Routes>
     </>
   );
