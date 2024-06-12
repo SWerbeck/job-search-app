@@ -26,8 +26,15 @@ router.post('/login', async (req, res) => {
       users.rows[0].user_password
     );
     if (
-      email === 'louis@test.com' ||
-      ('steve@gmail.com' && user_password === users.rows[0].user_password)
+      email === 'louis@test.com' &&
+      user_password === users.rows[0].user_password
+    ) {
+      validPassword = user_password;
+    }
+
+    if (
+      email === 'steve@gmail.com' &&
+      user_password === users.rows[0].user_password
     ) {
       validPassword = user_password;
     }
@@ -58,16 +65,23 @@ router.post('/login', async (req, res) => {
 
 router.get('/refresh_token', (req, res) => {
   try {
+    console.log('from route 1');
     const refreshToken = req.cookies.refresh_token;
+    console.log('from route 2');
+    console.log('from route', refreshToken);
+    console.log('from route 3');
     if (refreshToken === null)
       return res.status(401).json({ error: 'Null refresh token' });
+    console.log('from route 4');
     jwt.verify(
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET,
       (error, user) => {
         if (error) return res.status(403).json({ error: error.message });
         let tokens = jwtTokens(user);
-        res.cookie('refresh_token', tokens.refreshToken, { httpOnly: true });
+        res.cookie('refresh_token', tokens.refreshToken, {
+          httpOnly: true,
+        });
         return res.json(tokens);
       }
     );
