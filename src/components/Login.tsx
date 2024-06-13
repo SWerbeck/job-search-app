@@ -15,23 +15,17 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
 
-  //const token = window.localStorage.getItem('token');
-
   const login = async () => {
     try {
-      const loggedInUser = await axios.post(
-        'http://localhost:3000/api/auth/login',
-        {
-          email: email,
-          user_password: password,
-          headers: { 'Content-Type': 'application/json' },
-          //withCredentials: true,
-        }
-      );
+      const loggedInUser = await axios.post('/api/auth/login', {
+        email: email,
+        user_password: password,
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true,
+      });
       const accessToken = loggedInUser?.data?.token?.accessToken;
       const refreshToken = loggedInUser?.data?.token?.refreshToken;
       setAuth({ email, password, accessToken, refreshToken });
-      //window.localStorage.setItem('token', loggedInUser.data.token.accessToken);
       console.log(
         'LOGGED IN USER DATA',
         loggedInUser?.data?.token?.accessToken
