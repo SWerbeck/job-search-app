@@ -22,9 +22,7 @@ const Applications = () => {
 
   const fetchApplications = async () => {
     try {
-      const fetchedApps = await axios.get(
-        `http://localhost:3000/api/applications/user/${userId}`
-      );
+      const fetchedApps = await axios.get(`/api/applications/user/${userId}`);
       console.log('fetched apps from application', fetchedApps);
       dispatch(setUserApps(fetchedApps?.data?.userapplications));
       setIsLoaded(true);
