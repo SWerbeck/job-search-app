@@ -16,12 +16,19 @@ app.use(
   })
 );
 
-const corsOptions = {
-  credentials: true,
-  origin: process.env.URL || '*',
-};
+// const corsOptions = {
+//   credentials: true,
+//   origin: process.env.URL || '*',
+// };
 
-app.use(cors(corsOptions));
+const corsOrigin = {
+  origin: 'http://localhost:5173', //or whatever port your frontend is using
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOrigin));
+
+// app.use(cors(corsOptions));
 app.use(cookieParser());
 
 app.get('/', (req, res) => {

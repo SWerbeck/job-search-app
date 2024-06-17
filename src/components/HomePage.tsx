@@ -1,11 +1,12 @@
 import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+// import axios from '../../server/api/axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { setUsers } from '../store/userSlice';
 import Applications from './Applicationscomponent';
 import AuthContext from '../context/AuthProvider';
+import axios from 'axios';
 
 const HomePage = () => {
   const { user_id } = useParams();

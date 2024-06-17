@@ -65,14 +65,10 @@ router.post('/login', async (req, res) => {
 
 router.get('/refresh_token', (req, res) => {
   try {
-    console.log('from route 1');
     const refreshToken = req.cookies.refresh_token;
-    console.log('from route 2');
     console.log('from route', refreshToken);
-    console.log('from route 3');
     if (refreshToken === null)
       return res.status(401).json({ error: 'Null refresh token' });
-    console.log('from route 4');
     jwt.verify(
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET,
@@ -81,6 +77,8 @@ router.get('/refresh_token', (req, res) => {
         let tokens = jwtTokens(user);
         res.cookie('refresh_token', tokens.refreshToken, {
           httpOnly: true,
+          secure: true,
+          sameSite: 'None',
         });
         return res.json(tokens);
       }

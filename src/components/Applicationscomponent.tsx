@@ -1,40 +1,59 @@
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { RootState } from '../store';
 import { setUserApps } from '../store/userAppsSlice';
-import { setUsers } from '../store/userSlice';
 import useRefreshToken from '../custom-hooks/useRefreshToken';
+import useAxiosPrivate from '../custom-hooks/useAxiosPrivate';
+import useAuth from '../custom-hooks/useAuth';
+
+//import axios from 'axios';
 
 const Applications = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { auth } = useAuth();
+
+  // const from = location.state?.from?.pathname || '/login';
+
   const usersList = useSelector((state: RootState) => state.users.users);
   const userApplications = useSelector(
     (state: RootState) => state.userApps.userApps
   );
+  let isMounted = true;
   const [loaded, setIsLoaded] = useState(false);
-  //const [fetchedUsers, setFetchedUsers] = useState('');
-  const userId = usersList[0]?.user_id;
+  const [apps, setApps] = useState(false);
 
+  const id = usersList[0]?.user_id;
+  const user_id = auth.user_id;
+
+  console.log('error id?', auth);
+
+  const axiosPrivate = useAxiosPrivate();
   const refresh = useRefreshToken();
 
   const fetchApplications = async () => {
     try {
-      const fetchedApps = await axios.get(`/api/applications/user/${userId}`);
-      console.log('fetched apps from application', fetchedApps);
+      const fetchedApps = await axiosPrivate.get(
+        `/api/applications/user/${user_id}`
+      );
       dispatch(setUserApps(fetchedApps?.data?.userapplications));
-      setIsLoaded(true);
+      if (isMounted && fetchedApps) {
+        setIsLoaded(true);
+      }
     } catch (err) {
-      console.log(err);
+      console.log(err.response.data);
+      navigate('/login', { state: { from: location }, replace: true });
     }
   };
 
   useEffect(() => {
     fetchApplications();
-  }, [userId]);
-  console.log('outside use effext', userApplications);
+    return () => {
+      isMounted = false;
+    };
+  }, [id]);
 
   useEffect(() => {
     //console.log('dependency useEffect');

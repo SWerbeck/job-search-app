@@ -39,6 +39,10 @@ function App() {
         {/* These are protected routes */}
         <Route element={<RequireAuth />}>
           <Route path="/home/:user_id" element={<HomePage />} />
+          {/* <Route
+            path="/home/:user_id/applications"
+            element={<Applications />}
+          /> */}
         </Route>
       </Routes>
     </>
