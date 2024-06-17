@@ -35,7 +35,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Layout />} />
-        <Route path="/login" element={<Login />} />
+       
         {/* These are protected routes */}
         <Route element={<RequireAuth />}>
           <Route path="/home/:user_id" element={<HomePage />} />

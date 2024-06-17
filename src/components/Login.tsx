@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import useAuth from '../custom-hooks/useAuth';
 
-const Login = () => {
+const Login = ({grabUseId}) => {
   const { setAuth } = useAuth();
 
   const navigate = useNavigate();
@@ -30,6 +30,7 @@ const Login = () => {
         'LOGGED IN USER DATA',
         loggedInUser?.data?.token?.accessToken
       );
+      grabUseId(`${loggedInUser?.data?.id}`)
       navigate(`/home/${loggedInUser?.data?.id}`);
     } catch (error) {
       setEmailError(error.response.data.error);
