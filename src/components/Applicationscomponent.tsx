@@ -1,15 +1,18 @@
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { RootState } from '../store';
 import { setUserApps } from '../store/userAppsSlice';
-import { setUsers } from '../store/userSlice';
 import useRefreshToken from '../custom-hooks/useRefreshToken';
+import useAxiosPrivate from '../custom-hooks/useAxiosPrivate';
 
 const Applications = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // const from = location.state?.from?.pathname || '/login';
+
   const usersList = useSelector((state: RootState) => state.users.users);
   const userApplications = useSelector(
     (state: RootState) => state.userApps.userApps
@@ -18,16 +21,20 @@ const Applications = () => {
   //const [fetchedUsers, setFetchedUsers] = useState('');
   const userId = usersList[0]?.user_id;
 
+  const axiosPrivate = useAxiosPrivate();
   const refresh = useRefreshToken();
 
   const fetchApplications = async () => {
     try {
-      const fetchedApps = await axios.get(`/api/applications/user/${userId}`);
+      const fetchedApps = await axiosPrivate.get(
+        `/api/applications/user/${userId}`
+      );
       console.log('fetched apps from application', fetchedApps);
       dispatch(setUserApps(fetchedApps?.data?.userapplications));
       setIsLoaded(true);
     } catch (err) {
-      console.log(err);
+      console.log(err.response.data);
+      navigate('/login', { state: { from: location }, replace: true });
     }
   };
 

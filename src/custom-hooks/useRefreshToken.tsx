@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../server/api/axios';
 import useAuth from './useAuth';
 
 const useRefreshToken = () => {
@@ -14,7 +14,7 @@ const useRefreshToken = () => {
       return { ...prev, accessToken: response.data.acessToken };
     });
     console.log('response data from broekennnnnn', response.data);
-    //return response.data.tokens;
+    return response.data.tokens;
   };
   return refresh;
 };
