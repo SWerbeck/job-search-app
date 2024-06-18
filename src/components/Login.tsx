@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios from '../../server/api/axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import useAuth from '../custom-hooks/useAuth';
 
-const Login = ({grabUseId}) => {
+const Login = ({ grabUseId }) => {
   const { setAuth } = useAuth();
 
   const navigate = useNavigate();
@@ -26,11 +26,13 @@ const Login = ({grabUseId}) => {
       const accessToken = loggedInUser?.data?.token?.accessToken;
       const refreshToken = loggedInUser?.data?.token?.refreshToken;
       setAuth({ email, password, accessToken, refreshToken });
+      // setAuth({ email, password, user_id, accessToken, refreshToken });
+
       console.log(
         'LOGGED IN USER DATA',
         loggedInUser?.data?.token?.accessToken
       );
-      grabUseId(`${loggedInUser?.data?.id}`)
+      grabUseId(`${loggedInUser?.data?.id}`);
       navigate(`/home/${loggedInUser?.data?.id}`);
     } catch (error) {
       setEmailError(error.response.data.error);
