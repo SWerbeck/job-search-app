@@ -41,7 +41,7 @@ const Applications = () => {
   useEffect(() => {
     fetchApplications();
   }, [userId]);
-  console.log('outside use effext', userApplications);
+
 
   useEffect(() => {
     //console.log('dependency useEffect');
@@ -49,21 +49,38 @@ const Applications = () => {
   if (!loaded) {
     return <div>LOADING...</div>;
   }
+  console.log("for mapping ref ", userApplications)
+
+
   return (
     <div>
       <>
         <button onClick={refresh}>refresh token?</button>
       </>
-      {userApplications?.map((userApp) => {
+      {userApplications.map((userApp) => {
         return (
-          <div key={userApp?.applications}>
-            <h1>{`${userApp?.company}`}</h1>
-            {/* {userApp.applications.map((app) => 
-              <h3>{`${app.Position}`}</h3>)}
-               {userApp.contacts.map((contact) => 
-              <h3>{`${contact.CONTACT_NAME}`}</h3>)}
-            {userApp.past_job_contacts.map((pastJobCont) => 
-              <h3>{`${pastJobCont.CONTACT_NAME}`}</h3>)} */}
+          <div key={userApp.company_id}>
+            <ul>COMPANY: {userApp.company}</ul>
+
+            {userApp.applications?.map((applica) => {return (<div key={applica.Application_ID}>
+              <p>APPLICATIONS : {applica.Position} {applica.Applied_Date}</p>
+            </div>)})}
+
+            {userApp.contacts?.map((cont) => {return (<div key={cont.CONTACT_ID}>
+              <p>CURRENTLY WORKS HERE : {cont.CONTACT_NAME}</p>
+            </div>)})}
+
+            {userApp.past_job_contacts?.map((pastcont) => {return (<div key={pastcont.CONTACT_ID}>
+              <p>USED TO WORK HERE : {pastcont.CONTACT_NAME}</p>
+            </div>)})}
+
+
+
+            
+            
+        
+            
+           
           </div>
         );
       })}
