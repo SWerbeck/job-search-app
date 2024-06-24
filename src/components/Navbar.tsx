@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUsers } from '../store/userSlice';
 import { RootState } from '../store';
 import axios from 'axios';
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
 
@@ -38,7 +39,8 @@ const Navbar = () => {
   return (
     
     <>
-      <h2>applications, companies applied to, contacts</h2>
+    <Link to={`/home/${useId}/applications`}>applications</Link>
+      <h2>companies applied to, contacts</h2>
       <div>{useId}</div>
       <Login grabUseId={grabUseId}/>
     </>

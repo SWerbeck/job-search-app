@@ -48,7 +48,6 @@ const HomePage = () => {
   return (
     <div>
       <div>{user_id ? <p>welcome {usersList[0].first_name}</p> : ''}</div>
-      <Applications />
     </div>
   );
 };
