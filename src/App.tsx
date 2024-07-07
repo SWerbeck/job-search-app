@@ -11,6 +11,9 @@ import GuestHome from './components/GuestHome';
 import Layout from './components/Layout';
 import RequireAuth from './components/RequireAuth';
 import { Route, Routes } from 'react-router-dom';
+import Signup from './components/Signup';
+import Missing from './components/Missing';
+import Unauthorized from './components/Unauthorized';
 
 function App() {
   // const fetchCompanys = async () => {
@@ -34,13 +37,20 @@ function App() {
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Layout />} />
-       
-        {/* These are protected routes */}
-        <Route element={<RequireAuth />}>
-          <Route path="/home/:user_id" element={<HomePage />} />
-          <Route path="/home/:user_id/applications" element={<Applications />} />
-
+        {/* public routes */}
+        <Route path="/" element={<Layout />}>
+          <Route path="/signup" element={<Signup />} />
+          <Route path="unauthorized" element={<Unauthorized />} />
+          {/* These are protected routes */}
+          <Route element={<RequireAuth />}>
+            <Route path="/home/:user_id" element={<HomePage />} />
+            <Route
+              path="/home/:user_id/applications"
+              element={<Applications />}
+            />
+          </Route>
+          {/* catch all */}
+          <Route path="*" element={<Missing />} />
         </Route>
       </Routes>
     </>

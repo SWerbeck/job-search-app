@@ -4,7 +4,7 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import useAuth from '../custom-hooks/useAuth';
 
 const Login = ({ grabUseId }) => {
-  const { setAuth } = useAuth();
+  const { auth, setAuth } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -44,31 +44,36 @@ const Login = ({ grabUseId }) => {
     const loggedOut = await axios.delete(
       'http://localhost:3000/api/auth/logout'
     );
-    //window.localStorage.removeItem('token');
-    navigate('/login');
+    setAuth({});
+    navigate('/');
     console.log(loggedOut.data.message);
   };
 
   return (
     <>
-      <>
-        <h1>Login page</h1>
-        <input
-          type="text"
-          onChange={(event) => {
-            setEmail(event.target.value);
-          }}
-        />
-        <input
-          type="password"
-          onChange={(event) => {
-            setPassword(event.target.value);
-          }}
-        />
-        <button onClick={login}>Log in</button>
-        {emailError.length ? <p>{emailError}</p> : <p></p>}
-      </>
-      <button onClick={logout}>Log out</button>
+      {/* if we dont have an accessToken bring us to the login page  */}
+      {!auth.accessToken ? (
+        <>
+          <h1>Login page</h1>
+          <input
+            type="text"
+            onChange={(event) => {
+              setEmail(event.target.value);
+            }}
+          />
+          <input
+            type="password"
+            onChange={(event) => {
+              setPassword(event.target.value);
+            }}
+          />
+          <button onClick={login}>Log in</button>
+          {emailError.length ? <p>{emailError}</p> : <p></p>}
+        </>
+      ) : (
+        // if we do have an accessToken we want to show the logout button
+        <button onClick={logout}>Log out</button>
+      )}
     </>
   );
 };
