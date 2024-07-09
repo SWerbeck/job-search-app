@@ -34,7 +34,7 @@ const Applications = () => {
       setIsLoaded(true);
     } catch (err) {
       console.log(err.response.data);
-      navigate('/login', { state: { from: location }, replace: true });
+      navigate('/', { state: { from: location }, replace: true });
     }
   };
 
@@ -42,15 +42,13 @@ const Applications = () => {
     fetchApplications();
   }, [userId]);
 
-
   useEffect(() => {
     //console.log('dependency useEffect');
   }, [userApplications]);
   if (!loaded) {
     return <div>LOADING...</div>;
   }
-  console.log("for mapping ref ", userApplications)
-
+  console.log('for mapping ref ', userApplications);
 
   return (
     <div>
@@ -62,25 +60,31 @@ const Applications = () => {
           <div key={userApp.company_id}>
             <ul>COMPANY: {userApp.company}</ul>
 
-            {userApp.applications?.map((applica) => {return (<div key={applica.Application_ID}>
-              <p>APPLICATIONS : {applica.Position} {applica.Applied_Date}</p>
-            </div>)})}
+            {userApp.applications?.map((applica) => {
+              return (
+                <div key={applica.Application_ID}>
+                  <p>
+                    APPLICATIONS : {applica.Position} {applica.Applied_Date}
+                  </p>
+                </div>
+              );
+            })}
 
-            {userApp.contacts?.map((cont) => {return (<div key={cont.CONTACT_ID}>
-              <p>CURRENTLY WORKS HERE : {cont.CONTACT_NAME}</p>
-            </div>)})}
+            {userApp.contacts?.map((cont) => {
+              return (
+                <div key={cont.CONTACT_ID}>
+                  <p>CURRENTLY WORKS HERE : {cont.CONTACT_NAME}</p>
+                </div>
+              );
+            })}
 
-            {userApp.past_job_contacts?.map((pastcont) => {return (<div key={pastcont.CONTACT_ID}>
-              <p>USED TO WORK HERE : {pastcont.CONTACT_NAME}</p>
-            </div>)})}
-
-
-
-            
-            
-        
-            
-           
+            {userApp.past_job_contacts?.map((pastcont) => {
+              return (
+                <div key={pastcont.CONTACT_ID}>
+                  <p>USED TO WORK HERE : {pastcont.CONTACT_NAME}</p>
+                </div>
+              );
+            })}
           </div>
         );
       })}
