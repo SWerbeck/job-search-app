@@ -9,7 +9,9 @@ const Login = ({ grabUseId }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const from = location.state?.from?.pathname || '/login';
+  // This from property might need to be utilized in navigate if issues later on
+  // Protected routes tutorial 18 min mark
+  const from = location.state?.from?.pathname || '/';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,13 +27,11 @@ const Login = ({ grabUseId }) => {
       });
       const accessToken = loggedInUser?.data?.token?.accessToken;
       const refreshToken = loggedInUser?.data?.token?.refreshToken;
-      setAuth({ email, password, accessToken, refreshToken });
-      // setAuth({ email, password, user_id, accessToken, refreshToken });
+      const id = loggedInUser?.data?.id;
+      const roles = loggedInUser?.data?.roles;
 
-      console.log(
-        'LOGGED IN USER DATA',
-        loggedInUser?.data?.token?.accessToken
-      );
+      setAuth({ id, roles, email, password, accessToken, refreshToken });
+      console.log('LOGGED IN USER DATA', loggedInUser?.data);
       grabUseId(`${loggedInUser?.data?.id}`);
       navigate(`/home/${loggedInUser?.data?.id}`);
     } catch (error) {
@@ -39,6 +39,7 @@ const Login = ({ grabUseId }) => {
       console.log(error.response.data.error);
     }
   };
+  console.log('AUTHHHHHH', auth);
 
   const logout = async () => {
     const loggedOut = await axios.delete(

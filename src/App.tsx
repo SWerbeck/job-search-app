@@ -14,6 +14,8 @@ import { Route, Routes } from 'react-router-dom';
 import Signup from './components/Signup';
 import Missing from './components/Missing';
 import Unauthorized from './components/Unauthorized';
+import TestRoute from './components/TestRoute';
+import Lounge from './components/Lounge';
 
 function App() {
   // const fetchCompanys = async () => {
@@ -40,9 +42,11 @@ function App() {
         {/* public routes */}
         <Route path="/" element={<Layout />}>
           <Route path="/signup" element={<Signup />} />
-          <Route path="unauthorized" element={<Unauthorized />} />
+          <Route path="/testroute" element={<TestRoute />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
           {/* These are protected routes */}
-          <Route element={<RequireAuth />}>
+          <Route element={<RequireAuth allowedRoles={['User']} />}>
+            <Route path="/lounge" element={<Lounge />} />
             <Route path="/home/:user_id" element={<HomePage />} />
             <Route
               path="/home/:user_id/applications"
