@@ -54,6 +54,7 @@ router.post('/login', async (req, res) => {
         token: tokens,
         id: users.rows[0].user_id,
         username: users.rows[0].username,
+        roles: [users.rows[0].roles],
       });
       // when app is in prod we will want this line below instead to just say success
       //return res.status(200).json('Success');
