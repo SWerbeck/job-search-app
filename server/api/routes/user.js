@@ -8,7 +8,6 @@ import {
   selectAllUsers,
   selectSingleUserId,
   selectUserById,
-  selectIdForGuest,
 } from './queries/userqueries.js';
 
 const router = express.Router();
@@ -18,16 +17,6 @@ router.get('/', async (req, res) => {
   try {
     const users = await pool.query(selectAllUsers);
     res.json({ users: users.rows });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Get guest id by username
-router.get('/guest', async (req, res) => {
-  try {
-    const guest = await pool.query(selectIdForGuest);
-    res.json({ users: guest.rows });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
