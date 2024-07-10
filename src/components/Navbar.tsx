@@ -3,11 +3,12 @@ import Login from './Login';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUsers } from '../store/userSlice';
 import { RootState } from '../store';
-import axios from 'axios';
+import useAxiosPrivate from '../custom-hooks/useAxiosPrivate';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const dispatch = useDispatch();
+  const axiosPrivate = useAxiosPrivate();
   const usersList = useSelector((state: RootState) => state.users.users);
   const [isLoaded, setIsLoaded] = useState(false);
   const [useId, setUseId] = useState('');
@@ -17,10 +18,9 @@ const Navbar = () => {
 
   const fetchUserInfo = async () => {
     try {
-      const fetchedUserInfo = await axios.get(
+      const fetchedUserInfo = await axiosPrivate.get(
         `http://localhost:3000/api/users/${useId}`
       );
-      console.log('from home fetch users', fetchedUserInfo.data.users);
       dispatch(setUsers(fetchedUserInfo.data.users));
       setIsLoaded(true);
     } catch (err) {

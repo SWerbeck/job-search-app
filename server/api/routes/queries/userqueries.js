@@ -23,7 +23,7 @@ export const editUserById =
 export const selectSingleUserId =
   'SELECT USER_ID FROM _USER WHERE USER_ID = $1';
 
-export const selectIdForGuest =
-  "SELECT USER_ID, USERNAME FROM _USER WHERE UserName = 'guest'";
+// export const selectIdForGuest =
+//   "SELECT user_id, FIRST_NAME, LAST_NAME, User_email, UserName FROM _USER WHERE USERNAME = 'guest'";
 
 export const deleteUserById = 'DELETE FROM _USER WHERE user_id = $1';
