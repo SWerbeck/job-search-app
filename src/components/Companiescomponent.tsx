@@ -10,12 +10,15 @@ const Companies = () => {
   const companiesList = useSelector(
     (state: RootState) => state.companies.companies
   );
+  const usersList = useSelector((state: RootState) => state.users.users);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const userId = usersList[0]?.user_id;
 
   const fetchCompanies = async () => {
     try {
       const fetchedCompanies = await axios.get(
-        'http://localhost:3000/api/companies'
+        `http://localhost:3000/api/companies/user/${userId}`
       );
       dispatch(setCompanies(fetchedCompanies.data.companies));
       setIsLoaded(true);

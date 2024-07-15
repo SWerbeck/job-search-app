@@ -7,6 +7,7 @@ import {
   selectAllCompanies,
   selectCompanyById,
   selectSingleCompanyId,
+  selectUserCompanies,
 } from './queries/companyqueries.js';
 
 const router = express.Router();
@@ -16,6 +17,17 @@ router.get('/', async (req, res) => {
   try {
     const companies = await pool.query(selectAllCompanies);
     res.json({ companies: companies.rows });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get company by id
+router.get('user/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userCompanies = await pool.query(selectUserCompanies, [id]);
+    res.json({ users: userCompanies.rows });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
