@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { RootState } from '../store';
 import { setUserApps } from '../store/userAppsSlice';
 import useRefreshToken from '../custom-hooks/useRefreshToken';
@@ -38,6 +38,8 @@ const Applications = () => {
     }
   };
 
+  console.log("location",location)
+
   useEffect(() => {
     fetchApplications();
   }, [userId]);
@@ -63,9 +65,10 @@ const Applications = () => {
             {userApp.applications?.map((applica) => {
               return (
                 <div key={applica.Application_ID}>
-                  <p>
+                    <Link to={`${location.pathname}/${applica.Application_ID}`}>
                     APPLICATIONS : {applica.Position} {applica.Applied_Date}
-                  </p>
+                    </Link>
+              
                 </div>
               );
             })}

@@ -11,7 +11,7 @@ const Login = ({ grabUseId }) => {
 
   // This from property might need to be utilized in navigate if issues later on
   // Protected routes tutorial 18 min mark
-  const from = location.state?.from?.pathname || '/';
+  // const from = location.state?.from?.pathname || '/';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -39,7 +39,6 @@ const Login = ({ grabUseId }) => {
       console.log(error.response.data.error);
     }
   };
-  console.log('AUTHHHHHH', auth);
 
   const logout = async () => {
     const loggedOut = await axios.delete(

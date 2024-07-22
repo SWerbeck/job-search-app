@@ -11,6 +11,7 @@ import Missing from './components/Missing';
 import Unauthorized from './components/Unauthorized';
 import TestRoute from './components/TestRoute';
 import Lounge from './components/Lounge';
+import Singleapplicationcomponent from './components/Singleapplicationcomponent';
 
 function App() {
   return (
@@ -26,6 +27,8 @@ function App() {
           <Route element={<RequireAuth allowedRoles={['User']} />}>
             <Route path="/lounge" element={<Lounge />} />
             <Route path="/home/:user_id" element={<HomePage />} />
+            <Route path="/home/:user_id/applications/:applied_id" element={<Singleapplicationcomponent />} />
+
             <Route
               path="/home/:user_id/applications"
               element={<Applications />}
