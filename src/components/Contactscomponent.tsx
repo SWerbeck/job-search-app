@@ -51,7 +51,7 @@ const Contacts = () => {
   if (!loaded) {
     return <div>LOADING...</div>;
   }
-  console.log('for mapping ref ', contacts[0]);
+  console.log('for mapping ref in contacts ', contacts);
 
   return (
     <div>
@@ -64,7 +64,13 @@ const Contacts = () => {
       </>
       <div>
        {contacts?.map((cont) => {
-        return (<div key={cont.contact_id}>{cont.contactname}</div>)
+        return (<div key={cont.contact_id}>
+          <h3>Name: {cont.contactname}</h3>
+          <h4>Current company: {cont.companyname}</h4>
+        {cont.past_jobs?.map((job, idx) => {return(<div key={idx}>
+          <p>Used to work for: {job.COMPANY}</p>
+          </div>
+        )})}</div>)
        })}
       </div>
     </div>
