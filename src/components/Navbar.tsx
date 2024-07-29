@@ -39,6 +39,8 @@ const Navbar = () => {
       ) : (
         <Link to="unauthorized">applications</Link>
       )}
+      <br/>
+      <Link to="home/:user_id/contacts">contacts - needs auth to access</Link>
       <br />
       <Link to="/lounge">lounge - needs auth to access</Link>
       <br />
