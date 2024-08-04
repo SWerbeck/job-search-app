@@ -42,6 +42,8 @@ const Navbar = () => {
       <br/>
       <Link to="home/:user_id/contacts">contacts - needs auth to access</Link>
       <br />
+      <Link to="home/:user_id/companies">companies - needs auth to access</Link>
+      <br />
       <Link to="/lounge">lounge - needs auth to access</Link>
       <br />
       <Link to="/testroute">Test Route - no auth needed</Link>

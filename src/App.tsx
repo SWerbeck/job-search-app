@@ -13,6 +13,8 @@ import TestRoute from './components/TestRoute';
 import Lounge from './components/Lounge';
 import Singleapplicationcomponent from './components/Singleapplicationcomponent';
 import Contacts from './components/Contactscomponent';
+import Companies from './components/Companiescomponent';
+
 
 function App() {
   return (
@@ -30,6 +32,7 @@ function App() {
             <Route path="/home/:user_id" element={<HomePage />} />
             <Route path="/home/:user_id/applications/:applied_id" element={<Singleapplicationcomponent />} />
             <Route path="/home/:user_id/contacts" element={<Contacts/>}/>
+            <Route path="/home/:user_id/companies" element={<Companies/>}/>
 
             <Route
               path="/home/:user_id/applications"
