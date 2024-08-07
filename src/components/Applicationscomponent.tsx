@@ -38,7 +38,7 @@ const Applications = () => {
     }
   };
 
-  console.log("location",location)
+  console.log('location', location);
 
   useEffect(() => {
     fetchApplications();
@@ -65,10 +65,9 @@ const Applications = () => {
             {userApp.applications?.map((applica) => {
               return (
                 <div key={applica.Application_ID}>
-                    <Link to={`${location.pathname}/${applica.Application_ID}`}>
+                  <Link to={`${location.pathname}/${applica.Application_ID}`}>
                     APPLICATIONS : {applica.Position} {applica.Applied_Date}
-                    </Link>
-              
+                  </Link>
                 </div>
               );
             })}

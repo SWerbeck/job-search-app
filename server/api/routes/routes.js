@@ -12,13 +12,13 @@ router.use('/users', userRouter);
 
 router.use('/companies', companyRouter);
 
-router.use('/applications', applicationRouter);
-
 router.use('/contacts', contactRouter);
 
 router.use('/auth', authRouter);
 
 router.use('/guest', guestRouter);
+
+router.use('/applications', applicationRouter);
 
 router.use((req, res, next) => {
   const error = new Error('Not Found');

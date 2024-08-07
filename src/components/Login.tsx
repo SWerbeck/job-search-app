@@ -25,13 +25,13 @@ const Login = ({ grabUseId }) => {
         headers: { 'Content-Type': 'application/json' },
         withCredentials: true,
       });
-      const accessToken = loggedInUser?.data?.token?.accessToken;
-      const refreshToken = loggedInUser?.data?.token?.refreshToken;
+      const accessToken = loggedInUser?.data?.accessToken;
+      //const refreshToken = loggedInUser?.data?.token?.refreshToken;
       const id = loggedInUser?.data?.id;
       const roles = loggedInUser?.data?.roles;
 
-      setAuth({ id, roles, email, password, accessToken, refreshToken });
-      console.log('LOGGED IN USER DATA', loggedInUser?.data);
+      setAuth({ id, roles, email, password, accessToken });
+      //console.log('LOGGED IN USER DATA', loggedInUser?.data);
       grabUseId(`${loggedInUser?.data?.id}`);
       navigate(`/home/${loggedInUser?.data?.id}`);
     } catch (error) {
@@ -41,14 +41,11 @@ const Login = ({ grabUseId }) => {
   };
 
   const logout = async () => {
-    const loggedOut = await axios.delete(
-      'http://localhost:3000/api/auth/logout'
-    );
+    const loggedOut = await axios.get('http://localhost:3000/api/auth/logout');
     setAuth({});
     navigate('/');
     console.log(loggedOut.data.message);
   };
-
   return (
     <>
       {/* if we dont have an accessToken bring us to the login page  */}
