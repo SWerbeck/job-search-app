@@ -11,7 +11,7 @@ const useRefreshToken = () => {
     setAuth((prev) => {
       console.log('prev state do i need json.stringify?', prev);
       console.log('from refresh token', response.data.accessToken);
-      return { ...prev, accessToken: response.data.acessToken };
+      return { ...prev, accessToken: response.data.accessToken };
     });
     console.log('response data from broekennnnnn', response.data);
     return response.data.tokens;

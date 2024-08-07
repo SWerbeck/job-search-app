@@ -13,13 +13,13 @@ CREATE TABLE _USER(
   FIRST_NAME VARCHAR(255) NOT NULL,
   LAST_NAME VARCHAR(50) NOT NULL,
   USER_PASSWORD TEXT NOT NULL,
+  refreshToken VARCHAR(255),
   creation_date TIMESTAMPTZ DEFAULT Now()::timestamp, 
   User_email VARCHAR(255) NOT NULL UNIQUE,
   UserName VARCHAR(50) NOT NULL UNIQUE,
   roles role_type DEFAULT 'User',
   CHECK (User_email LIKE '%@%'),
   CHECK (User_email LIKE '%.com%')
- 
 );
 
 --creation_date DATE DEFAULT CURRENT_DATE,

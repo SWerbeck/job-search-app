@@ -9,6 +9,7 @@ import {
   selectApplicationById,
   singleApplicationById,
 } from './queries/applicationqueries.js';
+import verifyJWT from '../auth-middleware/authorization.js';
 
 const router = express.Router();
 
@@ -34,7 +35,7 @@ router.get('/:id', async (req, res) => {
 });
 
 //Get all applications for user by user id
-router.get('/user/:id', async (req, res) => {
+router.get('/user/:id', verifyJWT, async (req, res) => {
   try {
     const id = req.params.id;
 

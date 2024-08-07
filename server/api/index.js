@@ -3,13 +3,14 @@ import router from './routes/routes.js';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import verifyJWT from './auth-middleware/authorization.js';
+import applicationRouter from './routes/application.js';
 
 dotenv.config();
 
 const app = express();
 const port = 3000;
 
-app.use(express.json());
 app.use(
   express.urlencoded({
     extended: true,
@@ -28,12 +29,15 @@ app.use(cors(corsOrigin));
 // };
 
 // app.use(cors(corsOptions));
+app.use(express.json());
+
 app.use(cookieParser());
 
 app.get('/', (req, res) => {
   res.json({ info: 'Node.js, Express, and Postgres API' });
 });
 
+//app.use(verifyJWT);
 app.use('/api', router);
 //app.get('/users', db.getUsers);
 
