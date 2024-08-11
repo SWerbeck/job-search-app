@@ -30,7 +30,7 @@ const Login = ({ grabUseId }) => {
       const id = loggedInUser?.data?.id;
       const roles = loggedInUser?.data?.roles;
 
-      setAuth({ id, roles, email, password, accessToken });
+      setAuth({ id, roles: [roles], email, password, accessToken });
       //console.log('LOGGED IN USER DATA', loggedInUser?.data);
       grabUseId(`${loggedInUser?.data?.id}`);
       navigate(`/home/${loggedInUser?.data?.id}`);

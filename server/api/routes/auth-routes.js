@@ -32,12 +32,12 @@ const router = express.Router();
 //       validPassword = user_password;
 //     }
 
-//     if (
-//       email === 'steve@gmail.com' &&
-//       user_password === users.rows[0].user_password
-//     ) {
-//       validPassword = user_password;
-//     }
+// if (
+//   email === 'steve@gmail.com' &&
+//   user_password === users.rows[0].user_password
+// ) {
+//   validPassword = user_password;
+// }
 
 //     if (!validPassword) {
 //       return res.status(401).json({ error: 'Password is incorrect' });
@@ -119,27 +119,31 @@ router.post('/login', async (req, res) => {
   ) {
     match = user_password;
   }
+
+  if (
+    email === 'steve@gmail.com' &&
+    user_password === foundUser.rows[0].user_password
+  ) {
+    match = user_password;
+  }
   if (match) {
-    //const roles = Object.values(foundUser.rows[0].roles);
     // creating JWTs
     const accessToken = jwt.sign(
       {
         UserInfo: {
           email: foundUser.rows[0].email,
-          //roles: roles,
+          roles: foundUser.rows[0].roles,
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: '30s' }
+      { expiresIn: '10s' }
     );
     const refreshToken = jwt.sign(
       { email: foundUser.rows[0].email },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: '30s' }
+      { expiresIn: '5m' }
     );
-    // Saving refreshToken with current user
-    //foundUser.rows[0].refreshtoken = refreshToken;
-    // update db
+    // updating refreshToken in the db - will start as null and then update every time a user logs in
     const result = await pool.query(
       `UPDATE _USER SET refreshtoken = $1 WHERE USER_ID = $2`,
       [refreshToken, foundUser.rows[0].user_id]
@@ -154,7 +158,7 @@ router.post('/login', async (req, res) => {
       accessToken,
       id: foundUser.rows[0].user_id,
       username: foundUser.rows[0].username,
-      roles: [foundUser.rows[0].roles],
+      roles: foundUser.rows[0].roles,
     });
   } else {
     res.sendStatus(401);
@@ -173,9 +177,8 @@ router.get('/refresh_token', async (req, res) => {
   const refreshToken = cookies.jwt;
   console.log('token from refresh route', refreshToken);
   //checking the refresh token from cookie against the DB
-  // const foundUser = await User.findOne({ refreshToken }).exec();
   const foundUser = await pool.query(
-    'SELECT refreshtoken FROM _USER WHERE refreshtoken = $1',
+    'SELECT * FROM _USER WHERE refreshtoken = $1',
     [refreshToken]
   );
   if (!foundUser) return res.sendStatus(403); //Forbidden
@@ -183,18 +186,23 @@ router.get('/refresh_token', async (req, res) => {
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
     if (err || foundUser.username !== decoded.username)
       return res.sendStatus(403);
-    //const roles = Object.values(foundUser.rows[0].roles);
+    const roles = foundUser.rows[0].roles;
+    console.log('roles from refresh', roles);
     const accessToken = jwt.sign(
       {
         UserInfo: {
           username: decoded.username,
-          //roles: roles,
+          roles: roles,
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: '30s' }
+      { expiresIn: '1d' }
     );
-    res.json({ accessToken });
+    res.json({
+      id: foundUser.rows[0].user_id,
+      roles: foundUser.rows[0].roles,
+      accessToken,
+    });
   });
 });
 
@@ -213,7 +221,6 @@ router.get('/logout', async (req, res) => {
     'SELECT * FROM _USER WHERE refreshtoken = $1',
     [refreshToken]
   );
-  console.log('this is from logout', foundUser);
   if (!foundUser) {
     /* clear whatever it is called. In this case jwt
     also need to pass the same options it was set as, otherwise wont work. 

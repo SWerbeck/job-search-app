@@ -5,6 +5,7 @@ import Applications from './components/Applicationscomponent';
 import HomePage from './components/Homepage';
 import Layout from './components/Layout';
 import RequireAuth from './components/RequireAuth';
+import PersistantLogin from './components/PersistantLogin';
 import { Route, Routes } from 'react-router-dom';
 import Signup from './components/Signup';
 import Missing from './components/Missing';
@@ -14,7 +15,6 @@ import Lounge from './components/Lounge';
 import Singleapplicationcomponent from './components/Singleapplicationcomponent';
 import Contacts from './components/Contactscomponent';
 import Companies from './components/Companiescomponent';
-
 
 function App() {
   return (
@@ -27,18 +27,24 @@ function App() {
           <Route path="/testroute" element={<TestRoute />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
           {/* These are protected routes */}
-          <Route element={<RequireAuth allowedRoles={['User']} />}>
-            <Route path="/lounge" element={<Lounge />} />
-            <Route path="/home/:user_id" element={<HomePage />} />
-            <Route path="/home/:user_id/applications/:applied_id" element={<Singleapplicationcomponent />} />
-            <Route path="/home/:user_id/contacts" element={<Contacts/>}/>
-            <Route path="/home/:user_id/companies" element={<Companies/>}/>
+          <Route element={<PersistantLogin />}>
+            <Route element={<RequireAuth allowedRoles={['User']} />}>
+              <Route path="/lounge" element={<Lounge />} />
+              <Route path="/home/:user_id" element={<HomePage />} />
+              <Route
+                path="/home/:user_id/applications/:applied_id"
+                element={<Singleapplicationcomponent />}
+              />
+              <Route path="/home/:user_id/contacts" element={<Contacts />} />
+              <Route path="/home/:user_id/companies" element={<Companies />} />
 
-            <Route
-              path="/home/:user_id/applications"
-              element={<Applications />}
-            />
+              <Route
+                path="/home/:user_id/applications"
+                element={<Applications />}
+              />
+            </Route>
           </Route>
+
           {/* catch all */}
           <Route path="*" element={<Missing />} />
         </Route>
