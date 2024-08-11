@@ -11,7 +11,7 @@ const Applications = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // const from = location.state?.from?.pathname || '/login';
+  const from = location.state?.from?.pathname || '/login';
 
   const usersList = useSelector((state: RootState) => state.users.users);
   const userApplications = useSelector(
@@ -38,7 +38,7 @@ const Applications = () => {
     }
   };
 
-  console.log('location', location);
+  //console.log('location', location);
 
   useEffect(() => {
     fetchApplications();
@@ -50,7 +50,7 @@ const Applications = () => {
   if (!loaded) {
     return <div>LOADING...</div>;
   }
-  console.log('for mapping ref ', userApplications);
+  //console.log('for mapping ref ', userApplications);
 
   return (
     <div>

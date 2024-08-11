@@ -7,14 +7,18 @@ const useRefreshToken = () => {
     const response = await axios.get('/api/auth/refresh_token', {
       withCredentials: true,
     });
-    console.log('4');
     setAuth((prev) => {
-      console.log('prev state do i need json.stringify?', prev);
-      console.log('from refresh token', response.data.accessToken);
-      return { ...prev, accessToken: response.data.accessToken };
+      console.log('prev state ---->', prev);
+      // taking previous state and overriding the accessTpken with the refresh endpoint
+      return {
+        ...prev,
+        id: response.data.id,
+        roles: [response.data.roles],
+        accessToken: response.data.accessToken,
+      };
     });
-    console.log('response data from broekennnnnn', response.data);
-    return response.data.tokens;
+    console.log('response data from refresh', response.data);
+    return response.data.accessToken;
   };
   return refresh;
 };
