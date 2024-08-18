@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import Login from './Login';
+import Signup from './Signup';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUsers } from '../store/userSlice';
 import { RootState } from '../store';
 import useAxiosPrivate from '../custom-hooks/useAxiosPrivate';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import useAuth from '../custom-hooks/useAuth';
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -12,12 +13,14 @@ const Navbar = () => {
   const usersList = useSelector((state: RootState) => state.users.users);
   const [isLoaded, setIsLoaded] = useState(false);
   const [useId, setUseId] = useState('');
+  const [signUp, setSignup] = useState(false)
   // const grabUseId = (id) => {
   //   setUseId(id);
   // };
   const { auth, setAuth } = useAuth();
   console.log('auth from navbar ->', auth);
-
+  const location = useLocation();
+  console.log('from navbar',location)
   const fetchUserInfo = async () => {
     if (auth?.id?.length) {
       try {
@@ -54,7 +57,7 @@ const Navbar = () => {
       {/* <h2>companies applied to, contacts</h2> */}
       {/* <div>{useId}</div>
       <Login grabUseId={grabUseId} /> */}
-      <Login />
+      {location.pathname === '/signup' ?  <></> : <Login /> }
     </>
   );
 };

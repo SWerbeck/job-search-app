@@ -38,6 +38,39 @@ const Applications = () => {
     }
   };
 
+  const deleteApplication = async (appId) => {
+    try {
+      const applicationToDelete = await axiosPrivate.delete(
+        `/api/applications/${appId}`
+      );
+      console.log('deleted apps from application', applicationToDelete);
+      fetchApplications()
+      setIsLoaded(true);
+    } catch (err) {
+      console.log(err.response.data);
+      navigate('/', { state: { from: location }, replace: true });
+    }
+  };
+
+  //Delete Application by application id
+// router.delete('/:id', async (req, res) => {
+//   try {
+//     const id = req.params.id;
+//     //query to get id passed from req.params.id
+//     const singleApplication = await pool.query(singleApplicationById, [id]);
+//     //getting that value and storing it into a variable
+//     const toDeleteApplication = singleApplication.rows[0].applied_id;
+//     //check if the query matches the req.params.id || if so delete that application
+//     if (toDeleteApplication === id) {
+//       await pool.query(deleteApplicationById, [id]);
+//       res.status(200).send(`Application deleted with ID: ${id}`);
+//     }
+//   } catch (error) {
+//     res.status(500).json({ error: 'no application in db with this id' });
+//   }
+// });
+
+
   //console.log('location', location);
 
   useEffect(() => {
@@ -67,7 +100,7 @@ const Applications = () => {
                 <div key={applica.Application_ID}>
                   <Link to={`${location.pathname}/${applica.Application_ID}`}>
                     APPLICATIONS : {applica.Position} {applica.Applied_Date}
-                  </Link>
+                  </Link> <button onClick={ ()=> deleteApplication(applica.Application_ID)}>delete app</button>
                 </div>
               );
             })}

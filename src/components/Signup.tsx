@@ -1,6 +1,9 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from '../../server/api/axios';
+import { useNavigate  } from 'react-router-dom';
+
 
 // make a schema using zod
 const schema = z.object({
@@ -29,6 +32,8 @@ type FormFields = z.infer<typeof schema>;
 // };
 
 const Signup = () => {
+  const navigate = useNavigate();
+
   // register, handleSubmit, and formState come from React HF
   const {
     register,
@@ -39,12 +44,20 @@ const Signup = () => {
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      throw new Error();
+      //await new Promise((resolve) => setTimeout(resolve, 1000));
+      //throw new Error();
+      const createUser = await axios.post('/api/users', {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      user_password: data.password,
+      email: data.email,
+      userName: data.userName
+      });
       console.log(data);
+      navigate('/')
     } catch (error) {
       setError('root', {
-        message: 'you already have an account',
+        message: 'Email already exists',
       });
     }
   };
@@ -73,7 +86,7 @@ const Signup = () => {
         {errors.userName && <div>{errors.userName.message}</div>}
         {errors.root && <div>{errors.root.message}</div>}
 
-        <button disabled={isSubmitting}>
+        <button disabled={isSubmitting} >
           {isSubmitting ? 'Loading...' : 'Submit'}
         </button>
       </form>

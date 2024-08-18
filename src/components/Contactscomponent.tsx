@@ -39,6 +39,21 @@ const Contacts = () => {
     }
   };
 
+  const deleteContact = async (appId) => {
+    try {
+      const contactToDelete = await axiosPrivate.delete(
+        `/api/applications/${appId}`
+      );
+      console.log('deleted apps from application', applicationToDelete);
+      fetchApplications()
+      setIsLoaded(true);
+    } catch (err) {
+      console.log(err.response.data);
+      navigate('/', { state: { from: location }, replace: true });
+    }
+  };
+
+
   console.log("location",location)
 
   useEffect(() => {
