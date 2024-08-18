@@ -13,6 +13,7 @@ import Unauthorized from './components/Unauthorized';
 import TestRoute from './components/TestRoute';
 import Lounge from './components/Lounge';
 import Singleapplicationcomponent from './components/Singleapplicationcomponent';
+import Singlecontactcomponent from './components/Singlecontactcomponent';
 import Contacts from './components/Contactscomponent';
 import Companies from './components/Companiescomponent';
 
@@ -34,6 +35,10 @@ function App() {
               <Route
                 path="/home/:user_id/applications/:applied_id"
                 element={<Singleapplicationcomponent />}
+              />
+                <Route
+                path="/home/:user_id/contacts/:applied_id"
+                element={<Singlecontactcomponent />}
               />
               <Route path="/home/:user_id/contacts" element={<Contacts />} />
               <Route path="/home/:user_id/companies" element={<Companies />} />
