@@ -47,11 +47,11 @@ const Login = ({ grabUseId }) => {
     console.log(loggedOut.data.message);
   };
   return (
-    <>
+    <div>
       {/* if we dont have an accessToken bring us to the login page  */}
       {!auth.accessToken ? (
         <>
-          <h1>Login page</h1>
+          <h1 className="text-peach">Login page</h1>
           <input
             type="text"
             onChange={(event) => {
@@ -71,7 +71,7 @@ const Login = ({ grabUseId }) => {
         // if we do have an accessToken we want to show the logout button
         <button onClick={logout}>Log out</button>
       )}
-    </>
+    </div>
   );
 };
 
