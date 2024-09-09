@@ -40,25 +40,27 @@ const Navbar = () => {
   }, [auth.id]);
 
   return (
-    <>
+    <div className='bg-navbar flex-auto align-middle w-full h-20 mb-5'>
+    <div className='flex justify-center items-center space-x-5 px-4'>
       {auth.id ? (
         <Link to={`/home/${auth.id}/applications`}>applications</Link>
       ) : (
-        <Link to="unauthorized">applications</Link>
+        <Link to="unauthorized" className='text-white'>applications</Link>
       )}
-      <br />
-      <Link to="home/:user_id/contacts">contacts - needs auth to access</Link>
-      <br />
-      <Link to="home/:user_id/companies">companies - needs auth to access</Link>
-      <br />
-      <Link to="/lounge">lounge - needs auth to access</Link>
-      <br />
-      <Link to="/testroute">Test Route - no auth needed</Link>
+      
+      <Link to="home/:user_id/contacts" className='text-white'>contacts</Link>
+     
+      <Link to="home/:user_id/companies" className='text-white'>companies</Link>
+      
+      <Link to="/lounge" className='text-white'>lounge</Link>
+      
+      <Link to="/testroute" className='text-white'>Test Route</Link>
       {/* <h2>companies applied to, contacts</h2> */}
       {/* <div>{useId}</div>
       <Login grabUseId={grabUseId} /> */}
       {location.pathname === '/signup' ?  <></> : <Login /> }
-    </>
+      </div>
+    </div>
   );
 };
 

@@ -47,29 +47,31 @@ const Login = ({ grabUseId }) => {
     console.log(loggedOut.data.message);
   };
   return (
-    <div>
+    <div className='m-1'>
       {/* if we dont have an accessToken bring us to the login page  */}
       {!auth.accessToken ? (
         <>
-          <h1 className="text-peach">Login page</h1>
+          
           <input
             type="text"
+            placeholder='Email'
             onChange={(event) => {
               setEmail(event.target.value);
             }}
           />
           <input
             type="password"
+            placeholder='Password'
             onChange={(event) => {
               setPassword(event.target.value);
             }}
           />
-          <button onClick={login}>Log in</button>
+          <button onClick={login} className='bg-button1 text-white'>Log in</button>
           {emailError.length ? <p>{emailError}</p> : <p></p>}
         </>
       ) : (
         // if we do have an accessToken we want to show the logout button
-        <button onClick={logout}>Log out</button>
+        <button onClick={logout} >Log out</button>
       )}
     </div>
   );

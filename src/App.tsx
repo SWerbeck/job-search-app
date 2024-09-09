@@ -15,11 +15,14 @@ import Lounge from './components/Lounge';
 import Singleapplicationcomponent from './components/Singleapplicationcomponent';
 import Contacts from './components/Contactscomponent';
 import Companies from './components/Companiescomponent';
+import Colortest from './components/Colortestcomponent';
 
 function App() {
   return (
     <>
+    
       <Navbar />
+   
       <Routes>
         {/* public routes */}
         <Route path="/" element={<Layout />}>
@@ -49,6 +52,7 @@ function App() {
           <Route path="*" element={<Missing />} />
         </Route>
       </Routes>
+      <Colortest />
     </>
   );
 }

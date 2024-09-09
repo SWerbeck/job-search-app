@@ -7,8 +7,8 @@
 2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
 */
 
-*,
-::before,
+ *,
+ ::before,
 ::after {
   box-sizing: border-box;
   /* 1 */
@@ -557,13 +557,13 @@ video {
 .text-sky-400 {
   --tw-text-opacity: 1;
   color: rgb(56 189 248 / var(--tw-text-opacity));
-}
+} 
 
 /* @tailwind base;
 @tailwind components;
 @tailwind utilities; */
 
-:root {
+/* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -633,4 +633,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+}   */
