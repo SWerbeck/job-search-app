@@ -71,7 +71,7 @@ const Login = ({ grabUseId }) => {
         </>
       ) : (
         // if we do have an accessToken we want to show the logout button
-        <button onClick={logout} >Log out</button>
+        <button onClick={logout}className='bg-white text-button1' >Log out</button>
       )}
     </div>
   );

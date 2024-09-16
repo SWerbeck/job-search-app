@@ -43,7 +43,7 @@ const Navbar = () => {
     <div className='bg-navbar flex-auto align-middle w-full h-20 mb-5'>
     <div className='flex justify-center items-center space-x-5 px-4'>
       {auth.id ? (
-        <Link to={`/home/${auth.id}/applications`}>applications</Link>
+        <Link to={`/home/${auth.id}/applications`}className='text-white'>applications</Link>
       ) : (
         <Link to="unauthorized" className='text-white'>applications</Link>
       )}

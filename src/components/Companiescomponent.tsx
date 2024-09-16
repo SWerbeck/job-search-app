@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { setUsers } from '../store/userSlice';
 import { RootState } from '../store';
 import { setCompanies } from '../store/companiesSlice';
+import Companiescard from './cards/Companiescard';
 
 const Companies = () => {
   const dispatch = useDispatch();
@@ -33,13 +34,15 @@ const Companies = () => {
   }
   return (
     <div>
+      <h2 className="bg-headline h-20 w-50 border-spacing-x-5 border border: mx-3 border-white grid place-content-center text-white text-4xl">COMPANIES</h2>
       <div>
+
         {companiesList.map((company) => {
           return (
-            <div key={company.company_id}>
-              <h1>{`${company.companyname}`}</h1>
-              <h3>{`${company.website}`}</h3>
-            </div>
+            <Companiescard companyName={`${company.companyname}`}/>
+            // <div key={company.company_id}>
+            //   <h1>{`${company.companyname}`}</h1>
+            // </div> 
           );
         })}
       </div>

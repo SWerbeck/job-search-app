@@ -86,10 +86,7 @@ const Applications = () => {
   //console.log('for mapping ref ', userApplications);
 
   return (
-    <div>
-      <>
-        <button onClick={refresh}>refresh token?</button>
-      </>
+    <div className="grid place-content-center">
       {userApplications.map((userApp) => {
         return (
           <div key={userApp.company_id}>
@@ -100,7 +97,7 @@ const Applications = () => {
                 <div key={applica.Application_ID}>
                   <Link to={`${location.pathname}/${applica.Application_ID}`}>
                     APPLICATIONS : {applica.Position} {applica.Applied_Date}
-                  </Link> <button onClick={ ()=> deleteApplication(applica.Application_ID)}>delete app</button>
+                  </Link> <button onClick={ ()=> deleteApplication(applica.Application_ID)}className='bg-button1 text-white'>delete app</button>
                 </div>
               );
             })}
