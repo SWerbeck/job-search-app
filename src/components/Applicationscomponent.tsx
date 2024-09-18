@@ -5,11 +5,13 @@ import { RootState } from '../store';
 import { setUserApps } from '../store/userAppsSlice';
 import useRefreshToken from '../custom-hooks/useRefreshToken';
 import useAxiosPrivate from '../custom-hooks/useAxiosPrivate';
+import useAuth from '../custom-hooks/useAuth';
 
 const Applications = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const { auth, setAuth } = useAuth();
 
   const from = location.state?.from?.pathname || '/login';
 
@@ -24,18 +26,33 @@ const Applications = () => {
   const axiosPrivate = useAxiosPrivate();
   const refresh = useRefreshToken();
 
+  // const fetchApplications = async () => {
+  //   try {
+  //     const fetchedApps = await axiosPrivate.get(
+  //       `/api/applications/user/${userId}`
+  //     );
+  //     console.log('fetched apps from application', fetchedApps);
+  //     dispatch(setUserApps(fetchedApps?.data?.userapplications));
+  //     setIsLoaded(true);
+  //   } catch (err) {
+  //     console.log(err.response.data);
+  //     navigate('/', { state: { from: location }, replace: true });
+  //   }
+  // };
   const fetchApplications = async () => {
-    try {
-      const fetchedApps = await axiosPrivate.get(
-        `/api/applications/user/${userId}`
-      );
-      console.log('fetched apps from application', fetchedApps);
-      dispatch(setUserApps(fetchedApps?.data?.userapplications));
-      setIsLoaded(true);
-    } catch (err) {
-      console.log(err.response.data);
-      navigate('/', { state: { from: location }, replace: true });
-    }
+    if (auth?.id) {
+      try {
+        const fetchedApps = await axiosPrivate.get(
+          `/api/applications/user/${userId}`
+        );
+        console.log('fetched apps from application', fetchedApps);
+        dispatch(setUserApps(fetchedApps?.data?.userapplications));
+        setIsLoaded(true);
+      } catch (err) {
+        console.log(err.response.data);
+        navigate('/', { state: { from: location }, replace: true });
+      }
+    } 
   };
 
   const deleteApplication = async (appId) => {
@@ -74,6 +91,7 @@ const Applications = () => {
   //console.log('location', location);
 
   useEffect(() => {
+    console.log('THIS IS FROM APPS UNAUTHORIZED',userId)
     fetchApplications();
   }, [userId]);
 

@@ -29,9 +29,22 @@ const Navbar = () => {
         );
         dispatch(setUsers(fetchedUserInfo.data.users));
         setIsLoaded(true);
+        
       } catch (err) {
         console.log(err);
       }
+    } else {
+    try {
+      console.log('from before guest api call')
+      const fetchedGuestInfo = await axiosPrivate.get(
+        `http://localhost:3000/api/guest`
+      );
+      console.log('------------->',fetchedGuestInfo.data.users)
+      dispatch(setUsers(fetchedGuestInfo.data.users));
+      setIsLoaded(true);
+    } catch (error) {
+      console.log(error);
+    }
     }
   };
 
