@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS _CONTACT;
 
-CREATE TYPE reply_stat AS ENUM ('replied', 'has not replied');
+CREATE TYPE replystat AS ENUM ('replied', 'has not replied');
 
 
 CREATE TABLE _CONTACT(
@@ -15,7 +15,7 @@ CREATE TABLE _CONTACT(
   CONTACT_LINKEDIN VARCHAR(255),
   CONTACT_PHONE VARCHAR(255),
   CONTACT_EMAIL VARCHAR(255),
-  reply_status reply_stat NOT NULL DEFAULT 'has not replied',
+  reply_status replystat NOT NULL DEFAULT 'has not replied',
   FOLLOWUP BOOLEAN DEFAULT 'false',
   isprimary BOOLEAN DEFAULT 'false',
   CHECK (CONTACT_EMAIL LIKE '%.com%'),

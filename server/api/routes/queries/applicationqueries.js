@@ -1,8 +1,8 @@
 export const selectAllApplications =
-  "SELECT * FROM _APPLICATION ORDER BY user_id ASC";
+  'SELECT * FROM _APPLICATION ORDER BY user_id ASC';
 
 export const selectApplicationById =
-  "SELECT * FROM _APPLICATION WHERE applied_id = $1";
+  'SELECT * FROM _APPLICATION WHERE applied_id = $1';
 
 export const getAllUserApplications = `
 SELECT _COMPANY.company_id, _COMPANY.companyname as COMPANY,
@@ -15,6 +15,8 @@ jsonb_build_object(
     _APPLICATION.applied_id, 
     'Company_Website',
     _APPLICATION.website,
+    'Status',
+    _APPLICATION.application_status,
     'Applied_Date', 
     _APPLICATION.creation_date)) as APPLICATIONS,
 CASE 
@@ -58,13 +60,13 @@ contact_past_job.user_id
 `;
 
 export const postNewApplication =
-  "INSERT INTO _APPLICATION (job_title, company_id, user_id, application_info) VALUES ($1, $2, $3, $4) RETURNING *";
+  'INSERT INTO _APPLICATION (job_title, company_id, user_id, application_info) VALUES ($1, $2, $3, $4) RETURNING *';
 
 export const editApplicationById =
-  "UPDATE _APPLICATION SET job_title = $1, company_id = $2, application_info = $3, application_status = $4 WHERE applied_id = $5";
+  'UPDATE _APPLICATION SET job_title = $1, company_id = $2, application_info = $3, application_status = $4 WHERE applied_id = $5';
 
 export const singleApplicationById =
-  "SELECT applied_id FROM _APPLICATION WHERE applied_id = $1";
+  'SELECT applied_id FROM _APPLICATION WHERE applied_id = $1';
 
 export const deleteApplicationById =
-  "DELETE FROM _APPLICATION WHERE applied_id = $1";
+  'DELETE FROM _APPLICATION WHERE applied_id = $1';

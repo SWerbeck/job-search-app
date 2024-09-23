@@ -16,13 +16,13 @@ import Singleapplicationcomponent from './components/Singleapplicationcomponent'
 import Contacts from './components/Contactscomponent';
 import Companies from './components/Companiescomponent';
 import Colortest from './components/Colortestcomponent';
+import SingleCompany from './components/SingleCompany';
 
 function App() {
   return (
     <>
-    
       <Navbar />
-   
+
       <Routes>
         {/* public routes */}
         <Route path="/" element={<Layout />}>
@@ -44,6 +44,10 @@ function App() {
               <Route
                 path="/home/:user_id/applications"
                 element={<Applications />}
+              />
+              <Route
+                path="/home/:user_id/companies/:company_id"
+                element={<SingleCompany />}
               />
             </Route>
           </Route>
