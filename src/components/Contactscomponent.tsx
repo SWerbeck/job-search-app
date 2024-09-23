@@ -15,9 +15,7 @@ const Contacts = () => {
   // const from = location.state?.from?.pathname || '/login';
 
   const usersList = useSelector((state: RootState) => state.users.users);
-  const contacts = useSelector(
-    (state: RootState) => state.contacts.contacts
-  );
+  const contacts = useSelector((state: RootState) => state.contacts.contacts);
   const [loaded, setIsLoaded] = useState(false);
   //const [fetchedUsers, setFetchedUsers] = useState('');
   const userId = usersList[0]?.user_id;
@@ -45,7 +43,7 @@ const Contacts = () => {
         `/api/applications/${appId}`
       );
       console.log('deleted apps from application', applicationToDelete);
-      fetchApplications()
+      fetchApplications();
       setIsLoaded(true);
     } catch (err) {
       console.log(err.response.data);
@@ -53,8 +51,7 @@ const Contacts = () => {
     }
   };
 
-
-  console.log("location",location)
+  console.log('location', location);
 
   useEffect(() => {
     fetchContacts();
@@ -74,19 +71,24 @@ const Contacts = () => {
         <button onClick={refresh}>refresh token?</button>
       </>
       <>
-      <h1>CONTACTS</h1>
-      
+        <h1>CONTACTS</h1>
       </>
       <div>
-       {contacts?.map((cont) => {
-        return (<div key={cont.contact_id}>
-          <h3>Name: {cont.contactname}</h3>
-          <h4>Current company: {cont.companyname}</h4>
-        {cont.past_jobs?.map((job, idx) => {return(<div key={idx}>
-          <p>Used to work for: {job.COMPANY}</p>
-          </div>
-        )})}</div>)
-       })}
+        {contacts?.map((cont) => {
+          return (
+            <div key={cont.contact_id}>
+              <h3>Name: {cont.contactname}</h3>
+              <h4>Current company: {cont.companyname}</h4>
+              {cont.past_jobs?.map((job, idx) => {
+                return (
+                  <div key={idx}>
+                    <p>Used to work for: {job.COMPANY}</p>
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

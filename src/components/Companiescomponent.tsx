@@ -27,22 +27,26 @@ const Companies = () => {
 
   useEffect(() => {
     fetchCompanies();
+    console.log('companies ', companiesList);
   }, []);
-  console.log('companies ', companiesList);
   if (!isLoaded) {
     return <div>LOADING...</div>;
   }
   return (
     <div>
-      <h2 className="bg-headline h-20 w-50 border-spacing-x-5 border border: mx-3 border-white grid place-content-center text-white text-4xl">COMPANIES</h2>
+      <h2 className="bg-headline h-20 w-50 border-spacing-x-5 border border: mx-3 border-white grid place-content-center text-white text-4xl">
+        COMPANIES
+      </h2>
       <div>
-
         {companiesList.map((company) => {
           return (
-            <Companiescard companyName={`${company.companyname}`}/>
+            <Companiescard
+              companyName={`${company.companyname}`}
+              companyId={`${company.company_id}`}
+            />
             // <div key={company.company_id}>
             //   <h1>{`${company.companyname}`}</h1>
-            // </div> 
+            // </div>
           );
         })}
       </div>

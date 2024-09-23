@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS _APPLICATION;
 
-CREATE TYPE application_stat AS ENUM ('active', 'closed', 'interviewing');
+CREATE TYPE applicationstat AS ENUM ('active', 'closed', 'interviewing');
 
 
 CREATE TABLE _APPLICATION(
@@ -11,7 +11,7 @@ CREATE TABLE _APPLICATION(
  company_id uuid NOT NULL,
  user_id uuid NOT NULL,
  application_info VARCHAR(8000)DEFAULT NULL,
- application_status application_stat DEFAULT 'active',
+ application_status applicationstat DEFAULT 'active',
  WEBSITE VARCHAR(255),
  FOREIGN KEY (company_id) REFERENCES _COMPANY(company_id)
  ON DELETE CASCADE,

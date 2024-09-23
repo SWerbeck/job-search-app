@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS _CONTACT;
 DROP TABLE IF EXISTS _COMPANY;
 DROP TABLE IF EXISTS _USER;
 
-CREATE TYPE role_type AS ENUM ('User', 'Admin');
+CREATE TYPE roletype AS ENUM ('User', 'Admin', 'Guest');
 
 CREATE TABLE _USER(
   user_id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -17,7 +17,7 @@ CREATE TABLE _USER(
   creation_date TIMESTAMPTZ DEFAULT Now()::timestamp, 
   User_email VARCHAR(255) NOT NULL UNIQUE,
   UserName VARCHAR(50) NOT NULL UNIQUE,
-  roles role_type DEFAULT 'User',
+  roles roletype DEFAULT 'User',
   CHECK (User_email LIKE '%@%'),
   CHECK (User_email LIKE '%.com%')
 );
@@ -31,6 +31,6 @@ INSERT INTO _USER (FIRST_NAME, LAST_NAME, USER_PASSWORD, User_email, UserName)
 VALUES ('Stephen', 'Werbeck', '123', 'steve@gmail.com', 'SWerb');
 
 
-INSERT INTO _USER (FIRST_NAME, LAST_NAME, USER_PASSWORD, User_email, UserName)
-VALUES ('guest', 'guest', '123', 'guest@guestmail.com', 'guest');
+INSERT INTO _USER (FIRST_NAME, LAST_NAME, USER_PASSWORD, User_email, UserName, roles)
+VALUES ('guest', 'guest', '123', 'guest@guestmail.com', 'guest', 'Guest');
 
