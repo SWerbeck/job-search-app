@@ -6,6 +6,7 @@ import { setUserApps } from '../store/userAppsSlice';
 import useRefreshToken from '../custom-hooks/useRefreshToken';
 import useAxiosPrivate from '../custom-hooks/useAxiosPrivate';
 import useAuth from '../custom-hooks/useAuth';
+import axios from '../../server/api/axios';
 
 const Applications = () => {
   const dispatch = useDispatch();
@@ -52,7 +53,15 @@ const Applications = () => {
         console.log(err.response.data);
         navigate('/', { state: { from: location }, replace: true });
       }
-    } 
+    } else {
+      try {
+        const guestApps = await axios.get('/api/guest/applications');
+        dispatch(setUserApps(guestApps?.data?.userapplications));
+        setIsLoaded(true);
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   const deleteApplication = async (appId) => {
@@ -61,7 +70,7 @@ const Applications = () => {
         `/api/applications/${appId}`
       );
       console.log('deleted apps from application', applicationToDelete);
-      fetchApplications()
+      fetchApplications();
       setIsLoaded(true);
     } catch (err) {
       console.log(err.response.data);
@@ -70,28 +79,27 @@ const Applications = () => {
   };
 
   //Delete Application by application id
-// router.delete('/:id', async (req, res) => {
-//   try {
-//     const id = req.params.id;
-//     //query to get id passed from req.params.id
-//     const singleApplication = await pool.query(singleApplicationById, [id]);
-//     //getting that value and storing it into a variable
-//     const toDeleteApplication = singleApplication.rows[0].applied_id;
-//     //check if the query matches the req.params.id || if so delete that application
-//     if (toDeleteApplication === id) {
-//       await pool.query(deleteApplicationById, [id]);
-//       res.status(200).send(`Application deleted with ID: ${id}`);
-//     }
-//   } catch (error) {
-//     res.status(500).json({ error: 'no application in db with this id' });
-//   }
-// });
-
+  // router.delete('/:id', async (req, res) => {
+  //   try {
+  //     const id = req.params.id;
+  //     //query to get id passed from req.params.id
+  //     const singleApplication = await pool.query(singleApplicationById, [id]);
+  //     //getting that value and storing it into a variable
+  //     const toDeleteApplication = singleApplication.rows[0].applied_id;
+  //     //check if the query matches the req.params.id || if so delete that application
+  //     if (toDeleteApplication === id) {
+  //       await pool.query(deleteApplicationById, [id]);
+  //       res.status(200).send(`Application deleted with ID: ${id}`);
+  //     }
+  //   } catch (error) {
+  //     res.status(500).json({ error: 'no application in db with this id' });
+  //   }
+  // });
 
   //console.log('location', location);
 
   useEffect(() => {
-    console.log('THIS IS FROM APPS UNAUTHORIZED',userId)
+    console.log('THIS IS FROM APPS UNAUTHORIZED', userId);
     fetchApplications();
   }, [userId]);
 
@@ -115,7 +123,13 @@ const Applications = () => {
                 <div key={applica.Application_ID}>
                   <Link to={`${location.pathname}/${applica.Application_ID}`}>
                     APPLICATIONS : {applica.Position} {applica.Applied_Date}
-                  </Link> <button onClick={ ()=> deleteApplication(applica.Application_ID)}className='bg-button1 text-white'>delete app</button>
+                  </Link>{' '}
+                  <button
+                    onClick={() => deleteApplication(applica.Application_ID)}
+                    className="bg-button1 text-white"
+                  >
+                    delete app
+                  </button>
                 </div>
               );
             })}

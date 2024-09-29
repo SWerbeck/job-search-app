@@ -53,7 +53,7 @@ function App() {
           </Route>
 
           {/* catch all */}
-          <Route path="*" element={<Missing />} />
+          <Route path="/*" element={<Missing />} />
         </Route>
       </Routes>
       <Colortest />
