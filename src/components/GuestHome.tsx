@@ -1,64 +1,41 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { Route, Routes } from 'react-router-dom';
+import Signup from './Signup';
+import TestRoute from './TestRoute';
+import Contacts from './Contactscomponent';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
-import { setUsers } from '../store/userSlice';
+import HomePage from './Homepage';
+import Applications from './Applicationscomponent';
+import Companies from './Companiescomponent';
 
 const GuestHome = () => {
   const dispatch = useDispatch();
   const usersList = useSelector((state: RootState) => state.users.users);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [guestId, setGuestId] = useState('');
-  const [guestName, setGuestName] = useState('');
 
-  const fetchGuestId = async () => {
-    try {
-      const fetchedGuestId = await axios.get(
-        `http://localhost:3000/api/users/guest`
-      );
-      setGuestId(fetchedGuestId.data.users[0].user_id);
-      setGuestName(fetchedGuestId.data.users[0].username);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const fetchUserInfo = async () => {
-    try {
-      if (guestId) {
-        const fetchedUserInfo = await axios.get(
-          `http://localhost:3000/api/users/${guestId}`
-        );
-        dispatch(setUsers(fetchedUserInfo.data.users));
-        setIsLoaded(true);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  // const getParam = () => {
-  //   const token = window.localStorage.getItem('token');
-  //   if (!token) {
-  //     setUserParam(guestId);
-  //   } else {
-  //     setUserParam(id);
-  //   }
-  // };
+  const guestId = usersList[0].user_id;
 
   useEffect(() => {
-    fetchGuestId();
+    // fetchGuestId();
   }, []);
 
-  useEffect(() => {
-    fetchUserInfo();
-  }, [guestId]);
+  // useEffect(() => {
+  //   fetchUserInfo();
+  // }, [guestId]);
+  console.log(guestId, 'from guest home component');
+  console.log(usersList, 'from guest home component');
 
   return (
     <div>
-      <div>
-        <h1>welcome {usersList[0].username}</h1>
-      </div>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/home/:user_id/applications" element={<Applications />} />
+        <Route path={`/home/:guestId/contacts`} element={<Contacts />} />
+        <Route path={`/home/:guestId/companies`} element={<Companies />} />
+        <Route path="/testroute" element={<TestRoute />} />
+      </Routes>
     </div>
   );
 };
