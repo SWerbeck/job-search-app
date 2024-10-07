@@ -8,6 +8,7 @@ import { RootState } from '../store';
 import HomePage from './Homepage';
 import Applications from './Applicationscomponent';
 import Companies from './Companiescomponent';
+import SingleCompany from './SingleCompany';
 
 const GuestHome = () => {
   const dispatch = useDispatch();
@@ -23,8 +24,6 @@ const GuestHome = () => {
   // useEffect(() => {
   //   fetchUserInfo();
   // }, [guestId]);
-  console.log(guestId, 'from guest home component');
-  console.log(usersList, 'from guest home component');
 
   return (
     <div>
@@ -34,6 +33,8 @@ const GuestHome = () => {
         <Route path="/home/:user_id/applications" element={<Applications />} />
         <Route path={`/home/:guestId/contacts`} element={<Contacts />} />
         <Route path={`/home/:guestId/companies`} element={<Companies />} />
+        <Route path={`/home/:guestId/companies/:companyId`} element={<SingleCompany />} />
+
         <Route path="/testroute" element={<TestRoute />} />
       </Routes>
     </div>

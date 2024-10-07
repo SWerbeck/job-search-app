@@ -5,15 +5,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUsers } from '../store/userSlice';
 import { RootState } from '../store';
 import useAxiosPrivate from '../custom-hooks/useAxiosPrivate';
-import { Link, useLocation } from 'react-router-dom';
+import axios from '../../server/api/axios';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../custom-hooks/useAuth';
+import { setUserApps } from '../store/userAppsSlice';
+
+
 const Navbar = () => {
   const dispatch = useDispatch();
   const axiosPrivate = useAxiosPrivate();
   const usersList = useSelector((state: RootState) => state.users.users);
+  const userApplications = useSelector(
+    (state: RootState) => state.userApps.userApps
+  );
   const [isLoaded, setIsLoaded] = useState(false);
   const [useId, setUseId] = useState('');
   const [signUp, setSignup] = useState(false);
+  const navigate = useNavigate();
+
   // const grabUseId = (id) => {
   //   setUseId(id);
   // };
@@ -44,9 +53,34 @@ const Navbar = () => {
       }
     }
   };
+
+  const fetchApplications = async () => {
+    if (auth?.id) {
+      try {
+        const fetchedApps = await axiosPrivate.get(
+          `/api/applications/user/${auth.id}`
+        );
+        console.log('fetched apps from application', fetchedApps);
+        dispatch(setUserApps(fetchedApps?.data?.userapplications));
+        setIsLoaded(true);
+      } catch (err) {
+        console.log(err.response.data);
+        navigate('/', { state: { from: location }, replace: true });
+      }
+    } else {
+      try {
+        const guestApps = await axios.get('/api/guest/applications');
+        dispatch(setUserApps(guestApps?.data?.userapplications));
+        setIsLoaded(true);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
   console.log(usersList, 'userslist from nav');
   useEffect(() => {
     fetchUserInfo();
+    fetchApplications()
   }, [auth.id]);
 
   return (
