@@ -28,7 +28,7 @@ const Contacts = () => {
       const fetchedContacts = await axiosPrivate.get(
         `/api/contacts/user/${userId}`
       );
-      console.log('fetched apps from application', fetchedContacts);
+      //console.log('fetched apps from application', fetchedContacts);
       dispatch(setContacts(fetchedContacts?.data?.userContacts));
       setIsLoaded(true);
     } catch (err) {
@@ -51,8 +51,6 @@ const Contacts = () => {
     }
   };
 
-  console.log('location', location);
-
   useEffect(() => {
     fetchContacts();
   }, [userId]);
@@ -63,7 +61,7 @@ const Contacts = () => {
   if (!loaded) {
     return <div>LOADING...</div>;
   }
-  console.log('for mapping ref in contacts ', contacts);
+  //console.log('for mapping ref in contacts ', contacts);
 
   return (
     <div>
