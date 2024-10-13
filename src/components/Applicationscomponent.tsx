@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { RootState } from '../store';
-import { setUserApps } from '../store/userAppsSlice';
+import { deleteUserApps } from '../store/userAppsSlice';
 import useRefreshToken from '../custom-hooks/useRefreshToken';
 import useAxiosPrivate from '../custom-hooks/useAxiosPrivate';
 import useAuth from '../custom-hooks/useAuth';
@@ -26,7 +26,7 @@ const Applications = () => {
   const axiosPrivate = useAxiosPrivate();
   const refresh = useRefreshToken();
 
-  // THIS IS WHERE YOU STARTED COMMENTING OUT THR FETCH APPLICATIONS 
+  // THIS IS WHERE YOU STARTED COMMENTING OUT THR FETCH APPLICATIONS
   //   const fetchApplications = async () => {
   //   if (auth?.id) {
   //     try {
@@ -57,7 +57,7 @@ const Applications = () => {
         `/api/applications/${appId}`
       );
       console.log('deleted apps from application', applicationToDelete);
-      //fetchApplications();
+      dispatch(deleteUserApps(appId));
       setIsLoaded(true);
     } catch (err) {
       console.log(err.response.data);
@@ -80,7 +80,7 @@ const Applications = () => {
           <div key={userApp.company_id}>
             <ul>COMPANY: {userApp.company}</ul>
 
-            {userApp.applications?.map((applica) => {
+            {userApp?.applications?.map((applica) => {
               return (
                 <div key={applica.Application_ID}>
                   <Link to={`${location.pathname}/${applica.Application_ID}`}>

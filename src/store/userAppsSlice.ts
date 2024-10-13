@@ -1,5 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
-
+import { createSlice } from '@reduxjs/toolkit';
 
 export interface userAppsInitialStateType {
   userApps: [
@@ -13,19 +12,19 @@ export interface userAppsInitialStateType {
   ];
 }
 const initialState: userAppsInitialStateType = {
-    userApps: [
-        {
-      company_id: "",
-      COMPANYNAME: "",
+  userApps: [
+    {
+      company_id: '',
+      COMPANYNAME: '',
       applications: [],
       contacts: [],
-      past_job_contacts: []
-        }
-      ],
+      past_job_contacts: [],
+    },
+  ],
 };
 
 export const userAppsSlice = createSlice({
-  name: "userApps",
+  name: 'userApps',
   initialState,
   reducers: {
     setUserApps: (state, action) => {
@@ -34,18 +33,23 @@ export const userAppsSlice = createSlice({
     resetUserApps: (state, action) => {
       state.userApps = [
         {
-            company_id: "",
-            COMPANYNAME: "",
-            applications: [],
-            contacts: [],
-            past_job_contacts: []
-        }
+          company_id: '',
+          COMPANYNAME: '',
+          applications: [],
+          contacts: [],
+          past_job_contacts: [],
+        },
       ];
     },
-  
+    deleteUserApps: (state, action) => {
+      const filteredApps = state.userApps.filter((app) => {
+        return app.applications[0].Application_ID !== action.payload;
+      });
+      state.userApps = filteredApps;
+    },
   },
 });
 
-
-export const { setUserApps, resetUserApps } = userAppsSlice.actions;
+export const { setUserApps, resetUserApps, deleteUserApps } =
+  userAppsSlice.actions;
 export default userAppsSlice.reducer;

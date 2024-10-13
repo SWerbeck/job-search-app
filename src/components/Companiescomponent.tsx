@@ -11,6 +11,12 @@ const Companies = () => {
   const companiesList = useSelector(
     (state: RootState) => state.companies.companies
   );
+
+  const userApplications = useSelector(
+    (state: RootState) => state.userApps.userApps
+  );
+
+  console.log('This is from companies comp', userApplications);
   const [isLoaded, setIsLoaded] = useState(false);
 
   const fetchCompanies = async () => {
@@ -37,19 +43,26 @@ const Companies = () => {
       <h2 className="bg-headline h-20 w-50 border-spacing-x-5 border border: mx-3 border-white grid place-content-center text-white text-4xl">
         COMPANIES
       </h2>
-      <div>
+      {userApplications.map((userApp) => {
+        return (
+          <Companiescard
+            key={userApp.company_id}
+            companyName={userApp.company}
+            companyId={userApp.company_id}
+          />
+        );
+      })}
+      {/* <div>
         {companiesList.map((company) => {
           return (
             <Companiescard
+              key={company.company_id}
               companyName={`${company.companyname}`}
               companyId={`${company.company_id}`}
             />
-            // <div key={company.company_id}>
-            //   <h1>{`${company.companyname}`}</h1>
-            // </div>
           );
         })}
-      </div>
+      </div> */}
     </div>
   );
 };
