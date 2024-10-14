@@ -1,33 +1,38 @@
 import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
-
+import SingleCompanyCard from './cards/SingleCompanyCard';
 
 const SingleCompany = () => {
   const { company_id } = useParams();
   const userApplications = useSelector(
     (state: RootState) => state.userApps.userApps
   );
-  
 
+  //used the application from the db and checks against the url parameter
+  const singleCompanyFilter = userApplications.filter(
+    (app) => app.company_id === company_id
+  );
 
+  const singleCompany = singleCompanyFilter[0];
+  // gets the position that the user applied to
+  const jobPosition = singleCompany?.applications.map(
+    (application) => application.Position
+  );
 
-  // here lets try to figure out some logic where if data = null we can run a fetch request,
-  // otherwise we can just filter from the userApplications
-  // currently unless you click on the application route in the navbar the data will be null
-  // need to be concerned about an infinite loop
-  // maybe having a useEffect that runs only once can help with that.
-
-
-  console.log('from single component COMPANY', company_id);
-  console.log('from single component APPLICATION', userApplications);
-
+  // gets the contatcs if any the user has for the company
+  const contacts = singleCompany?.contacts?.map(
+    (contact) => contact.CONTACT_NAME
+  );
 
   return (
-    <section>
-      <h1>This is the single company page</h1>
-      <h2></h2>
-    </section>
+    <>
+      <SingleCompanyCard
+        singleCompany={singleCompany}
+        jobPosition={jobPosition}
+        contacts={contacts}
+      />
+    </>
   );
 };
 
