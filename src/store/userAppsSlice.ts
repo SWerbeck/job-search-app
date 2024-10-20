@@ -47,9 +47,26 @@ export const userAppsSlice = createSlice({
       });
       state.userApps = filteredApps;
     },
+    editUserApp: (state, action) => {
+      console.log('state from editUserredux',state)
+      console.log('action from editUserredux',action)
+      console.log('payload from editUserredux',action.payload)
+
+      // const editApp = state.userApps.map((app)=> app.applications[0].Application_ID === action.payload)
+      const editApp = state.userApps.map((app)=> {
+        if (app.applications[0].Application_ID === action.payload.applicationId) {
+          console.log('got the map')
+          state.userApps.applications[0].Position = action.payload.data.job_title
+        } else {
+          console.log('dont got the map')
+        }
+      })
+      state.userApps = editApp
+    }
+
   },
 });
 
-export const { setUserApps, resetUserApps, deleteUserApps } =
+export const { setUserApps, resetUserApps, deleteUserApps, editUserApp } =
   userAppsSlice.actions;
 export default userAppsSlice.reducer;

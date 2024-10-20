@@ -71,9 +71,9 @@ router.put("/:id", async (req, res) => {
       req.body;
     await pool.query(editApplicationById, [
       job_title,
-      company_id,
-      application_info,
-      application_status,
+      // company_id,
+      // application_info,
+      // application_status,
       id,
     ]);
     res

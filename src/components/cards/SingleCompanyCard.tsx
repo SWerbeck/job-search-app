@@ -8,6 +8,7 @@ const SingleCompanyCard = ({
   singleCompany,
   jobPosition,
   contacts,
+  setEditMode
 }) => {
   const { auth, setAuth } = useAuth();
 
@@ -16,6 +17,7 @@ const SingleCompanyCard = ({
     <>
       {auth?.id?.length ? (
         <div className="bg-mainbody h-50 w-50 border-spacing-x-7 border border: mx-3 border-white">
+          <button onClick={()=>setEditMode(true)}className="bg-button1 text-mainbody">Edit</button>
           <Link to={`/home/${auth.id}/companies/${companyId}`}>
             <p className="text-white text-2xl mx-5">{singleCompany?.company}</p>
           </Link>
