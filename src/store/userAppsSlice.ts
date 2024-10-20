@@ -48,22 +48,18 @@ export const userAppsSlice = createSlice({
       state.userApps = filteredApps;
     },
     editUserApp: (state, action) => {
-      console.log('state from editUserredux',state)
-      console.log('action from editUserredux',action)
-      console.log('payload from editUserredux',action.payload)
-
-      // const editApp = state.userApps.map((app)=> app.applications[0].Application_ID === action.payload)
-      const editApp = state.userApps.map((app)=> {
-        if (app.applications[0].Application_ID === action.payload.applicationId) {
-          console.log('got the map')
-          state.userApps.applications[0].Position = action.payload.data.job_title
-        } else {
-          console.log('dont got the map')
-        }
-      })
-      state.userApps = editApp
-    }
-
+      // found will check the id of the applications in the db against the application id from the payload if there is a match
+      let found = state.userApps.find(
+        (app) =>
+          app.applications[0].Application_ID === action.payload.applicationId
+      );
+      // we create a new variable and extract the action.payload.data.job_title
+      let job_title = action.payload.data.job_title;
+      if (found) {
+        // if found, ie we have a match then reassign the position on the front end
+        found.applications[0].Position = job_title;
+      }
+    },
   },
 });
 

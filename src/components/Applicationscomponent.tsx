@@ -26,31 +26,6 @@ const Applications = () => {
   const axiosPrivate = useAxiosPrivate();
   const refresh = useRefreshToken();
 
-  // THIS IS WHERE YOU STARTED COMMENTING OUT THR FETCH APPLICATIONS
-  //   const fetchApplications = async () => {
-  //   if (auth?.id) {
-  //     try {
-  //       const fetchedApps = await axiosPrivate.get(
-  //         `/api/applications/user/${userId}`
-  //       );
-  //       console.log('fetched apps from application', fetchedApps);
-  //       dispatch(setUserApps(fetchedApps?.data?.userapplications));
-  //       setIsLoaded(true);
-  //     } catch (err) {
-  //       console.log(err.response.data);
-  //       navigate('/', { state: { from: location }, replace: true });
-  //     }
-  //   } else {
-  //     try {
-  //       const guestApps = await axios.get('/api/guest/applications');
-  //       dispatch(setUserApps(guestApps?.data?.userapplications));
-  //       setIsLoaded(true);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  // };
-
   const deleteApplication = async (appId) => {
     try {
       const applicationToDelete = await axiosPrivate.delete(
@@ -65,38 +40,65 @@ const Applications = () => {
     }
   };
 
-  useEffect(() => {
-    //console.log('dependency useEffect');
-  }, [userApplications]);
+  useEffect(() => {}, [userApplications]);
+
   // if (!loaded) {
   //   return <div>LOADING...</div>;
   // }
-  //console.log('for mapping ref ', userApplications);
+
+  const applicationData = userApplications?.map((userApp) => (
+    <div key={userApp.company_id}>
+      <ul>COMPANY: {userApp.company}</ul>
+      {userApp?.applications?.map((app) => (
+        <div key={app.Application_ID}>
+          <Link to={`${location.pathname}/${app.Application_ID}`}>
+            APPLICATIONS : {app.Position} {app.Applied_Date}
+          </Link>{' '}
+          <button
+            onClick={() => deleteApplication(app.Application_ID)}
+            className="bg-button1 text-white"
+          >
+            delete app
+          </button>
+        </div>
+      ))}
+    </div>
+  ));
+
+  const appData = userApplications?.map((userApp) =>
+    userApp?.applications?.map((app) => app.Position)
+  );
+
+  const displayData = appData?.map((data) => data);
+
+  console.log('DATA from applications', displayData);
 
   return (
     <div className="grid place-content-center">
+      {applicationData}
       {userApplications.map((userApp) => {
         return (
           <div key={userApp.company_id}>
-            <ul>COMPANY: {userApp.company}</ul>
+            {/* <ul>COMPANY: {userApp.company}</ul> */}
 
-            {userApp?.applications?.map((applica) => {
+            {/* {userApp?.applications?.map((applica) => {
               return (
                 <div key={applica.Application_ID}>
-                  <Link to={`${location.pathname}/${applica.Application_ID}`}>
-                    APPLICATIONS : {applica.Position} {applica.Applied_Date}
-                  </Link>{' '}
-                  <button
-                    onClick={() => deleteApplication(applica.Application_ID)}
-                    className="bg-button1 text-white"
-                  >
-                    delete app
-                  </button>
+                <Link to={`${location.pathname}/${applica.Application_ID}`}>
+                APPLICATIONS : {applica.Position} {applica.Applied_Date}
+                </Link>{' '}
+                <button
+                onClick={() => deleteApplication(applica.Application_ID)}
+                className="bg-button1 text-white"
+                >
+                delete app
+                </button>
                 </div>
-              );
-            })}
+                );
+              })} */}
 
-            {userApp.contacts?.map((cont) => {
+            {/* {currentContacts} */}
+            {/* {userApp.contacts?.map((cont) => {
               return (
                 <div key={cont.CONTACT_ID}>
                   <p>CURRENTLY WORKS HERE : {cont.CONTACT_NAME}</p>
@@ -110,7 +112,7 @@ const Applications = () => {
                   <p>USED TO WORK HERE : {pastcont.CONTACT_NAME}</p>
                 </div>
               );
-            })}
+            })} */}
           </div>
         );
       })}
