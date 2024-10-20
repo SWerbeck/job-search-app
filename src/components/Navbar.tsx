@@ -23,9 +23,6 @@ const Navbar = () => {
   const [signUp, setSignup] = useState(false);
   const navigate = useNavigate();
 
-  // const grabUseId = (id) => {
-  //   setUseId(id);
-  // };
   const { auth, setAuth } = useAuth();
   const location = useLocation();
   const fetchUserInfo = async () => {
@@ -41,11 +38,10 @@ const Navbar = () => {
       }
     } else {
       try {
-        console.log('from before guest api call');
         const fetchedGuestInfo = await axiosPrivate.get(
           `http://localhost:3000/api/guest`
         );
-        console.log('------------->', fetchedGuestInfo.data.users);
+       //console.log('------------->', fetchedGuestInfo.data.users);
         dispatch(setUsers(fetchedGuestInfo.data.users));
         setIsLoaded(true);
       } catch (error) {
@@ -60,7 +56,7 @@ const Navbar = () => {
         const fetchedApps = await axiosPrivate.get(
           `/api/applications/user/${auth.id}`
         );
-        console.log('fetched apps from application', fetchedApps);
+        //console.log('fetched apps from application', fetchedApps);
         dispatch(setUserApps(fetchedApps?.data?.userapplications));
         setIsLoaded(true);
       } catch (err) {
