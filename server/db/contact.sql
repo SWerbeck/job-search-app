@@ -36,6 +36,9 @@ INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
 VALUES ('Judd Paul', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'));
 
 INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
+VALUES ('Dave Wilson', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'));
+
+INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
 VALUES ('Sara Jackson', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb') );
 
 INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)

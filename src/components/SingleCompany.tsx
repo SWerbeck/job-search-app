@@ -22,16 +22,23 @@ const SingleCompany = () => {
 
   const singleCompany = singleCompanyFilter[0];
   // gets the position that the user applied to
-  const jobPosition = singleCompany?.applications.map(
-    (application) => application.Position
+  const singleApplication = singleCompany?.applications.map(
+    (application) => application
   );
 
   // gets the contatcs if any the user has for the company
-  const contacts = singleCompany?.contacts?.map(
+  const contactsDisplay = singleCompany?.contacts?.map(
     (contact) => contact.CONTACT_NAME
   );
 
+  const companyId = singleCompanyFilter[0].company_id;
+
+
   const applicationId = singleCompanyFilter[0]?.applications[0]?.Application_ID;
+
+  const contacts = singleCompany?.contacts?.map(
+    (contact) => contact
+  );
 
   return (
     <>
@@ -39,15 +46,16 @@ const SingleCompany = () => {
         <EditCompanyCard
           editMode={editMode}
           setEditMode={setEditMode}
+          singleApplication={singleApplication}
           singleCompany={singleCompany}
+          companyId={companyId}
           applicationId={applicationId}
-          jobPosition={jobPosition}
           contacts={contacts}
         />
       ) : (
         <SingleCompanyCard
           singleCompany={singleCompany}
-          jobPosition={jobPosition}
+          singleApplication={singleApplication}
           contacts={contacts}
           setEditMode={setEditMode}
         />

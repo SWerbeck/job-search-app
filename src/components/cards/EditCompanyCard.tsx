@@ -16,15 +16,29 @@ const schema = z.object({
     .min(2, {
       message: 'Please edit poisiton',
     }),
+  companyName: z
+  .string()
+  .min(1, {
+    message: 'Please edit company name',
+  }),
+  contactName: z
+  .string()
+  .min(1, {
+    message: 'Please edit contactName',
+  })
 });
 
 type FormFields = z.infer<typeof schema>;
 
 
-const EditCompanyCard = ({editMode, setEditMode, applicationId, jobPosition}) => {
+const EditCompanyCard = ({editMode, setEditMode, singleApplication, singleCompany, applicationId, companyId, contacts}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch()
-
+  const jobPosition = singleApplication.map(app => app.Position)
+  // console.log('from edit comanyId',companyId)
+  // console.log('single company passed down', singleCompany.company)
+  console.log('contacts from the edit',contacts)
+  console.log('from edit mode',singleApplication)
   const {
     register,
     handleSubmit,
@@ -36,8 +50,10 @@ const EditCompanyCard = ({editMode, setEditMode, applicationId, jobPosition}) =>
     try {
       const editJobTitle = await axios.put(`/api/applications/${applicationId}`, {
       job_title: data.job_title,
+      companyName: data.companyName,
+      company_id: companyId
       });
-      console.log(data);
+      console.log('DATA FROM EDIT',data);
       dispatch(editUserApp({applicationId, data}))
       setEditMode(false)
     } catch (error) {
@@ -53,11 +69,29 @@ const EditCompanyCard = ({editMode, setEditMode, applicationId, jobPosition}) =>
         <button onClick={()=> setEditMode(false)} className="bg-button2 text-mainbody">Cancel</button>
        <h1>edit mode</h1>
        <form onSubmit={handleSubmit(onSubmit)}>
+       <input
+          {...register('companyName')}
+          type="text"
+          placeholder={singleCompany.company}
+        />
         <input
           {...register('job_title')}
           type="text"
           placeholder={jobPosition}
         />
+        
+        {/* {contacts ? <input
+          {...register('contactName')}
+          type="text"
+          placeholder={contacts[0].CONTACT_NAME}
+        /> : <button>click here to add contact</button>} */}
+
+         {contacts ? contacts.map((contact) => <input
+          {...register('contactName')}
+          type="text"
+          placeholder={contact.CONTACT_NAME}
+        />) : <button>click here to add contact</button>} 
+
         {errors.job_title && <div>{errors.job_title.message}</div>}
         <button disabled={isSubmitting} >
           {isSubmitting ? 'Loading...' : 'Submit'}

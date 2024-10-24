@@ -55,8 +55,12 @@ export const userAppsSlice = createSlice({
       );
       // we create a new variable and extract the action.payload.data.job_title
       let job_title = action.payload.data.job_title;
+      let companyName = action.payload.data.companyName
       if (found) {
+        console.log('from redux copnayname',companyName)
+        console.log('data from redux', action.payload.data)
         // if found, ie we have a match then reassign the position on the front end
+        found.company = companyName;
         found.applications[0].Position = job_title;
       }
     },

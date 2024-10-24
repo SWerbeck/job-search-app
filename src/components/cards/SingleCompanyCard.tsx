@@ -6,13 +6,14 @@ const SingleCompanyCard = ({
   companyName,
   companyId,
   singleCompany,
-  jobPosition,
+  singleApplication,
   contacts,
   setEditMode
 }) => {
   const { auth, setAuth } = useAuth();
 
   const usersList = useSelector((state: RootState) => state.users.users);
+  const jobPosition = singleApplication.map(app => app.Position)
   return (
     <>
       {auth?.id?.length ? (
@@ -23,7 +24,7 @@ const SingleCompanyCard = ({
           </Link>
           <p className="text-white text-2xl mx-5"> {jobPosition}</p>
           {contacts ? (
-            <p className="text-white text-2xl mx-5">Contacts: {contacts}</p>
+            <p className="text-white text-2xl mx-5">Contacts: {contacts.map(contact => <p key={contact.CONTACT_ID}>{contact.CONTACT_NAME}</p>)}</p>
           ) : (
             <p className="text-white text-2xl mx-5">
               No Contacts for {singleCompany?.company}
@@ -38,7 +39,7 @@ const SingleCompanyCard = ({
           </Link>
           <p className="text-white text-2xl mx-5">{jobPosition}</p>
           {contacts ? (
-            <p className="text-white text-2xl mx-5">Contacts: {contacts}</p>
+            <p className="text-white text-2xl mx-5">Contacts: {contacts.map(contact => <p>{contact.CONTACT_NAME}</p>)}</p>
           ) : (
             <p className="text-white text-2xl mx-5">
               No Contacts for {singleCompany?.company}

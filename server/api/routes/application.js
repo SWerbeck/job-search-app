@@ -9,6 +9,8 @@ import {
   selectApplicationById,
   singleApplicationById,
 } from "./queries/applicationqueries.js";
+
+import { editCompanyById } from "./queries/companyqueries.js";
 import verifyJWT from "../auth-middleware/authorization.js";
 
 const router = express.Router();
@@ -67,8 +69,13 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const { job_title, company_id, application_info, application_status } =
-      req.body;
+    const {
+      job_title,
+      company_id,
+      application_info,
+      application_status,
+      companyName,
+    } = req.body;
     await pool.query(editApplicationById, [
       job_title,
       // company_id,
@@ -76,6 +83,7 @@ router.put("/:id", async (req, res) => {
       // application_status,
       id,
     ]);
+    await pool.query(editCompanyById, [companyName, company_id]);
     res
       .status(200)
       .send(`Updated info for: ${job_title} with company_id ${company_id}`);
