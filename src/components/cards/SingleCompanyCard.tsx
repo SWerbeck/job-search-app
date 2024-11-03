@@ -8,23 +8,33 @@ const SingleCompanyCard = ({
   singleCompany,
   singleApplication,
   contacts,
-  setEditMode
+  setEditMode,
 }) => {
   const { auth, setAuth } = useAuth();
 
   const usersList = useSelector((state: RootState) => state.users.users);
-  const jobPosition = singleApplication.map(app => app.Position)
+  const jobPosition = singleApplication.map((app) => app.Position);
   return (
     <>
       {auth?.id?.length ? (
         <div className="bg-mainbody h-50 w-50 border-spacing-x-7 border border: mx-3 border-white">
-          <button onClick={()=>setEditMode(true)}className="bg-button1 text-mainbody">Edit</button>
+          <button
+            onClick={() => setEditMode(true)}
+            className="bg-button1 text-mainbody"
+          >
+            Edit
+          </button>
           <Link to={`/home/${auth.id}/companies/${companyId}`}>
             <p className="text-white text-2xl mx-5">{singleCompany?.company}</p>
           </Link>
           <p className="text-white text-2xl mx-5"> {jobPosition}</p>
           {contacts ? (
-            <p className="text-white text-2xl mx-5">Contacts: {contacts.map(contact => <p key={contact.CONTACT_ID}>{contact.CONTACT_NAME}</p>)}</p>
+            <div className="text-white text-2xl mx-5">
+              Contacts:{' '}
+              {contacts.map((contact) => (
+                <p key={contact.CONTACT_ID}>{contact.CONTACT_NAME}</p>
+              ))}
+            </div>
           ) : (
             <p className="text-white text-2xl mx-5">
               No Contacts for {singleCompany?.company}
@@ -39,7 +49,12 @@ const SingleCompanyCard = ({
           </Link>
           <p className="text-white text-2xl mx-5">{jobPosition}</p>
           {contacts ? (
-            <p className="text-white text-2xl mx-5">Contacts: {contacts.map(contact => <p>{contact.CONTACT_NAME}</p>)}</p>
+            <p className="text-white text-2xl mx-5">
+              Contacts:{' '}
+              {contacts.map((contact) => (
+                <p>{contact.CONTACT_NAME}</p>
+              ))}
+            </p>
           ) : (
             <p className="text-white text-2xl mx-5">
               No Contacts for {singleCompany?.company}
