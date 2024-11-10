@@ -17,6 +17,7 @@ import Contacts from './components/Contactscomponent';
 import Companies from './components/Companiescomponent';
 import Colortest from './components/Colortestcomponent';
 import SingleCompany from './components/SingleCompany';
+import ApplicationForm from './components/ApplicationForm';
 
 function App() {
   return (
@@ -44,6 +45,10 @@ function App() {
               <Route
                 path="/home/:user_id/applications"
                 element={<Applications />}
+              />
+              <Route
+                path="/home/:user_id/applications/addapplications"
+                element={<ApplicationForm />}
               />
               <Route
                 path="/home/:user_id/companies/:company_id"

@@ -47,12 +47,12 @@ const Applications = () => {
   // }
 
   const applicationData = userApplications?.map((userApp) => (
-    <div key={userApp.company_id}>
-      <ul>COMPANY: {userApp.company}</ul>
+    <div key={userApp?.company_id}>
+      <ul>COMPANY: {userApp?.company}</ul>
       {userApp?.applications?.map((app) => (
-        <div key={app.Application_ID}>
+        <div key={app?.Application_ID}>
           <Link to={`${location.pathname}/${app.Application_ID}`}>
-            APPLICATIONS : {app.Position} {app.Applied_Date}
+            APPLICATIONS : {app?.Position} {app?.Applied_Date}
           </Link>{' '}
           <button
             onClick={() => deleteApplication(app.Application_ID)}
@@ -75,10 +75,16 @@ const Applications = () => {
 
   return (
     <div className="grid place-content-center">
+      <Link
+        to={`/home/${auth.id}/applications/addapplications`}
+        className="mx-auto"
+      >
+        <button className="bg-button1 text-white">Add new Application</button>
+      </Link>
       {applicationData}
       {userApplications.map((userApp) => {
         return (
-          <div key={userApp.company_id}>
+          <div key={userApp?.company_id}>
             {/* <ul>COMPANY: {userApp.company}</ul> */}
 
             {/* {userApp?.applications?.map((applica) => {
