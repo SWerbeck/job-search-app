@@ -41,34 +41,31 @@ export const userAppsSlice = createSlice({
         },
       ];
     },
-    // addUserApp: (state, action) => {
-    //   console.log('action before?', action);
-    //   const newVariable = [...state.userApps];
-    //   console.log('newVariable', newVariable);
-    //   let found = state.userApps.find(
-    //     (app) => app.company_id === action.payload.company_id
-    //     // app.applications[0].Application_ID === action.payload.applicationId
-    //   );
-    //   let indexFound = state.userApps.indexOf(found);
-    //   console.log('index found!!!', indexFound);
-    //   if (found) {
-    //     // console.log('company name???', state.userApps[`${indexFound}`].company);
-    //     // return (state.userApps.COMPANYNAME =
-    //     //   state.userApps[`${indexFound}`].company);
-
-    //     let newAppObj = {
-    //       Position: action.payload.position,
-    //     };
-    //     //return [...state.userApps[`${indexFound}`][applications], newAppObj];
-    //   }
-    //   //state.userApps.push(action.payload);
-    //   console.log('action AFTER?', state.userApps);
-    // },
     addUserApp: (state, action) => {
-      console.log('action before?', action);
-
-      state.userApps.push(action.payload); // Create a new array with the new application
-      console.log('action AFTER?', action);
+      const { appData } = action.payload;
+      // Check if the company already exists in the userApps array
+      const existingCompany = state.userApps.find(
+        (app) => app.company_id === appData.company_id
+      );
+      if (existingCompany) {
+        // If the company exists, add the new application to the company's applications array
+        existingCompany.applications.push({
+          Status: appData.application_status,
+          Position: appData.job_title,
+          Applied_Date: appData.creation_date,
+          Application_ID: appData.applied_id,
+          Company_Website: appData.website,
+        });
+      } else {
+        // If the company doesn't exist, create a new company entry with the new application
+        state.userApps.push({
+          company_id: appData.company_id,
+          COMPANYNAME: 'Hardcoded Company Name', // You can adjust this based on your logic
+          applications: [appData],
+          contacts: [],
+          past_job_contacts: [],
+        });
+      }
     },
     deleteUserApps: (state, action) => {
       const filteredApps = state.userApps.filter((app) => {

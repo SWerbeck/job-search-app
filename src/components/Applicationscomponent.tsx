@@ -42,6 +42,15 @@ const Applications = () => {
 
   useEffect(() => {}, [userApplications]);
 
+  // console.log(
+  //   'take-2 from applications',
+  //   userApplications.applications[0]?.Application_ID
+  // );
+  // console.log(
+  //   'take-2 from IDDD',
+  //   userApplications?.applications.Application_ID
+  // );
+
   // if (!loaded) {
   //   return <div>LOADING...</div>;
   // }
@@ -71,7 +80,7 @@ const Applications = () => {
 
   const displayData = appData?.map((data) => data);
 
-  console.log('DATA from applications', displayData);
+  //console.log('DATA from applications', displayData);
 
   return (
     <div className="grid place-content-center">
@@ -104,7 +113,7 @@ const Applications = () => {
               })} */}
 
             {/* {currentContacts} */}
-            {/* {userApp.contacts?.map((cont) => {
+            {/* {userApp.contacts?.map((cont) => {`
               return (
                 <div key={cont.CONTACT_ID}>
                   <p>CURRENTLY WORKS HERE : {cont.CONTACT_NAME}</p>
