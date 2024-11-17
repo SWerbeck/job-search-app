@@ -14,6 +14,10 @@ const SingleCompanyCard = ({
 
   const usersList = useSelector((state: RootState) => state.users.users);
   const jobPosition = singleApplication.map((app) => app.Position);
+  const singleJob = jobPosition.map((position) => (
+    <p className="text-white text-2xl mx-5"> {position}</p>
+  ));
+  console.log('job position', jobPosition);
   return (
     <>
       {auth?.id?.length ? (
@@ -27,7 +31,7 @@ const SingleCompanyCard = ({
           <Link to={`/home/${auth.id}/companies/${companyId}`}>
             <p className="text-white text-2xl mx-5">{singleCompany?.company}</p>
           </Link>
-          <p className="text-white text-2xl mx-5"> {jobPosition}</p>
+          {singleJob}
           {contacts ? (
             <div className="text-white text-2xl mx-5">
               Contacts:{' '}

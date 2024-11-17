@@ -52,8 +52,6 @@ const ApplicationForm = () => {
 
   const axiosPrivate = useAxiosPrivate();
 
-  useEffect(() => {}, []);
-
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
       const createApp = await axios.post('/api/applications', {
@@ -62,9 +60,11 @@ const ApplicationForm = () => {
         user_id: auth.id,
         application_info: data.application_info,
       });
-      console.log('before dispatch onsubmit', data);
-      dispatch(addUserApp(data));
-      console.log('after dispatch onsubmit', data);
+      //console.log('before setApp useState', createApp.data.newApp);
+
+      //console.log('after setApp useState', createApp.data.newApp);
+      //console.log('before dispatch onsubmit', appData);
+      dispatch(addUserApp({ appData: createApp.data.newApp, data }));
       //navigate(`/home/${auth.id}/applications`);
     } catch (error) {
       setError('root', {
@@ -72,6 +72,8 @@ const ApplicationForm = () => {
       });
     }
   };
+
+  useEffect(() => {}, []);
 
   return (
     <div>
