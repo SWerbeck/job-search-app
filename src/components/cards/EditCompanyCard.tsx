@@ -9,14 +9,8 @@ import { useEffect, useState } from 'react';
 
 // make a schema using zod
 const schema = z.object({
-  job_title: z.string().min(2, {
-    message: 'Please edit poisiton',
-  }),
   companyName: z.string().min(1, {
     message: 'Please edit company name',
-  }),
-  contactName: z.string().min(1, {
-    message: 'Please edit contactName',
   }),
 });
 
@@ -51,10 +45,7 @@ const EditCompanyCard = ({
     grabContInfoFromRedux();
   }, []);
 
-  console.log('local hook we just made', contactsLocalHook);
-  //console.log('contacts from the edit', contacts);
-  //console.log('from edit mode', singleApplication);
-
+  
   const {
     register,
     handleSubmit,
@@ -65,9 +56,8 @@ const EditCompanyCard = ({
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
       const editJobTitle = await axios.put(
-        `/api/applications/${applicationId}`,
+        `/api/companies/${companyId}`,
         {
-          job_title: data.job_title,
           companyName: data.companyName,
           company_id: companyId,
         }
@@ -98,31 +88,6 @@ const EditCompanyCard = ({
           type="text"
           placeholder={singleCompany.company}
         />
-        <input
-          {...register('job_title')}
-          type="text"
-          placeholder={jobPosition}
-        />
-
-        {/* {contacts ? <input
-          {...register('contactName')}
-          type="text"
-          placeholder={contacts[0].CONTACT_NAME}
-        /> : <button>click here to add contact</button>} */}
-
-        {contacts ? (
-          contacts.map((contact) => (
-            <input
-              {...register('contactName')}
-              type="text"
-              placeholder={contact.CONTACT_NAME}
-            />
-          ))
-        ) : (
-          <button>click here to add contact</button>
-        )}
-
-        {errors.job_title && <div>{errors.job_title.message}</div>}
         <button disabled={isSubmitting}>
           {isSubmitting ? 'Loading...' : 'Submit'}
         </button>

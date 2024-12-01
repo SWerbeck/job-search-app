@@ -24,10 +24,9 @@ const schema = z.object({
   application_info: z.string().min(2, {
     message: 'Application info is required and must be at least 2 characters',
   }),
-  // newCompanyName: z.string().min(2, {
-  //   message: 'New company info is required and must be at least 2 characters',
-  // }),
-  newCompanyName: z.nullable(z.string()),
+  newCompanyName: z.string().min(1, {
+    message: 'New company name is required',
+  }).optional(),
 });
 
 type FormFields = z.infer<typeof schema>;
@@ -56,8 +55,6 @@ const ApplicationForm = () => {
   const axiosPrivate = useAxiosPrivate();
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    console.log("from submit company_id ", data.company_id)
-    console.log("from submit new company name ", data.newCompanyName)
     try {
       const createApp = await axios.post('/api/applications', {
         
@@ -91,18 +88,19 @@ const ApplicationForm = () => {
               setNewCompany(event.target.value);
             }}>
           {userApplications?.map((app, idx) => (
-            <option key={idx} value={app.company_id} {...register('newCompanyName', {setValueAs: app.company})}>
+            <option key={idx} value={app.company_id}>
               {app.company}
             </option>
-            
+        
           ))}
           {<option value={"0"}> add new</option>}
         </select>
        {newCompany == "0" ?  <input
-          {...register('newCompanyName')}
+          {...register('newCompanyName', {required: true})}
           type="text"
           placeholder="New Company Name"
-        /> : <></>}
+        /> 
+        : <></>} {errors.newCompanyName && <div>{errors.newCompanyName.message}</div>}
         <input
           {...register('application_info')}
           type="text"

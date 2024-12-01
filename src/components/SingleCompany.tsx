@@ -22,10 +22,12 @@ const SingleCompany = () => {
 
   const singleCompany = singleCompanyFilter[0];
   // gets the position that the user applied to
-  const singleApplication = singleCompany?.applications.map(
-    (application) => application
-  );
+  // const singleApplication = singleCompany?.applications.map(
+  //   (application) => application
+  // );
 
+  const singleApplication = singleCompany?.applications
+  
   // gets the contatcs if any the user has for the company
   const contactsDisplay = singleCompany?.contacts?.map(
     (contact) => contact.CONTACT_NAME
