@@ -42,7 +42,7 @@ export const userAppsSlice = createSlice({
       ];
     },
     addUserApp: (state, action) => {
-      const { appData } = action.payload;
+      const { appData, data } = action.payload;
       // Check if the company already exists in the userApps array
       const existingCompany = state.userApps.find(
         (app) => app.company_id === appData.company_id
@@ -60,8 +60,12 @@ export const userAppsSlice = createSlice({
         // If the company doesn't exist, create a new company entry with the new application
         state.userApps.push({
           company_id: appData.company_id,
-          COMPANYNAME: 'Hardcoded Company Name', // You can adjust this based on your logic
-          applications: [appData],
+          company: data.newCompanyName, // You can adjust this based on your logic
+          applications: [{Status: appData.application_status,
+            Position: appData.job_title,
+            Applied_Date: appData.creation_date,
+            Application_ID: appData.applied_id,
+            Company_Website: appData.website}],
           contacts: [],
           past_job_contacts: [],
         });
