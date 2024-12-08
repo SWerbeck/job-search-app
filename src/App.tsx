@@ -29,6 +29,10 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route path="/signup" element={<Signup />} />
           <Route path="/testroute" element={<TestRoute />} />
+          <Route
+            path="/home/:user_id/applications/:applied_id"
+            element={<Singleapplicationcomponent />}
+          />
           <Route path="/unauthorized" element={<Unauthorized />} />
           {/* These are protected routes */}
           <Route element={<PersistantLogin />}>

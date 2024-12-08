@@ -1,43 +1,31 @@
-import { useParams } from "react-router-dom"
+import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import useAxiosPrivate from "../custom-hooks/useAxiosPrivate";
+import useAxiosPrivate from '../custom-hooks/useAxiosPrivate';
 import { RootState } from '../store';
-
+import SingleApplicationCard from './cards/SingleApplicationCard';
 
 const Singleapplicationcomponent = () => {
-const applied_id = useParams().applied_id
-const axiosPrivate = useAxiosPrivate();
-const [singleApp, setSingleApp] = useState ([])
+  const applied_id = useParams().applied_id;
+  const axiosPrivate = useAxiosPrivate();
+  const [singleApp, setSingleApp] = useState([]);
 
-const userApplications = useSelector(
+  const userApplications = useSelector(
     (state: RootState) => state.userApps.userApps
   );
-  const fetchSingleApplication = async () => {
-    try {
-      const singleApplication = await axiosPrivate.get(
-        `/api/applications/${applied_id}`
-      );
-      setSingleApp(singleApplication?.data?.application[0])
-    } catch (err) {
-      console.log(err.response.data);
-      //navigate('/', { state: { from: location }, replace: true });
-    }
-  };
 
-console.log("single app local hook",singleApp)
+  const singleApplicationFilter = userApplications.filter(
+    (app) => app.applications[0]?.Application_ID === applied_id
+  );
 
-console.log('app id from single',applied_id)
-useEffect(() => {
-    fetchSingleApplication();
-  }, [applied_id]);
+  useEffect(() => {
+    setSingleApp(singleApplicationFilter);
+  }, []);
   return (
     <>
-      <h1>
-        {singleApp?.job_title}
-      </h1>
+      <SingleApplicationCard singleApp={singleApp} />
     </>
-  )
-}
+  );
+};
 
-export default Singleapplicationcomponent
+export default Singleapplicationcomponent;
