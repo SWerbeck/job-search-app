@@ -8,7 +8,7 @@ type Contacts = {
   CONTACT_NAME: string;
 };
 
-const SingleApplicationCard = ({ singleApp, contactsList }) => {
+const SingleApplicationCard = ({ singleApp, contactsList, editMode, setEditMode }) => {
   const { auth, setAuth } = useAuth();
 
   const usersList = useSelector((state: RootState) => state.users.users);
@@ -22,7 +22,14 @@ const SingleApplicationCard = ({ singleApp, contactsList }) => {
   console.log('mapped contacts in card', contactsMap);
   return (
     <>
-      <h1>single Application card</h1>
+   <button
+            onClick={() => setEditMode(true)}
+            className="bg-button1 text-mainbody"
+          >
+            Edit
+   </button>
+
+      {/* <h1>single Application card</h1> */}
       <p>{singleApp?.company_name}</p>
       <p>{singleApp?.Position}</p>
       {contactsMap.length > 0 ? contactsMap : <p>No Contacts</p>}

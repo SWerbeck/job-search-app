@@ -6,7 +6,7 @@ Applications:
 
 1. Need to be able to edit applications. Currently can post and delete.
 2. Single application needs to display form fields. Toggle to edit
-3. Delete button should be moved to single application page.
+3. On delete an application need a pop up or an are you sure button.
 
 Contacts:
 

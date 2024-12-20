@@ -5,6 +5,7 @@ import useAxiosPrivate from '../custom-hooks/useAxiosPrivate';
 import { RootState } from '../store';
 import SingleApplicationCard from './cards/SingleApplicationCard';
 import { deleteUserApps } from '../store/userAppsSlice';
+import EditApplicationCard from './cards/EditApplicationCard';
 
 const Singleapplicationcomponent = () => {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ const Singleapplicationcomponent = () => {
   const axiosPrivate = useAxiosPrivate();
   const [singleApp, setSingleApp] = useState(null);
   const [loaded, setIsLoaded] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   const userApplications = useSelector(
     (state: RootState) => state.userApps.userApps
@@ -54,17 +56,23 @@ const Singleapplicationcomponent = () => {
   }, [userApplications, applied_id]); // Added dependencies
 
   return (
-    <>
+    <> {editMode ? (<EditApplicationCard singleApp={singleApp}
+      contactsList={contactsList} editMode={editMode}
+      setEditMode={setEditMode}/>) : (
       <SingleApplicationCard
         singleApp={singleApp}
         contactsList={contactsList}
+        editMode={editMode}
+        setEditMode={setEditMode}
       />
-      <button
-        onClick={() => deleteApplication(applied_id)}
-        className="bg-button1 text-white"
-      >
-        delete app
-      </button>
+    
+      // <button
+      //   onClick={() => deleteApplication(applied_id)}
+      //   className="bg-button1 text-white"
+      // >
+      //   delete app
+      // </button>
+      )}
     </>
   );
 };
