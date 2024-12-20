@@ -26,30 +26,7 @@ const Applications = () => {
   const axiosPrivate = useAxiosPrivate();
   const refresh = useRefreshToken();
 
-  const deleteApplication = async (appId) => {
-    try {
-      const applicationToDelete = await axiosPrivate.delete(
-        `/api/applications/${appId}`
-      );
-      console.log('deleted apps from application', applicationToDelete);
-      dispatch(deleteUserApps(appId));
-      setIsLoaded(true);
-    } catch (err) {
-      console.log(err.response.data);
-      navigate('/', { state: { from: location }, replace: true });
-    }
-  };
-
   useEffect(() => {}, [userApplications]);
-
-  // console.log(
-  //   'take-2 from applications',
-  //   userApplications.applications[0]?.Application_ID
-  // );
-  // console.log(
-  //   'take-2 from IDDD',
-  //   userApplications?.applications.Application_ID
-  // );
 
   // if (!loaded) {
   //   return <div>LOADING...</div>;
@@ -63,12 +40,6 @@ const Applications = () => {
           <Link to={`${location.pathname}/${app.Application_ID}`}>
             APPLICATIONS : {app?.Position} {app?.Applied_Date}
           </Link>{' '}
-          <button
-            onClick={() => deleteApplication(app.Application_ID)}
-            className="bg-button1 text-white"
-          >
-            delete app
-          </button>
         </div>
       ))}
     </div>

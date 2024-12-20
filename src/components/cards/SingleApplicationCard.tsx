@@ -2,22 +2,30 @@ import { Link } from 'react-router-dom';
 import useAuth from '../../custom-hooks/useAuth';
 import { useSelector } from 'react-redux';
 
-const SingleApplicationCard = ({ singleApp }) => {
+type Contacts = {
+  COMPANY_ID: string;
+  CONTACT_ID: string;
+  CONTACT_NAME: string;
+};
+
+const SingleApplicationCard = ({ singleApp, contactsList }) => {
   const { auth, setAuth } = useAuth();
 
   const usersList = useSelector((state: RootState) => state.users.users);
   console.log('this is from the singleApp card', singleApp);
 
   // Map over the contacts for each application otherwise it breaks :(
-  const contactsMap = singleApp[0]?.contacts?.map(
-    (contact) => contact.CONTACT_NAME
-  );
+  const contactsMap = contactsList?.map((contact: Contacts) => (
+    <p key={contact.CONTACT_ID}>{contact?.CONTACT_NAME}</p>
+  ));
+  console.log('contactsList from card', contactsList);
+  console.log('mapped contacts in card', contactsMap);
   return (
     <>
       <h1>single Application card</h1>
-      <p>{singleApp[0]?.company}</p>
-      <p>{singleApp[0]?.applications[0].Position}</p>
-      {contactsMap ? <p>{contactsMap}</p> : <p>No Contacts</p>}
+      <p>{singleApp?.company_name}</p>
+      <p>{singleApp?.Position}</p>
+      {contactsMap.length > 0 ? contactsMap : <p>No Contacts</p>}
     </>
   );
 };
