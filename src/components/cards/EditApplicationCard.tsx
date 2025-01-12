@@ -3,22 +3,20 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from '../../../server/api/axios';
 import { useNavigate } from 'react-router-dom';
-import { editUserApp } from '../../store/userAppsSlice';
+import { editAppInfo } from '../../store/userAppsSlice';
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
   
 // make a schema using zod
 const schema = z.object({
-    companyName: z.string().min(1, {
-      message: 'Please edit company name',
+    job_title: z.string().min(1, {
+      message: 'Please edit job title',
     }),
   });
   
   type FormFields = z.infer<typeof schema>;
 
 
-
-  
   const  EditApplicationCard = ( {
     singleApp,
     contactsList,
@@ -35,28 +33,29 @@ const schema = z.object({
             formState: { errors, isSubmitting },
           } = useForm<FormFields>({ resolver: zodResolver(schema) });
         
-          const onSubmit: SubmitHandler<FormFields> = async (data) => {
-            try {
-              const editJobTitle = await axios.put(
-                `/api/companies/${companyId}`,
-                {
-                  companyName: data.companyName,
-                  company_id: companyId,
-                }
-              );
-              console.log('DATA FROM EDIT', data);
-              dispatch(editUserApp({ applicationId, data }));
-              setEditMode(false);
-            } catch (error) {
-              setError('root', {
-                message: 'No application exists',
-              });
-            }
-          };
+
+const appId = singleApp?.Application_ID
+
+  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    try {
+      const editJobTitle = await axios.put(`/api/applications/${appId}`, {
+        job_title: data.job_title,
+        applicationId: singleApp.Application_ID,
+      });
+      console.log('DATA FROM EDIT', data);
+      dispatch(editAppInfo({ appId, data }));
+      setEditMode(false);
+    } catch (error) {
+      setError('root', {
+        message: 'No application exists',
+      });
+    }
+  };
 
 
   return (
-    <div>edit application
+    <div>
+      {/* <p>{singleApp?.Position}</p> */}
          <button
         onClick={() => setEditMode(false)}
         className="bg-button2 text-mainbody"
@@ -64,10 +63,16 @@ const schema = z.object({
         Cancel
       </button>
 
-
-      <button disabled={isSubmitting}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input
+          {...register('job_title')}
+          type="text"
+          placeholder={singleApp?.Position}
+        />
+        <button disabled={isSubmitting}>
           {isSubmitting ? 'Loading...' : 'Submit'}
         </button>
+      </form>
     </div>
   )
 }

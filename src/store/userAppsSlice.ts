@@ -77,7 +77,7 @@ export const userAppsSlice = createSlice({
       });
       state.userApps = filteredApps;
     },
-    editUserApp: (state, action) => {
+    editCompanyName: (state, action) => {
       // found will check the id of the applications in the db against the application id from the payload if there is a match
       let found = state.userApps.find(
         (app) =>
@@ -94,6 +94,24 @@ export const userAppsSlice = createSlice({
         found.applications[0].Position = job_title;
       }
     },
+    editAppInfo: (state, action) => {
+      // found will check the id of the applications in the db against the application id from the payload if there is a match
+      console.log('state',state)
+      console.log('action',action)
+      let found = state.userApps.find(
+        (app) =>
+          app.applications[0].Application_ID === action.payload.appId
+      );
+      // we create a new variable and extract the action.payload.data.job_title
+      let job_title = action.payload.data.job_title;
+      //let companyName = action.payload.data.companyName;
+      if (found) {
+        console.log('data from redux', action.payload.data);
+        // if found, ie we have a match then reassign the position on the front end
+        //found.company = companyName;
+        found.applications[0].Position = job_title;
+      }
+    },
   },
 });
 
@@ -101,7 +119,8 @@ export const {
   setUserApps,
   resetUserApps,
   deleteUserApps,
-  editUserApp,
+  editAppInfo,
+  editCompanyName,
   addUserApp,
 } = userAppsSlice.actions;
 export default userAppsSlice.reducer;

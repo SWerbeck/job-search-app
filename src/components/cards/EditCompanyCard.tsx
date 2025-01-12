@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from '../../../server/api/axios';
 import { useNavigate } from 'react-router-dom';
-import { editUserApp } from '../../store/userAppsSlice';
+import { editCompanyName } from '../../store/userAppsSlice';
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 
@@ -63,7 +63,7 @@ const EditCompanyCard = ({
         }
       );
       console.log('DATA FROM EDIT', data);
-      dispatch(editUserApp({ applicationId, data }));
+      dispatch(editCompanyName({ applicationId, data }));
       setEditMode(false);
     } catch (error) {
       setError('root', {
