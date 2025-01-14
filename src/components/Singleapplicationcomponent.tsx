@@ -24,7 +24,7 @@ const Singleapplicationcomponent = () => {
   const usersList = useSelector((state: RootState) => state.users.users);
   const userId = usersList[0]?.user_id;
 
-  const deleteApplication = async (applied_id) => {
+  const deleteApplication = async (applied_id: string) => {
     try {
       const applicationToDelete = await axiosPrivate.delete(
         `/api/applications/${applied_id}`
@@ -56,22 +56,29 @@ const Singleapplicationcomponent = () => {
   }, [userApplications, applied_id]); // Added dependencies
 
   return (
-    <> {editMode ? (<EditApplicationCard singleApp={singleApp}
-      contactsList={contactsList} editMode={editMode}
-      setEditMode={setEditMode}/>) : (
-      <SingleApplicationCard
-        singleApp={singleApp}
-        contactsList={contactsList}
-        editMode={editMode}
-        setEditMode={setEditMode}
-      />
-    
-      // <button
-      //   onClick={() => deleteApplication(applied_id)}
-      //   className="bg-button1 text-white"
-      // >
-      //   delete app
-      // </button>
+    <>
+      {' '}
+      {editMode ? (
+        <EditApplicationCard
+          singleApp={singleApp}
+          contactsList={contactsList}
+          editMode={editMode}
+          setEditMode={setEditMode}
+        />
+      ) : (
+        <SingleApplicationCard
+          singleApp={singleApp}
+          contactsList={contactsList}
+          editMode={editMode}
+          setEditMode={setEditMode}
+        />
+
+        // <button
+        //   onClick={() => deleteApplication(applied_id)}
+        //   className="bg-button1 text-white"
+        // >
+        //   delete app
+        // </button>
       )}
     </>
   );
