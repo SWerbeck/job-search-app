@@ -23,6 +23,7 @@ const Login = ({ grabUseId }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
   // register, handleSubmit, and formState come from React HF
   const {
@@ -55,6 +56,7 @@ const Login = ({ grabUseId }) => {
       navigate(`/home/${loggedInUser?.data?.id}`);
     } catch (error) {
       setEmailError(error.response.data.error);
+      setPasswordError(error.response.data.passwordError);
       console.log(error.response.data.error);
     }
   };
@@ -72,16 +74,14 @@ const Login = ({ grabUseId }) => {
       {!auth.accessToken ? (
         <form onSubmit={handleSubmit(onSubmit)}>
           <input {...register('email')} type="text" placeholder="email" />
-          {errors.email && (
-            <p className="text-white text-xs">{errors.email.message}</p>
-          )}
+          {emailError && <p className="text-white text-xs">{emailError}</p>}
           <input
             {...register('password')}
             type="password"
             placeholder="password"
           />
-          {errors.password && (
-            <p className="text-white text-xs">{errors.password.message}</p>
+          {passwordError && (
+            <p className="text-white text-xs">{passwordError}</p>
           )}
           <button disabled={isSubmitting} className="bg-button1 text-white">
             {isSubmitting ? 'Loading...' : 'Login'}

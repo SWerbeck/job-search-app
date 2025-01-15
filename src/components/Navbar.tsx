@@ -10,7 +10,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../custom-hooks/useAuth';
 import { setUserApps } from '../store/userAppsSlice';
 
-
 const Navbar = () => {
   const dispatch = useDispatch();
   const axiosPrivate = useAxiosPrivate();
@@ -25,28 +24,48 @@ const Navbar = () => {
 
   const { auth, setAuth } = useAuth();
   const location = useLocation();
+
+  // const fetchUserInfo = async () => {
+  //   if (auth?.id?.length) {
+  //     try {
+  //       const fetchedUserInfo = await axiosPrivate.get(
+  //         `http://localhost:3000/api/users/${auth.id}`
+  //       );
+  //       dispatch(setUsers(fetchedUserInfo.data.users));
+  //       setIsLoaded(true);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   } else {
+  //     try {
+  //       const fetchedGuestInfo = await axiosPrivate.get(
+  //         `http://localhost:3000/api/guest`
+  //       );
+  //       //console.log('------------->', fetchedGuestInfo.data.users);
+  //       dispatch(setUsers(fetchedGuestInfo.data.users));
+  //       setIsLoaded(true);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // };
+
   const fetchUserInfo = async () => {
-    if (auth?.id?.length) {
-      try {
+    try {
+      if (auth?.id?.length) {
         const fetchedUserInfo = await axiosPrivate.get(
           `http://localhost:3000/api/users/${auth.id}`
         );
         dispatch(setUsers(fetchedUserInfo.data.users));
-        setIsLoaded(true);
-      } catch (err) {
-        console.log(err);
-      }
-    } else {
-      try {
+      } else {
         const fetchedGuestInfo = await axiosPrivate.get(
           `http://localhost:3000/api/guest`
         );
-       //console.log('------------->', fetchedGuestInfo.data.users);
         dispatch(setUsers(fetchedGuestInfo.data.users));
-        setIsLoaded(true);
-      } catch (error) {
-        console.log(error);
       }
+      setIsLoaded(true);
+    } catch (err) {
+      console.error('Error fetching user info:', err);
     }
   };
 
@@ -76,7 +95,7 @@ const Navbar = () => {
   console.log(usersList, 'userslist from nav');
   useEffect(() => {
     fetchUserInfo();
-    fetchApplications()
+    fetchApplications();
   }, [auth.id]);
 
   return (

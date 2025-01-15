@@ -6,162 +6,81 @@ import { jwtTokens } from '../auth-middleware/jwt-helpers.js';
 
 const router = express.Router();
 
-// router.post('/login', async (req, res) => {
-//   try {
-//     let { email, user_password } = req.body;
-//     const users = await pool.query(
-//       'SELECT * FROM _USER WHERE user_email = $1',
-//       [email]
-//     );
-
-//     if (users.rows.length === 0) {
-//       return res.status(401).json({
-//         error:
-//           'Email not found. Please check that the email is correct or create an account to login',
-//       });
-//     }
-
-//     let validPassword = await bcrypt.compare(
-//       user_password,
-//       users.rows[0].user_password
-//     );
-//     if (
-//       email === 'louis@test.com' &&
-//       user_password === users.rows[0].user_password
-//     ) {
-//       validPassword = user_password;
-//     }
-
-// if (
-//   email === 'steve@gmail.com' &&
-//   user_password === users.rows[0].user_password
-// ) {
-//   validPassword = user_password;
-// }
-
-//     if (!validPassword) {
-//       return res.status(401).json({ error: 'Password is incorrect' });
-//     }
-
-//     if (validPassword) {
-//       let tokens = jwtTokens(users.rows[0]);
-//       res.cookie('refresh_token', tokens.refreshToken, {
-//         httpOnly: true,
-//       });
-//       //for debugging the below line is returning the tokens
-//       //return res.json(users);
-//       return res.json({
-//         token: tokens,
-//         id: users.rows[0].user_id,
-//         username: users.rows[0].username,
-//         roles: [users.rows[0].roles],
-//       });
-//       // when app is in prod we will want this line below instead to just say success
-//       //return res.status(200).json('Success');
-//     }
-//   } catch (error) {
-//     res.status(401).json({ error: error.message });
-//   }
-// });
-
-// router.get('/refresh_token', (req, res) => {
-//   try {
-//     const refreshToken = req.cookies.refresh_token;
-//     console.log('from route', refreshToken);
-//     if (refreshToken === null)
-//       return res.status(401).json({ error: 'Null refresh token' });
-//     jwt.verify(
-//       refreshToken,
-//       process.env.REFRESH_TOKEN_SECRET,
-//       (error, user) => {
-//         if (error) return res.status(403).json({ error: error.message });
-//         let tokens = jwtTokens(user);
-//         res.cookie('refresh_token', tokens.refreshToken, {
-//           httpOnly: true,
-//           secure: true,
-//           sameSite: 'None',
-//         });
-//         return res.json(tokens);
-//       }
-//     );
-//   } catch (error) {
-//     res.status(401).json({ error: error.message });
-//   }
-// });
-
-// router.delete('/logout', (req, res) => {
-//   try {
-//     res.clearCookie('refresh_token');
-//     return res.status(200).json({ message: 'refresh token deleted' });
-//   } catch (error) {
-//     res.status(401).json({ error: error.message });
-//   }
-// });
-
 // LOGIN FROM NEW BUILT BACKEND
 router.post('/login', async (req, res) => {
   const { email, user_password } = req.body;
   if (!email || !user_password)
     return res.status(400).json({ message: 'Email and password are required' });
-  const foundUser = await pool.query(
-    'SELECT * FROM _USER WHERE user_email = $1',
-    [email]
-  );
-  if (!email) return res.sendStatus(401); //Unauthorized
-  // evaluate pw
-  let match = await bcrypt.compare(
-    user_password,
-    foundUser.rows[0].user_password
-  );
-  if (
-    email === 'louis@test.com' &&
-    user_password === foundUser.rows[0].user_password
-  ) {
-    match = user_password;
-  }
 
-  if (
-    email === 'steve@gmail.com' &&
-    user_password === foundUser.rows[0].user_password
-  ) {
-    match = user_password;
-  }
-  if (match) {
-    // creating JWTs
-    const accessToken = jwt.sign(
-      {
-        UserInfo: {
-          email: foundUser.rows[0].email,
-          roles: foundUser.rows[0].roles,
+  try {
+    const foundUser = await pool.query(
+      'SELECT * FROM _USER WHERE user_email = $1',
+      [email]
+    );
+    if (!foundUser.rows.length) {
+      return res.status(401).json({ error: 'No user with this email' });
+    }
+    if (!email) return res.sendStatus(401); //Unauthorized
+    // evaluate pw
+    let match = await bcrypt.compare(
+      user_password,
+      foundUser.rows[0].user_password
+    );
+
+    if (
+      email === 'louis@test.com' &&
+      user_password === foundUser.rows[0].user_password
+    ) {
+      match = user_password;
+    }
+
+    if (
+      email === 'steve@gmail.com' &&
+      user_password === foundUser.rows[0].user_password
+    ) {
+      match = user_password;
+    }
+    if (!match) {
+      return res.status(401).json({ passwordError: 'incorrect password' });
+    }
+    if (match) {
+      // creating JWTs
+      const accessToken = jwt.sign(
+        {
+          UserInfo: {
+            email: foundUser.rows[0].email,
+            roles: foundUser.rows[0].roles,
+          },
         },
-      },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: '10s' }
-    );
-    const refreshToken = jwt.sign(
-      { email: foundUser.rows[0].email },
-      process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: '5m' }
-    );
-    // updating refreshToken in the db - will start as null and then update every time a user logs in
-    const result = await pool.query(
-      `UPDATE _USER SET refreshtoken = $1 WHERE USER_ID = $2`,
-      [refreshToken, foundUser.rows[0].user_id]
-    );
-    res.cookie('jwt', refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'None',
-      maxAge: 24 * 60 * 60 * 1000,
-    }); //take out secure: true for testing with postman/thunderclient, but need to be put back in
-    res.json({
-      accessToken,
-      id: foundUser.rows[0].user_id,
-      username: foundUser.rows[0].username,
-      roles: foundUser.rows[0].roles,
-    });
-  } else {
-    res.sendStatus(401);
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: '10s' }
+      );
+      const refreshToken = jwt.sign(
+        { email: foundUser.rows[0].email },
+        process.env.REFRESH_TOKEN_SECRET,
+        { expiresIn: '5m' }
+      );
+      // updating refreshToken in the db - will start as null and then update every time a user logs in
+      const result = await pool.query(
+        `UPDATE _USER SET refreshtoken = $1 WHERE USER_ID = $2`,
+        [refreshToken, foundUser.rows[0].user_id]
+      );
+      res.cookie('jwt', refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'None',
+        maxAge: 24 * 60 * 60 * 1000,
+      }); //take out secure: true for testing with postman/thunderclient, but need to be put back in
+      res.json({
+        accessToken,
+        id: foundUser.rows[0].user_id,
+        username: foundUser.rows[0].username,
+        roles: foundUser.rows[0].roles,
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
