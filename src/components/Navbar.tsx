@@ -49,6 +49,7 @@ const Navbar = () => {
   //     }
   //   }
   // };
+  console.log('USER APP FROM NAV', userApplications);
 
   const fetchUserInfo = async () => {
     try {

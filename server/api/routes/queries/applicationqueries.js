@@ -22,7 +22,12 @@ export const getAllUserApplications = `
       'Status',
       _APPLICATION.application_status,
       'Applied_Date',
-      _APPLICATION.creation_date)) as APPLICATIONS,
+      _APPLICATION.creation_date,
+      'Last_Updated_Date',
+      _APPLICATION.last_updated,
+      'application_info',
+      _APPLICATION.application_info
+     )) as APPLICATIONS,
   CASE
   WHEN
   _CONTACT.company_id = _COMPANY.company_id AND _CONTACT.user_id = $1

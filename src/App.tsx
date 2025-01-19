@@ -33,6 +33,10 @@ function App() {
             path="/home/:user_id/applications/:applied_id"
             element={<Singleapplicationcomponent />}
           />
+          <Route
+            path="/home/:user_id/applications/addapplications"
+            element={<ApplicationForm />}
+          />
           <Route path="/unauthorized" element={<Unauthorized />} />
           {/* These are protected routes */}
           <Route element={<PersistantLogin />}>

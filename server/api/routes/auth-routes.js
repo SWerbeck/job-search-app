@@ -41,7 +41,7 @@ router.post('/login', async (req, res) => {
       match = user_password;
     }
     if (!match) {
-      return res.status(401).json({ passwordError: 'incorrect password' });
+      return res.status(401).json({ error: 'incorrect password' });
     }
     if (match) {
       // creating JWTs

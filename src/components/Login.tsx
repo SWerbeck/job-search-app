@@ -22,7 +22,7 @@ const Login = ({ grabUseId }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
+  const [error, setError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
   // register, handleSubmit, and formState come from React HF
@@ -55,8 +55,7 @@ const Login = ({ grabUseId }) => {
       grabUseId(`${loggedInUser?.data?.id}`);
       navigate(`/home/${loggedInUser?.data?.id}`);
     } catch (error) {
-      setEmailError(error.response.data.error);
-      setPasswordError(error.response.data.passwordError);
+      setError(error.response.data.error);
       console.log(error.response.data.error);
     }
   };
@@ -64,6 +63,7 @@ const Login = ({ grabUseId }) => {
   const logout = async () => {
     const loggedOut = await axios.get('http://localhost:3000/api/auth/logout');
     setAuth({});
+    setError('');
     reset();
     navigate('/');
     console.log(loggedOut.data.message);
@@ -74,15 +74,12 @@ const Login = ({ grabUseId }) => {
       {!auth.accessToken ? (
         <form onSubmit={handleSubmit(onSubmit)}>
           <input {...register('email')} type="text" placeholder="email" />
-          {emailError && <p className="text-white text-xs">{emailError}</p>}
+          {error && <p className="text-white text-xs">{error}</p>}
           <input
             {...register('password')}
             type="password"
             placeholder="password"
           />
-          {passwordError && (
-            <p className="text-white text-xs">{passwordError}</p>
-          )}
           <button disabled={isSubmitting} className="bg-button1 text-white">
             {isSubmitting ? 'Loading...' : 'Login'}
           </button>

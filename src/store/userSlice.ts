@@ -1,5 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
-
+import { createSlice } from '@reduxjs/toolkit';
 
 export interface usersInitialStateType {
   users: [
@@ -7,25 +6,25 @@ export interface usersInitialStateType {
       user_id: string;
       first_name: string;
       last_name: string;
-      User_email: string;
+      user_email: string;
       username: string;
     }
   ];
 }
 const initialState: usersInitialStateType = {
   users: [
-{
-  user_id: "",
-  first_name: "",
-  last_name: "",
-  User_email:  "",
-  username:  "",
-}   
+    {
+      user_id: '',
+      first_name: '',
+      last_name: '',
+      user_email: '',
+      username: '',
+    },
   ],
 };
 
 export const userSlice = createSlice({
-  name: "users",
+  name: 'users',
   initialState,
   reducers: {
     setUsers: (state, action) => {
@@ -34,18 +33,16 @@ export const userSlice = createSlice({
     resetUsers: (state, action) => {
       state.users = [
         {
-          user_id: "",
-          first_name: "",
-          last_name: "",
-          User_email:  "",
-          username:  "",
-        }   
-          ];
+          user_id: '',
+          first_name: '',
+          last_name: '',
+          user_email: '',
+          username: '',
+        },
+      ];
     },
-  
   },
 });
-
 
 export const { setUsers, resetUsers } = userSlice.actions;
 export default userSlice.reducer;
