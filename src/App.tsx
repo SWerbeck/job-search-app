@@ -18,12 +18,14 @@ import Companies from './components/Companiescomponent';
 import Colortest from './components/Colortestcomponent';
 import SingleCompany from './components/SingleCompany';
 import ApplicationForm from './components/ApplicationForm';
+import { ToastContainer } from 'react-toastify';
+
 
 function App() {
   return (
     <>
+     <ToastContainer />
       <Navbar />
-
       <Routes>
         {/* public routes */}
         <Route path="/" element={<Layout />}>
