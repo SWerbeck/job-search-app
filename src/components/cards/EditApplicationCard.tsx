@@ -11,6 +11,7 @@ import { deleteUserApps } from '../../store/userAppsSlice';
 import useAxiosPrivate from '../../custom-hooks/useAxiosPrivate';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDisable } from '../../context/DisableContext';
 
   
 // make a schema using zod
@@ -45,6 +46,8 @@ const schema = z.object({
 const appId = singleApp?.Application_ID
 const userId = usersList[0]?.user_id;
 const axiosPrivate = useAxiosPrivate();
+const { isDisabled, setIsDisabled } = useDisable();
+
 
 const [toastId, setToastId] = useState<string | number | null>(null);
 
@@ -52,7 +55,6 @@ const handleConfirm = () => {
   // Perform the action you want on confirmation
   toast.dismiss(toastId);
   deleteApplication(appId)
-  //setToastId(null); 
   // Enable interactions again
     console.log('Confirmed!');
 };
@@ -67,6 +69,7 @@ const handleCancel = () => {
 
 const showConfirmationToast = () => {
   if (!toastId || !toast.isActive(toastId)) {
+    setIsDisabled(true)
     const id = toast.info(
       <div>
         <p>Are you sure?</p>
@@ -78,6 +81,7 @@ const showConfirmationToast = () => {
         closeOnClick: false,
         draggable: false,
         pauseOnHover: false,
+        onClose: () => setIsDisabled(false)
       }
     );
     setToastId(id); // Correct type now matches

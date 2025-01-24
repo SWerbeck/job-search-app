@@ -9,6 +9,7 @@ import axios from '../../server/api/axios';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../custom-hooks/useAuth';
 import { setUserApps } from '../store/userAppsSlice';
+import { useDisable } from '../context/DisableContext';
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,8 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const { auth, setAuth } = useAuth();
+  const { isDisabled } = useDisable();
+
   const location = useLocation();
 
   // const fetchUserInfo = async () => {
@@ -104,21 +107,21 @@ const Navbar = () => {
       <div className="flex justify-center items-center space-x-5 px-4">
         {auth.id ? (
           <>
-            <Link to={`/home/${auth.id}/applications`} className="text-white">
+            <Link to={`/home/${auth.id}/applications`} className={isDisabled ? 'pointer-events-none text-gray-500' :"text-white"}>
               applications
             </Link>
-            <Link to={`home/${auth.id}/contacts`} className="text-white">
+            <Link to={`home/${auth.id}/contacts`} className={isDisabled ? 'pointer-events-none text-gray-500' :"text-white"}>
               contacts
             </Link>
-            <Link to={`home/${auth.id}/companies`} className="text-white">
+            <Link to={`home/${auth.id}/companies`} className={isDisabled ? 'pointer-events-none text-gray-500' :"text-white"}>
               companies
             </Link>
 
-            <Link to="/lounge" className="text-white">
+            <Link to="/lounge" className={isDisabled ? 'pointer-events-none text-gray-500' :"text-white"}>
               lounge
             </Link>
 
-            <Link to="/testroute" className="text-white">
+            <Link to="/testroute" className={isDisabled ? 'pointer-events-none text-gray-500' :"text-white"}>
               Test Route
             </Link>
           </>
@@ -126,28 +129,28 @@ const Navbar = () => {
           <>
             <Link
               to={`/home/${usersList[0].user_id}/applications`}
-              className="text-white"
+              className={isDisabled ? 'pointer-events-none text-gray-500' :"text-white"}
             >
               applications
             </Link>
             <Link
               to={`home/${usersList[0].user_id}/contacts`}
-              className="text-white"
+              className={isDisabled ? 'pointer-events-none text-gray-500' :"text-white"}
             >
               contacts
             </Link>
             <Link
               to={`home/${usersList[0].user_id}/companies`}
-              className="text-white"
+              className={isDisabled ? 'pointer-events-none text-gray-500' :"text-white"}
             >
               companies
             </Link>
 
-            <Link to="/lounge" className="text-white">
+            <Link to="/lounge" className={isDisabled ? 'pointer-events-none text-gray-500' :"text-white"}>
               lounge
             </Link>
 
-            <Link to="/testroute" className="text-white">
+            <Link to="/testroute" className={isDisabled ? 'pointer-events-none text-gray-500' :"text-white"}>
               Test Route
             </Link>
           </>

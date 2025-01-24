@@ -18,10 +18,16 @@ import Companies from './components/Companiescomponent';
 import Colortest from './components/Colortestcomponent';
 import SingleCompany from './components/SingleCompany';
 import ApplicationForm from './components/ApplicationForm';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import { useDisable } from './context/DisableContext';
 
 
 function App() {
+  const { isDisabled, setIsDisabled } = useDisable();
+
+  if (toast.isActive('confirmation-toast')) {
+    setIsDisabled(true); // Disable everything
+  }
   return (
     <>
      <ToastContainer />
