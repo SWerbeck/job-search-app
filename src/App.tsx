@@ -35,6 +35,7 @@ function App() {
       <Routes>
         {/* public routes */}
         <Route path="/" element={<Layout />}>
+        <Route path="/" element={<HomePage />}/>
           <Route path="/signup" element={<Signup />} />
           <Route path="/testroute" element={<TestRoute />} />
           <Route
@@ -77,7 +78,7 @@ function App() {
           <Route path="/*" element={<Missing />} />
         </Route>
       </Routes>
-      <Colortest />
+      {/* <Colortest /> */}
     </>
   );
 }
