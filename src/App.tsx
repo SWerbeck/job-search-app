@@ -21,7 +21,6 @@ import ApplicationForm from './components/ApplicationForm';
 import { ToastContainer, toast } from 'react-toastify';
 import { useDisable } from './context/DisableContext';
 
-
 function App() {
   const { isDisabled, setIsDisabled } = useDisable();
 
@@ -30,12 +29,12 @@ function App() {
   }
   return (
     <>
-     <ToastContainer />
+      <ToastContainer />
       <Navbar />
       <Routes>
         {/* public routes */}
         <Route path="/" element={<Layout />}>
-        <Route path="/" element={<HomePage />}/>
+          <Route path="/" element={<HomePage />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/testroute" element={<TestRoute />} />
           <Route
@@ -78,7 +77,7 @@ function App() {
           <Route path="/*" element={<Missing />} />
         </Route>
       </Routes>
-      {/* <Colortest /> */}
+      <Colortest />
     </>
   );
 }

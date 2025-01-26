@@ -50,23 +50,36 @@ const Applications = () => {
 
   const applicationData = userApplications?.map((userApp) => (
     <div key={userApp?.company_id}>
-      <ul>COMPANY: {userApp?.company}</ul>
-      APPLICATIONS :
+      <ul className="bg-button2 text-white  h-10 w-50 border-spacing-x-7 border border: mx-3 border-white grid place-content-left content-center text-4xl p-10 mt-10">
+        {/* "bg-headline h-20 w-50 border-spacing-x-5 border border: mx-3 border-white grid place-content-center text-white text-4xl mb-8 mt-8" */}
+        {userApp?.company}
+      </ul>
+
       {userApp?.applications?.map((app) => (
-        <div key={app?.Application_ID}>
+        <div
+          key={app?.Application_ID}
+          className="bg-mainbody h-20 w-50 border-spacing-x-5 border border: mx-3 border-white grid place-content-center text-button3 text-4xl p-20"
+        >
           <Link to={`${location.pathname}/${app.Application_ID}`}>
-            <li className="flex justify-center items-center">
-              {app?.Position} {/* parse data to look better  */}
-              {new Date(app?.Applied_Date).toLocaleString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                // hour: '2-digit',
-                // minute: '2-digit',
-                // second: '2-digit',
-                // timeZoneName: 'short',
-              })}{' '}
-              <p className="text-xs">
+            <div className="flex justify-center items-center pb-2">
+              <p>
+                Job title: {app?.Position} {/* parse data to look better  */}
+              </p>
+            </div>
+            <div className="flex justify-center items-center pb-4">
+              <p className="text-lg">
+                Date applied:{' '}
+                {new Date(app?.Applied_Date).toLocaleString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                  // hour: '2-digit',
+                  // minute: '2-digit',
+                  // second: '2-digit',
+                  // timeZoneName: 'short',
+                })}{' '}
+              </p>
+              <p className="text-xs pl-1">
                 {new Date(app?.Applied_Date).toLocaleString('en-US', {
                   // year: 'numeric',
                   // month: 'long',
@@ -77,8 +90,15 @@ const Applications = () => {
                   timeZoneName: 'short',
                 })}
               </p>
-            </li>
+            </div>
           </Link>{' '}
+          <div className="flex justify-center items-center">
+            <Link to={`${location.pathname}/${app.Application_ID}`}>
+              <button className="bg-button1 text-white  text-base p-2">
+                More info
+              </button>
+            </Link>
+          </div>
         </div>
       ))}
     </div>
@@ -104,6 +124,9 @@ const Applications = () => {
       > */}
         <button className="bg-button1 text-white">Add new Application</button>
       </Link>
+      <div className="bg-headline h-20 w-50 border-spacing-x-5 border border: mx-3 border-white grid place-content-center text-white text-4xl mt-8">
+        APPLICATIONS :
+      </div>
       {applicationData}
       {userApplications.map((userApp) => {
         return (

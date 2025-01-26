@@ -17,16 +17,16 @@ const SingleApplicationCard = ({
   const { auth, setAuth } = useAuth();
 
   const usersList = useSelector((state: RootState) => state.users.users);
-  console.log("this is from the singleApp card", singleApp);
+  console.log('this is from the singleApp card', singleApp);
 
   // Map over the contacts for each application otherwise it breaks :(
   const contactsMap = contactsList?.map((contact: Contacts) => (
     <p key={contact.CONTACT_ID}>{contact?.CONTACT_NAME}</p>
   ));
-  console.log("contactsList from card", contactsList);
-  console.log("mapped contacts in card", contactsMap);
+  console.log('contactsList from card', contactsList);
+  console.log('mapped contacts in card', contactsMap);
   return (
-    <>
+    <div className="flex justify-center items-center">
       <button
         onClick={() => setEditMode(true)}
         className="bg-button1 text-mainbody"
@@ -35,10 +35,15 @@ const SingleApplicationCard = ({
       </button>
 
       {/* <h1>single Application card</h1> */}
-      <p>{singleApp?.company_name}</p>
-      <p>{singleApp?.Position}</p>
-      {contactsMap.length > 0 ? contactsMap : <p>No Contacts</p>}
-    </>
+      <div className="m-10">
+        <p className="text-lg">Company: {singleApp?.company_name}</p>
+        <p className="text-sm">Job Title: {singleApp?.Position}</p>
+        <div>
+          Contact List:{' '}
+          {contactsMap.length > 0 ? contactsMap : <p>No Contacts</p>}
+        </div>
+      </div>
+    </div>
   );
 };
 
