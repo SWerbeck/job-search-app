@@ -47,21 +47,37 @@ export const userAppsSlice = createSlice({
       const existingCompany = state.userApps.find(
         (app) => app.company_id === appData.company_id
       );
-      let foundCompName;
-      const foundCompany = state.userApps.find(
-        (app) => app.company_id === appData.company_id
-      );
-      if (foundCompany) {
-        foundCompName = foundCompany.COMPANYNAME;
-      }
+      /* need to make a copy due to Immer.js, which is used under the hood by Redux Toolkit. 
+         Immer allows you to work with state immutably while using mutable syntax, but
+         (Proxy(Object), [[Handler]], [[Target]], [[IsRevoked]]) indicates that attempting to access a value in a draft state outside of where Immer manages it.
+      */
+      const existingCompanyCopy = { ...existingCompany };
 
-      console.log('PAYLOAAAAD', action.payload);
-      console.log('outside of the if statement existing comp', existingCompany);
+      // const contactsCopy = {
+      //   ...existingCompany,
+      //   contacts: existingCompany.contacts.map((contact) => ({ ...contact })),
+      // };
+
+      // console.log('ok contacts copy', contactsCopy);
+      // const existingCompanyCopy = {
+      //   ...existingCompany,
+      //   applications: existingCompany.applications.map((app) => ({ ...app })), // Unwrap proxy
+      //   contacts: existingCompany.contacts.map((contact) => ({ ...contact })), // Unwrap proxy
+      //   past_job_contacts: existingCompany.past_job_contacts
+      //     ? existingCompany.past_job_contacts.map((contact) => ({ ...contact }))
+      //     : [], // Handle null case
+      // };
+
+      // Log the unwrapped values
+      // console.log('Existing company copy:', existingCompanyCopy);
+      // console.log('Contacts:', existingCompanyCopy.contacts);
+      // console.log('Applications:', existingCompanyCopy.applications);
+      // console.log('Past job contacts:', existingCompanyCopy.past_job_contacts);
+      // console.log('omg copyyyy', existingCompanyCopy);
+
       if (existingCompany) {
-        const companyName = existingCompany.COMPANYNAME; // Or .companyName, based on your state
-        console.log('Found company name:', companyName);
-        // existingCompany.company.push(appData.company_name);
         console.log('app data', appData);
+        console.log('data', data);
         // If the company exists, add the new application to the company's applications array
         existingCompany.applications.push({
           Status: appData.application_status,
@@ -69,8 +85,13 @@ export const userAppsSlice = createSlice({
           Applied_Date: appData.creation_date,
           Application_ID: appData.applied_id,
           Company_Website: appData.website,
-          companyName: appData.newCompanyName,
+          company_name: existingCompanyCopy.company,
         });
+        // existingCompany.contacts.push({
+        //   COMPANY_ID: contactsCopy.COMPANY_ID,
+        //   CONTACT_ID: contactsCopy.CONTACT_ID,
+        //   CONTACT_NAME: contactsCopy.CONTACT_NAME,
+        // });
       } else {
         // If the company doesn't exist, create a new company entry with the new application
         state.userApps.push({
@@ -83,6 +104,7 @@ export const userAppsSlice = createSlice({
               Applied_Date: appData.creation_date,
               Application_ID: appData.applied_id,
               Company_Website: appData.website,
+              company_name: data.newCompanyName,
             },
           ],
           contacts: [],
