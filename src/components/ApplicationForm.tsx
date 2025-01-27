@@ -66,15 +66,21 @@ const ApplicationForm = () => {
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
       if (usersList[0].user_email === 'guest@guestmail.com') {
-        console.log('hey we got the guest');
+        console.log('guest data from onsubmit', data);
         const createApp = await axios.post('/api/applications', {
           job_title: data.job_title,
           companyName: data.newCompanyName,
-          company_id: data.company_id || null,
+          company_id: data.company_id,
+          //company_id: data.company_id || null,
           user_id: usersList[0].user_id,
           application_info: data.application_info,
         });
-        dispatch(addUserApp({ appData: createApp.data.newApp, data }));
+        dispatch(
+          addUserApp({
+            appData: createApp.data.newApp,
+            data,
+          })
+        );
         navigate(`/home/${usersList[0].user_id}/applications`);
       } else {
         const createApp = await axios.post('/api/applications', {
@@ -94,7 +100,9 @@ const ApplicationForm = () => {
     }
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log('useEffect triggered fromt he form');
+  }, [userApplications]);
 
   return (
     <div>
