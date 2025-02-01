@@ -1,5 +1,5 @@
-import express from "express";
-import pool from "../../db/db.js";
+import express from 'express';
+import pool from '../../db/db.js';
 import {
   deleteApplicationById,
   editApplicationById,
@@ -8,15 +8,15 @@ import {
   selectAllApplications,
   selectApplicationById,
   singleApplicationById,
-} from "./queries/applicationqueries.js";
-import { postNewCompany } from "./queries/companyqueries.js";
-import { editCompanyById } from "./queries/companyqueries.js";
-import verifyJWT from "../auth-middleware/authorization.js";
+} from './queries/applicationqueries.js';
+import { postNewCompany } from './queries/companyqueries.js';
+import { editCompanyById } from './queries/companyqueries.js';
+import verifyJWT from '../auth-middleware/authorization.js';
 
 const router = express.Router();
 
 // Get all applications
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const applications = await pool.query(selectAllApplications);
     res.json({ applications: applications.rows });
@@ -26,7 +26,7 @@ router.get("/", async (req, res) => {
 });
 
 // Get application by id application id
-router.get("/:id", async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const id = req.params.id;
     const singleApplication = await pool.query(selectApplicationById, [id]);
@@ -48,7 +48,7 @@ router.get("/:id", async (req, res) => {
 //   }
 // });
 
-router.get("/user/:id", async (req, res) => {
+router.get('/user/:id', async (req, res) => {
   try {
     const id = req.params.id;
 
@@ -60,14 +60,15 @@ router.get("/user/:id", async (req, res) => {
 });
 
 // post new application to database
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { job_title, companyName, company_id, user_id, application_info } =
       req.body;
-    let createdCompanyId;
-    if (company_id === "0") {
+    if (company_id === '0') {
+      let createdCompanyId;
       const newInsertCompany = await pool.query(postNewCompany, [companyName]);
       createdCompanyId = newInsertCompany.rows[0].company_id;
+      console.log('createdCompanyId?', createdCompanyId);
       const newApplication = await pool.query(postNewApplication, [
         job_title,
         createdCompanyId,
@@ -90,7 +91,7 @@ router.post("/", async (req, res) => {
 });
 
 //update application info
-router.put("/:id", async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const id = req.params.id;
     const {
@@ -115,7 +116,7 @@ router.put("/:id", async (req, res) => {
 });
 
 //Delete Application by application id
-router.delete("/:id", async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const id = req.params.id;
     //query to get id passed from req.params.id
@@ -128,7 +129,7 @@ router.delete("/:id", async (req, res) => {
       res.status(200).send(`Application deleted with ID: ${id}`);
     }
   } catch (error) {
-    res.status(500).json({ error: "no application in db with this id" });
+    res.status(500).json({ error: 'no application in db with this id' });
   }
 });
 

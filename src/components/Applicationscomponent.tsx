@@ -47,6 +47,7 @@ const Applications = () => {
   });
 
   console.log(formattedDate);
+  console.log('FROM ALL APPS', userApplications);
 
   const applicationData = userApplications?.map((userApp) => (
     <div key={userApp?.company_id}>
