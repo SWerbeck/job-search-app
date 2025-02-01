@@ -87,7 +87,6 @@ router.post('/login', async (req, res) => {
 // REFRESH FROM NEW BUILT BACKEND
 router.get('/refresh_token', async (req, res) => {
   const cookies = req.cookies;
-  console.log('cookies???', cookies);
   if (!cookies?.jwt) {
     console.log('hit 401 in refresh route');
     return res.sendStatus(401);

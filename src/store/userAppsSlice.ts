@@ -41,75 +41,57 @@ export const userAppsSlice = createSlice({
         },
       ];
     },
+
     addUserApp: (state, action) => {
       const { appData, data } = action.payload;
-      // Check if the company already exists in the userApps array
+
+      // Check if the company already exists
       const existingCompany = state.userApps.find(
         (app) => app.company_id === appData.company_id
       );
-      /* need to make a copy due to Immer.js, which is used under the hood by Redux Toolkit. 
-         Immer allows you to work with state immutably while using mutable syntax, but
-         (Proxy(Object), [[Handler]], [[Target]], [[IsRevoked]]) indicates that attempting to access a value in a draft state outside of where Immer manages it.
-      */
-      const existingCompanyCopy = { ...existingCompany };
-
-      // const contactsCopy = {
-      //   ...existingCompany,
-      //   contacts: existingCompany.contacts.map((contact) => ({ ...contact })),
-      // };
-
-      // console.log('ok contacts copy', contactsCopy);
-      // const existingCompanyCopy = {
-      //   ...existingCompany,
-      //   applications: existingCompany.applications.map((app) => ({ ...app })), // Unwrap proxy
-      //   contacts: existingCompany.contacts.map((contact) => ({ ...contact })), // Unwrap proxy
-      //   past_job_contacts: existingCompany.past_job_contacts
-      //     ? existingCompany.past_job_contacts.map((contact) => ({ ...contact }))
-      //     : [], // Handle null case
-      // };
-
-      // Log the unwrapped values
-      // console.log('Existing company copy:', existingCompanyCopy);
-      // console.log('Contacts:', existingCompanyCopy.contacts);
-      // console.log('Applications:', existingCompanyCopy.applications);
-      // console.log('Past job contacts:', existingCompanyCopy.past_job_contacts);
-      // console.log('omg copyyyy', existingCompanyCopy);
 
       if (existingCompany) {
-        console.log('app data', appData);
-        console.log('data', data);
-        // If the company exists, add the new application to the company's applications array
+        console.log('Company already exists, adding new application.');
+
+        // Make copies to avoid Proxy issues due to Immer.js, which is used under the hood by Redux Toolkit.
+        // Immer allows you to work with state immutably while using mutable syntax, but
+        //      (Proxy(Object), [[Handler]], [[Target]], [[IsRevoked]]) indicates that attempting to access a value in a draft state outside of where Immer manages it.
+        const existingCompanyCopy = { ...existingCompany };
+        const contactsCopy =
+          existingCompanyCopy?.contacts?.map((contact) => ({ ...contact })) ||
+          [];
+
         existingCompany.applications.push({
           Status: appData.application_status,
           Position: appData.job_title,
           Applied_Date: appData.creation_date,
           Application_ID: appData.applied_id,
           Company_Website: appData.website,
-          company_name: existingCompanyCopy.company,
-        });
-        // existingCompany.contacts.push({
-        //   COMPANY_ID: contactsCopy.COMPANY_ID,
-        //   CONTACT_ID: contactsCopy.CONTACT_ID,
-        //   CONTACT_NAME: contactsCopy.CONTACT_NAME,
-        // });
-      } else {
-        // If the company doesn't exist, create a new company entry with the new application
-        state.userApps.push({
+          company_name: existingCompanyCopy.COMPANYNAME,
           company_id: appData.company_id,
-          company: data.newCompanyName, // You can adjust this based on your logic
-          applications: [
-            {
-              Status: appData.application_status,
-              Position: appData.job_title,
-              Applied_Date: appData.creation_date,
-              Application_ID: appData.applied_id,
-              Company_Website: appData.website,
-              company_name: data.newCompanyName,
-            },
-          ],
-          contacts: [],
-          past_job_contacts: [],
         });
+      } else {
+        console.log('Company does not exist, creating new entry.');
+
+        state.userApps = [
+          ...state.userApps,
+          {
+            company_id: appData.company_id,
+            company: data.newCompanyName,
+            applications: [
+              {
+                Status: appData.application_status,
+                Position: appData.job_title,
+                Applied_Date: appData.creation_date,
+                Application_ID: appData.applied_id,
+                Company_Website: appData.website,
+                company_name: data.newCompanyName,
+              },
+            ],
+            contacts: [],
+            past_job_contacts: [],
+          },
+        ];
       }
     },
     deleteUserApps: (state, action) => {

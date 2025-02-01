@@ -64,6 +64,7 @@ const ApplicationForm = () => {
   }
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    // Probably need an if statement here for company_id
     try {
       if (usersList[0].user_email === 'guest@guestmail.com') {
         console.log('guest data from onsubmit', data);
@@ -124,7 +125,7 @@ const ApplicationForm = () => {
           ))}
           {<option value={'0'}> add new</option>}
         </select>
-        {newCompany == '0' ? (
+        {newCompany === '0' ? (
           <input
             {...register('newCompanyName', { required: true })}
             type="text"
