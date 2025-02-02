@@ -60,14 +60,14 @@ export const userAppsSlice = createSlice({
         const contactsCopy =
           existingCompanyCopy?.contacts?.map((contact) => ({ ...contact })) ||
           [];
-
+        console.log(existingCompanyCopy, 'COPY from redux');
         existingCompany.applications.push({
           Status: appData.application_status,
           Position: appData.job_title,
           Applied_Date: appData.creation_date,
           Application_ID: appData.applied_id,
           Company_Website: appData.website,
-          company_name: existingCompanyCopy.COMPANYNAME,
+          company_name: existingCompanyCopy.company,
           company_id: appData.company_id,
         });
       } else {
