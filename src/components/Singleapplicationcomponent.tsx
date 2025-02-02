@@ -72,13 +72,6 @@ const Singleapplicationcomponent = () => {
           editMode={editMode}
           setEditMode={setEditMode}
         />
-
-        // <button
-        //   onClick={() => deleteApplication(applied_id)}
-        //   className="bg-button1 text-white"
-        // >
-        //   delete app
-        // </button>
       )}
     </>
   );
