@@ -54,7 +54,6 @@ const SingleApplicationCard = ({
           {singleApp?.Company_Website
             ? singleApp?.Company_Website
             : 'No website plz add'}{' '}
-          {singleApp?.Company_Website}
         </p>
         <p className="text-sm">Status: {singleApp?.Status}</p>
         <div className="flex items-center">

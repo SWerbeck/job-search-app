@@ -97,15 +97,17 @@ router.put('/:id', async (req, res) => {
     const {
       job_title,
       //company_id,
-      //application_info,
-      //application_status,
+      application_info,
+      application_status,
+      WEBSITE,
       //companyName,
     } = req.body;
     await pool.query(editApplicationById, [
       job_title,
       // company_id,
-      // application_info,
-      // application_status,
+      application_info,
+      application_status,
+      WEBSITE,
       id,
     ]);
     //await pool.query(editCompanyById, [companyName, company_id]);
