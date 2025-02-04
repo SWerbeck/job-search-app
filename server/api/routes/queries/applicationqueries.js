@@ -77,7 +77,7 @@ export const postNewApplication =
 //   "UPDATE _APPLICATION SET job_title = $1, company_id = $2, application_info = $3, application_status = $4 WHERE applied_id = $5";
 
 export const editApplicationById =
-  'UPDATE _APPLICATION SET job_title = $1 WHERE applied_id = $2';
+  'UPDATE _APPLICATION SET job_title = $1, application_info = $2, application_status = $3, WEBSITE = $4 WHERE applied_id = $5';
 
 export const singleApplicationById =
   'SELECT applied_id FROM _APPLICATION WHERE applied_id = $1';

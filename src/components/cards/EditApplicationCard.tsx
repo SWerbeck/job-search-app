@@ -18,6 +18,13 @@ const schema = z.object({
   job_title: z.string().min(1, {
     message: 'Please edit job title',
   }),
+  application_info: z.string().min(1, {
+    message: 'Please edit info title',
+  }),
+  Status: z.string().min(1, {
+    message: 'Please select a status',
+  }),
+  Company_Website: z.string(),
 });
 
 type FormFields = z.infer<typeof schema>;
@@ -102,6 +109,9 @@ const EditApplicationCard = ({
       const editJobTitle = await axios.put(`/api/applications/${appId}`, {
         job_title: data.job_title,
         applicationId: singleApp.Application_ID,
+        application_info: data.application_info,
+        application_status: data.Status,
+        WEBSITE: data.Company_Website,
       });
       console.log('DATA FROM EDIT', data);
       dispatch(editAppInfo({ appId, data }));
@@ -116,44 +126,122 @@ const EditApplicationCard = ({
   console.log('duuuun', singleApp);
 
   return (
-    <div>
-      {toastId ? (
-        <button disabled className="bg-button3 text-mainbody">
-          Cancel
-        </button>
-      ) : (
-        <button
-          onClick={() => setEditMode(false)}
-          className="bg-button3 text-mainbody"
-        >
-          Cancel
-        </button>
-      )}
-      <button
-        className="bg-button1 text-white"
-        onClick={showConfirmationToast}
-        // deleteApplication(appId)
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? 'Loading...' : 'Delete Application'}
-      </button>
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          {...register('job_title')}
-          type="text"
-          placeholder={singleApp?.Position}
-        />
+    <div className="grid place-items-center">
+      <div className="flex space-x-4 pb-4">
         {toastId ? (
-          <button className="bg-button2 text-white" disabled>
-            Submit
+          <button
+            disabled
+            className="bg-button3 text-mainbody px-6 py-2 rounded-md w-40 text-center"
+          >
+            Cancel
           </button>
         ) : (
-          <button className="bg-button2 text-white" disabled={isSubmitting}>
-            {isSubmitting ? 'Loading...' : 'Submit'}
+          <button
+            onClick={() => setEditMode(false)}
+            className="bg-button3 text-mainbody px-6 py-2 rounded-md w-40 text-center"
+          >
+            Cancel
           </button>
         )}
-      </form>
+        <button
+          className="bg-button1 text-white text-center"
+          onClick={showConfirmationToast}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Loading...' : 'Delete Application'}
+        </button>
+      </div>
+
+      {/* Centering the entire form section */}
+      <div className="flex flex-col items-center justify-center text-center">
+        <div>
+          <h3 className="text-lg font-semibold mb-4 pt-5">
+            Edit Application for {singleApp?.company_name}
+          </h3>
+
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col space-y-4"
+          >
+            {/* Label-Input Pair */}
+            <div className="flex items-center justify-center">
+              <label className="text-gray-700 text-sm font-bold w-32 text-right mr-4">
+                Job Title:
+              </label>
+              <input
+                className="bg-mainbody p-2 border rounded-md w-64"
+                {...register('job_title')}
+                type="text"
+                defaultValue={singleApp?.Position}
+                placeholder={singleApp?.Position}
+              />
+            </div>
+
+            {/* Label-Select Pair */}
+            <div className="flex items-center justify-center">
+              <label className="text-gray-700 text-sm font-bold w-32 text-right mr-4">
+                Status:
+              </label>
+              <select
+                {...register('Status')}
+                defaultValue={singleApp?.Status}
+                className="p-2 border rounded-md w-64 bg-mainbody"
+              >
+                <option value="active">Active</option>
+                <option value="interviewing">Interviewing</option>
+                <option value="closed">Closed</option>
+              </select>
+            </div>
+
+            {/* Label-Input Pair */}
+            <div className="flex items-center justify-center">
+              <label className="text-gray-700 text-sm font-bold w-32 text-right mr-4">
+                App Info:
+              </label>
+              <input
+                className="bg-mainbody p-2 border rounded-md w-64"
+                {...register('application_info')}
+                type="text"
+                placeholder={singleApp?.application_info}
+                defaultValue={singleApp?.application_info}
+              />
+            </div>
+
+            {/* Label-Input Pair */}
+            <div className="flex items-center justify-center">
+              <label className="text-gray-700 text-sm font-bold w-32 text-right mr-4">
+                Company Website:
+              </label>
+              <input
+                className="bg-mainbody p-2 border rounded-md w-64"
+                {...register('Company_Website')}
+                type="text"
+                placeholder={singleApp?.Company_Website}
+                defaultValue={singleApp?.Company_Website}
+              />
+            </div>
+
+            {/* Submit Button */}
+            <div className="flex justify-center pt-5">
+              {toastId ? (
+                <button
+                  className="bg-button2 text-white p-2 w-64 rounded-md"
+                  disabled
+                >
+                  Submit
+                </button>
+              ) : (
+                <button
+                  className="bg-button2 text-white px-4 py-2 rounded-md w-40 mb-10"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Loading...' : 'Submit'}
+                </button>
+              )}
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };

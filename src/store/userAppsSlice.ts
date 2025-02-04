@@ -152,7 +152,9 @@ export const userAppsSlice = createSlice({
             return {
               ...app,
               Position: data.job_title, // Example: updating job title
-              Status: data.application_status, // Example: updating status
+              Status: data.Status, // Example: updating status
+              application_info: data.application_info,
+              Company_Website: data.Company_Website,
             };
           }
           return app;
