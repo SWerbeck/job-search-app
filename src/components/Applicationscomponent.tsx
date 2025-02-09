@@ -20,6 +20,10 @@ const Applications = () => {
   const userApplications = useSelector(
     (state: RootState) => state.userApps.userApps
   );
+
+//sorting alphabetically by company name
+  const sortUserApps = [...userApplications].sort((a, b) => a.company.localeCompare(b.company));
+
   const [loaded, setIsLoaded] = useState(false);
   const userId = usersList[0]?.user_id;
 
@@ -36,7 +40,7 @@ const Applications = () => {
 
   console.log('FROM ALL APPS', userApplications);
 
-  const applicationData = userApplications?.map((userApp) => (
+  const applicationData = sortUserApps?.map((userApp) => (
     
 
     <div key={userApp?.company_id}>
@@ -96,6 +100,8 @@ const Applications = () => {
   );
 
   const displayData = appData?.map((data) => data);
+
+ 
 
   //console.log('DATA from applications', displayData);
 
