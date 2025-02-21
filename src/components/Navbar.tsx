@@ -53,6 +53,8 @@ const Navbar = () => {
   //   }
   // };
   console.log('USER APP FROM NAV', userApplications);
+  console.log('Auth FROM NAV', auth);
+  console.log('list of users from nav', usersList);
 
   const fetchUserInfo = async () => {
     try {
@@ -74,7 +76,7 @@ const Navbar = () => {
   };
 
   const fetchApplications = async () => {
-    if (auth?.id) {
+    if (auth?.id?.length) {
       try {
         const fetchedApps = await axiosPrivate.get(
           `/api/applications/user/${auth.id}`
@@ -103,56 +105,97 @@ const Navbar = () => {
   }, [auth.id]);
 
   return (
-    <div className="bg-navbar flex-auto align-middle w-full h-20 mb-5">
-      <div className="flex justify-center items-center space-x-5 px-4">
+    <div className="bg-navbar z-40 sticky top-0 flex-auto align-middle w-full mb-10">
+      <div className="flex justify-evenly items-center space-x-5 px-4">
         {auth.id ? (
           <>
-            <Link to={`/home/${auth.id}/applications`} className={isDisabled ? 'pointer-events-none text-gray-500' :"text-white"}>
+            <Link
+              to={`/home/${auth.id}/applications`}
+              className={
+                isDisabled ? 'pointer-events-none text-gray-500' : 'text-white'
+              }
+            >
               applications
             </Link>
-            <Link to={`home/${auth.id}/contacts`} className={isDisabled ? 'pointer-events-none text-gray-500' :"text-white"}>
+            <Link
+              to={`home/${auth.id}/contacts`}
+              className={
+                isDisabled ? 'pointer-events-none text-gray-500' : 'text-white'
+              }
+            >
               contacts
             </Link>
-            <Link to={`home/${auth.id}/companies`} className={isDisabled ? 'pointer-events-none text-gray-500' :"text-white"}>
+            <Link
+              to={`home/${auth.id}/companies`}
+              className={
+                isDisabled ? 'pointer-events-none text-gray-500' : 'text-white'
+              }
+            >
               companies
             </Link>
 
-            <Link to="/lounge" className={isDisabled ? 'pointer-events-none text-gray-500' :"text-white"}>
+            {/* <Link
+              to="/lounge"
+              className={
+                isDisabled ? 'pointer-events-none text-gray-500' : 'text-white'
+              }
+            >
               lounge
             </Link>
 
-            <Link to="/testroute" className={isDisabled ? 'pointer-events-none text-gray-500' :"text-white"}>
+            <Link
+              to="/testroute"
+              className={
+                isDisabled ? 'pointer-events-none text-gray-500' : 'text-white'
+              }
+            >
               Test Route
-            </Link>
+            </Link> */}
           </>
         ) : (
           <>
             <Link
               to={`/home/${usersList[0].user_id}/applications`}
-              className={isDisabled ? 'pointer-events-none text-gray-500' :"text-white"}
+              className={
+                isDisabled ? 'pointer-events-none text-gray-500' : 'text-white'
+              }
             >
               applications
             </Link>
             <Link
               to={`home/${usersList[0].user_id}/contacts`}
-              className={isDisabled ? 'pointer-events-none text-gray-500' :"text-white"}
+              className={
+                isDisabled ? 'pointer-events-none text-gray-500' : 'text-white'
+              }
             >
               contacts
             </Link>
             <Link
               to={`home/${usersList[0].user_id}/companies`}
-              className={isDisabled ? 'pointer-events-none text-gray-500' :"text-white"}
+              className={
+                isDisabled ? 'pointer-events-none text-gray-500' : 'text-white'
+              }
             >
               companies
             </Link>
 
-            <Link to="/lounge" className={isDisabled ? 'pointer-events-none text-gray-500' :"text-white"}>
+            {/* <Link
+              to="/lounge"
+              className={
+                isDisabled ? 'pointer-events-none text-gray-500' : 'text-white'
+              }
+            >
               lounge
             </Link>
 
-            <Link to="/testroute" className={isDisabled ? 'pointer-events-none text-gray-500' :"text-white"}>
+            <Link
+              to="/testroute"
+              className={
+                isDisabled ? 'pointer-events-none text-gray-500' : 'text-white'
+              }
+            >
               Test Route
-            </Link>
+            </Link> */}
           </>
         )}
 
@@ -161,6 +204,25 @@ const Navbar = () => {
       <Login grabUseId={grabUseId} /> */}
         {location.pathname === '/signup' ? <></> : <Login />}
       </div>
+      {auth?.id?.length ? (
+        ''
+      ) : (
+        <div className="bg-button1 sticky bottom-0 align-middle w-full flex justify-center">
+          <p className="text-white">
+            You are logged in as {usersList[0]?.first_name}. Please login or
+            create an account <Link to="/signup">here</Link> to get the full
+            site experience.
+          </p>
+        </div>
+      )}
+
+      {/* <div className="bg-button1 sticky bottom-0 align-middle w-full">
+        {auth?.id?.length ? (
+          <p className="mt-8">Welcome {usersList[0]?.first_name}</p>
+        ) : (
+          <p className="mt-8">Welcome {usersList[0]?.first_name}</p>
+        )}
+      </div> */}
     </div>
   );
 };

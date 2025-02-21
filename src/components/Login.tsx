@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 // make a schema using zod
 const schema = z.object({
-  email: z.string().email(),
+  email: z.string().min(3),
   password: z.string().min(3),
 });
 
@@ -40,7 +40,7 @@ const Login = ({ grabUseId }) => {
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
       // alert('are you sure you want to login?')
-  
+
       const loggedInUser = await axios.post('/api/auth/login', {
         email: data.email,
         user_password: data.password,
@@ -70,19 +70,31 @@ const Login = ({ grabUseId }) => {
     navigate('/');
     console.log(loggedOut.data.message);
   };
+
+  console.log('from login', error);
+
   return (
     <div>
       {/* if we dont have an accessToken bring us to the login page  */}
       {!auth.accessToken ? (
         <form onSubmit={handleSubmit(onSubmit)}>
-          <input {...register('email')} type="text" placeholder="email" />
+          <input
+            className="w-24 m-1"
+            {...register('email')}
+            type="text"
+            placeholder="email"
+          />
           {error && <p className="text-white text-xs">{error}</p>}
           <input
+            className="w-24 m-1"
             {...register('password')}
             type="password"
             placeholder="password"
           />
-          <button disabled={isSubmitting} className="bg-button1 text-white">
+          <button
+            disabled={isSubmitting}
+            className="bg-button1 border-none px-2 py-1 m-1 text-white text-sm hover:shadow-lg hover:shadow-gray-800 hover:border-none transition-all duration-300 hover:scale-110"
+          >
             {isSubmitting ? 'Loading...' : 'Login'}
           </button>
         </form>
@@ -95,5 +107,18 @@ const Login = ({ grabUseId }) => {
     </div>
   );
 };
+
+{
+  /* <div class="w-full relative">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div class="w-full relative mx-auto h-auto overflow-hidden rounded-lg ">
+<img src="https://pagedone.io/asset/uploads/1688031162.jpg" alt="image" class="w-full h-auto relative z-0 rounded-lg transition-all duration-300 hover:scale-110">
+</div>
+<div class="w-full relative mx-auto h-auto overflow-hidden rounded-lg ">
+<img src="https://pagedone.io/asset/uploads/1688031162.jpg" alt="image" class="w-full h-auto relative z-0 rounded-lg scale-110 transition-all duration-300 hover:scale-100">
+</div>
+</div>
+</div> */
+}
 
 export default Login;
