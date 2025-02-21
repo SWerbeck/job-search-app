@@ -10,6 +10,7 @@ const Colortest = () => {
         </p>
         <div className="flex-auto items-end">
           <button className="bg-button1 text-mainbody">button</button>
+          <button className="bg-button4 text-mainbody">button</button>
           <button className="bg-button2 text-mainbody">button 2</button>
           <button className="bg-button3 text-mainbody">button 3</button>
         </div>
