@@ -36,6 +36,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/testroute" element={<TestRoute />} />
           <Route
             path="/home/:user_id/applications/:applied_id"
