@@ -21,8 +21,10 @@ const Applications = () => {
     (state: RootState) => state.userApps.userApps
   );
 
-//sorting alphabetically by company name
-  const sortUserApps = [...userApplications].sort((a, b) => a.company.localeCompare(b.company));
+  //sorting alphabetically by company name
+  const sortUserApps = [...userApplications].sort((a, b) =>
+    a.company.localeCompare(b.company)
+  );
 
   const [loaded, setIsLoaded] = useState(false);
   const userId = usersList[0]?.user_id;
@@ -41,29 +43,26 @@ const Applications = () => {
   console.log('FROM ALL APPS', userApplications);
 
   const applicationData = sortUserApps?.map((userApp) => (
-    
-
     <div key={userApp?.company_id}>
-      <ul className=" bg-headline text-white h-10 w-50 border-spacing-x-7 border mx-3 border-white grid place-content-left content-center text-4xl p-10 mt-10 rounded-xl"
-      >
+      <ul className=" bg-headline text-white h-10 w-50 border-spacing-x-7 border mx-3 border-white grid place-content-left content-center p-10 mt-10 rounded-xl  text-center text-2xl xs:text-3xl sm:text-4xl md:text-left">
         {userApp?.company}
       </ul>
 
-    <div className='grid grid-cols-3 mx-3 mt-10 gap-x-4 gap-y-8'>
-      {userApp?.applications?.map((app) => {
-        const appliedDate = new Date(app?.Applied_Date); // Create a single Date instance
+      <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 mx-3 mt-10 gap-x-4 gap-y-8">
+        {userApp?.applications?.map((app) => {
+          const appliedDate = new Date(app?.Applied_Date); // Create a single Date instance
 
-        return (
-          <div
-            key={app?.Application_ID}
-            className="bg-gray-100 border-spacing-x-5 mx-3 place-content-center text-4xl p-20 drop-shadow-lg rounded-xl"
-          >
-              <div className="flex justify-center items-center pb-2">
+          return (
+            <div
+              key={app?.Application_ID}
+              className="bg-gray-100 border-spacing-x-5 mx-3 place-content-center p-20 drop-shadow-lg rounded-xl"
+            >
+              <div className="flex justify-center items-center pb-2 text-2xl sm:text-2xl md:text-3xl lg:text-4xl">
                 {/* Job Title */}
-                <p>{app?.Position}</p>
+                <p className="text-center">{app?.Position}</p>
               </div>
               <div className="flex justify-center items-center pb-4">
-                <p className="text-lg">
+                <p className="sm:text-sm md:text-md lg:text-lg">
                   {/* Date applied*/}
                   {appliedDate.toLocaleString('en-US', {
                     year: 'numeric',
@@ -80,18 +79,18 @@ const Applications = () => {
                   })}
                 </p>
               </div>
-            
-            <div className="flex justify-center items-center">
-              <Link to={`${location.pathname}/${app.Application_ID}`}>
-                <button className="bg-button1 text-white text-base p-2">
-                  More info
-                </button>
-              </Link>
+
+              <div className="flex justify-center items-center">
+                <Link to={`${location.pathname}/${app.Application_ID}`}>
+                  <button className="bg-button1 text-white text-base p-2">
+                    More info
+                  </button>
+                </Link>
+              </div>
             </div>
-            </div>
-        );
-      })}
-    </div>
+          );
+        })}
+      </div>
     </div>
   ));
 
@@ -100,8 +99,6 @@ const Applications = () => {
   );
 
   const displayData = appData?.map((data) => data);
-
- 
 
   //console.log('DATA from applications', displayData);
 
@@ -117,7 +114,7 @@ const Applications = () => {
       > */}
         <button className="bg-button1 text-white">Add new Application</button>
       </Link>
-      <div className="h-20 w-50 border-spacing-x-5 border border: mx-3 border-white grid place-content-center text-4xl mt-8">
+      <div className="h-20 w-50 border-spacing-x-5 border border: mx-3 border-white grid place-content-center mt-8 text-2xl sm:text-4xl">
         APPLICATIONS
       </div>
       {applicationData}

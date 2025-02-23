@@ -12,7 +12,7 @@ const HomePage = () => {
   return (
     <div>
       {/* <div>{auth?.id ? <p>welcome {usersList[0].first_name}</p> : 'welcome'}</div> */}
-      <img src="public/images/computer.webp" />
+      <img className="w-full rounder-lg" src="public/images/computer.webp" />
     </div>
   );
 };

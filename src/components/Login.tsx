@@ -77,16 +77,16 @@ const Login = ({ grabUseId }) => {
     <div>
       {/* if we dont have an accessToken bring us to the login page  */}
       {!auth.accessToken ? (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form className="flex" onSubmit={handleSubmit(onSubmit)}>
           <input
-            className="w-24 m-1"
+            className="m-1 md:w-32 lg:w-40"
             {...register('email')}
             type="text"
             placeholder="email"
           />
           {error && <p className="text-white text-xs">{error}</p>}
           <input
-            className="w-24 m-1"
+            className="m-1 md:w-32 lg:w-40"
             {...register('password')}
             type="password"
             placeholder="password"

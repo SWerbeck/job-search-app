@@ -15,6 +15,13 @@ export default {
         navbar: '#41565B',
       },
       fontFamily: {},
+      screens: {
+        xs: '380px',
+        sm: '540px',
+        md: '720px',
+        lg: '920px',
+        xl: '1040px',
+      },
     },
   },
   plugins: [],

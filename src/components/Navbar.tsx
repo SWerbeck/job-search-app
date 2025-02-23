@@ -105,8 +105,8 @@ const Navbar = () => {
   }, [auth.id]);
 
   return (
-    <div className="bg-navbar z-40 sticky top-0 flex-auto align-middle w-full mb-10">
-      <div className="flex justify-evenly items-center space-x-5 px-4">
+    <div className="bg-navbar z-40 sticky top-0 flex-auto align-middle md:w-full mb-10">
+      <div className="flex justify-evenly items-center space-x-5 px-4 pt-3 pb-3">
         {auth.id ? (
           <>
             <Link
@@ -133,7 +133,6 @@ const Navbar = () => {
             >
               companies
             </Link>
-
             {/* <Link
               to="/lounge"
               className={
@@ -178,7 +177,9 @@ const Navbar = () => {
             >
               companies
             </Link>
-
+            <Link to={'/login'} className="block md:hidden text-white">
+              login
+            </Link>
             {/* <Link
               to="/lounge"
               className={
@@ -202,16 +203,25 @@ const Navbar = () => {
         {/* <h2>companies applied to, contacts</h2> */}
         {/* <div>{useId}</div>
       <Login grabUseId={grabUseId} /> */}
-        {location.pathname === '/signup' ? <></> : <Login />}
+        {location.pathname === '/signup' ? (
+          <></>
+        ) : (
+          <div className="hidden md:block">
+            <Login />
+          </div>
+        )}
       </div>
       {auth?.id?.length ? (
         ''
       ) : (
-        <div className="bg-button1 sticky bottom-0 align-middle w-full flex justify-center">
-          <p className="text-white">
+        <div className="bg-button1 w-full flex justify-center pt-0.5 pb-0.5">
+          <p className="text-white text-xs text-center">
             You are logged in as {usersList[0]?.first_name}. Please login or
-            create an account <Link to="/signup">here</Link> to get the full
-            site experience.
+            create an account{' '}
+            <span className="underline hover:text-button3">
+              <Link to="/signup">here</Link>
+            </span>{' '}
+            to get the full site experience.
           </p>
         </div>
       )}
