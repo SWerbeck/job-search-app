@@ -123,41 +123,19 @@ const EditApplicationCard = ({
     }
   };
 
-  console.log('duuuun', singleApp);
-
   return (
-    <div className="grid place-items-center">
-      <div className="flex space-x-4 pb-4">
-        {toastId ? (
-          <button
-            disabled
-            className="bg-button3 text-mainbody px-6 py-2 rounded-md w-40 text-center"
-          >
-            Cancel
-          </button>
-        ) : (
-          <button
-            onClick={() => setEditMode(false)}
-            className="bg-button3 text-mainbody px-6 py-2 rounded-md w-40 text-center"
-          >
-            Cancel
-          </button>
-        )}
-        <button
-          className="bg-button1 text-white text-center"
-          onClick={showConfirmationToast}
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? 'Loading...' : 'Delete Application'}
-        </button>
-      </div>
-
+    <div className="grid place-items-center mt-16 mb-20">
       {/* Centering the entire form section */}
-      <div className="flex flex-col items-center justify-center text-center">
-        <div>
-          <h3 className="text-lg font-semibold mb-4 pt-5">
+      <div className='bg-gray-100 drop-shadow-lg rounded-xl xs:w-full sm:w-full md:w-3/4 lg:w-1/2'>
+      <div className='bg-button2 rounded-tl-xl rounded-tr-xl rounded-br-sm rounded-bl-sm inset-x-0 top-0 flex justify-center items-center drop-shadow-lg mb-10'>
+          <h3 className="text-xl text-white font-semibold mb-8 pt-5">
             Edit Application for {singleApp?.company_name}
           </h3>
+          </div>
+      <div className="flex flex-col items-center justify-center text-center">
+        
+        <div>
+          
 
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -165,7 +143,7 @@ const EditApplicationCard = ({
           >
             {/* Label-Input Pair */}
             <div className="flex items-center justify-center">
-              <label className="text-gray-700 text-sm font-bold w-32 text-right mr-4">
+              <label className="text-gray-700 text-md font-bold w-32 text-center">
                 Job Title:
               </label>
               <input
@@ -179,7 +157,7 @@ const EditApplicationCard = ({
 
             {/* Label-Select Pair */}
             <div className="flex items-center justify-center">
-              <label className="text-gray-700 text-sm font-bold w-32 text-right mr-4">
+              <label className="text-gray-700 text-md font-bold w-32 text-center">
                 Status:
               </label>
               <select
@@ -195,7 +173,7 @@ const EditApplicationCard = ({
 
             {/* Label-Input Pair */}
             <div className="flex items-center justify-center">
-              <label className="text-gray-700 text-sm font-bold w-32 text-right mr-4">
+              <label className="text-gray-700 text-md font-bold w-32 text-center">
                 App Info:
               </label>
               <input
@@ -209,7 +187,7 @@ const EditApplicationCard = ({
 
             {/* Label-Input Pair */}
             <div className="flex items-center justify-center">
-              <label className="text-gray-700 text-sm font-bold w-32 text-right mr-4">
+              <label className="text-gray-700 text-md font-bold w-32 text-center">
                 Company Website:
               </label>
               <input
@@ -223,23 +201,51 @@ const EditApplicationCard = ({
 
             {/* Submit Button */}
             <div className="flex justify-center pt-5">
+
               {toastId ? (
+              <>
                 <button
-                  className="bg-button2 text-white p-2 w-64 rounded-md"
-                  disabled
+                className="bg-button2 text-white px-4 py-2 rounded-md w-40 mb-10"
+                disabled
                 >
                   Submit
                 </button>
-              ) : (
                 <button
-                  className="bg-button2 text-white px-4 py-2 rounded-md w-40 mb-10"
-                  disabled={isSubmitting}
+                disabled
+                className="bg-button3 text-mainbody px-6 py-2 rounded-md w-40 text-center mb-10"
                 >
+                Cancel
+              </button>
+                </>
+              ) : (
+                <>
+                <button
+                  className="bg-button2 text-white px-4 py-2 rounded-md w-40 mb-10 mx-4"
+                  disabled={isSubmitting}
+                  >
                   {isSubmitting ? 'Loading...' : 'Submit'}
                 </button>
+                <button
+            onClick={() => setEditMode(false)}
+            className="bg-button3 text-mainbody px-6 py-2 rounded-md w-40 text-center mb-10"
+          >
+            Cancel
+          </button>
+                  </>
               )}
             </div>
+            
           </form>
+          <div className="flex space-x-4 pb-4 justify-center">
+        <button
+          className="bg-button1 text-white text-center"
+          onClick={showConfirmationToast}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Loading...' : 'Delete Application'}
+        </button>
+      </div>
+      </div>
         </div>
       </div>
     </div>

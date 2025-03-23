@@ -48,7 +48,9 @@ const SingleApplicationCard = ({
   return (
     <div className="flex justify-center items-center">
       <div className="m-10 bg-gray-100 border-spacing-x-5 mx-5 place-content-center p-20 drop-shadow-lg rounded-xl">
-        <p className="text-xl">Job Title: {singleApp?.Position}</p>
+        <div className="bg-button2 rounded-tl-xl rounded-tr-xl rounded-br-sm rounded-bl-sm absolute inset-x-0 top-0 h-16 flex justify-center items-center drop-shadow-lg">
+        <p className="text-xl text-white">{singleApp?.Position}</p>
+        </div>
         <p className="text-lg">Company: {singleApp?.company_name}</p>
         <p className="text-sm">
           Website:{" "}
