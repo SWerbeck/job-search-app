@@ -23,3 +23,5 @@ Future Ideas:
 
 1. Add follow up field for reminders on applications to follow up on. Yes or no tab? Checkbox?
 2. Maybe a calendar for when you applied to a job -> Look up how to har code SQL timestamps going back a year for guests. React Calendar
+
+test test
