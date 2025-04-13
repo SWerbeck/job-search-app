@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
-import useAuth from '../../custom-hooks/useAuth';
-import { useSelector } from 'react-redux';
+import { Link } from "react-router-dom";
+import useAuth from "../../custom-hooks/useAuth";
+import { useSelector } from "react-redux";
 
 const Companiescard = ({ companyName, companyId }) => {
   const { auth, setAuth } = useAuth();

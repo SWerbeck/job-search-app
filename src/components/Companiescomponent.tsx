@@ -1,10 +1,10 @@
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { setUsers } from '../store/userSlice';
-import { RootState } from '../store';
-import { setCompanies } from '../store/companiesSlice';
-import Companiescard from './cards/Companiescard';
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { setUsers } from "../store/userSlice";
+import { RootState } from "../store";
+import { setCompanies } from "../store/companiesSlice";
+import Companiescard from "./cards/Companiescard";
 
 const Companies = () => {
   const dispatch = useDispatch();
@@ -16,13 +16,13 @@ const Companies = () => {
     (state: RootState) => state.userApps.userApps
   );
 
-  console.log('This is from companies comp', userApplications);
+  console.log("This is from companies comp", userApplications);
   const [isLoaded, setIsLoaded] = useState(false);
 
   const fetchCompanies = async () => {
     try {
       const fetchedCompanies = await axios.get(
-        'http://localhost:3000/api/companies'
+        "http://localhost:3000/api/companies"
       );
       dispatch(setCompanies(fetchedCompanies.data.companies));
       setIsLoaded(true);
@@ -33,7 +33,7 @@ const Companies = () => {
 
   useEffect(() => {
     fetchCompanies();
-    console.log('companies ', companiesList);
+    console.log("companies ", companiesList);
   }, []);
   if (!isLoaded) {
     return <div>LOADING...</div>;

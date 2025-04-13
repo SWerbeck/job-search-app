@@ -2,11 +2,13 @@ React router still keeps guest id in url on login -> need to fix
 
 Todo from 12/1/24
 
+Bugs to fix:
+When editing a company name for a logged in user the single application data does not load for the company we edited.
+
 Applications:
 
-1. Need to be able to edit more info on the applications. Currently can post and delete.
-2. Single application needs to display form fields. Toggle to edit - Mostly done
-3. Might need to make a calendar or library calendar to be able to edit the applied date. Say you forgot to add one from a week ago and want to change the date.
+1. Last updated date when you edit an appication does not update the date.
+2. Might need to make a calendar or library calendar to be able to edit the applied date. Say you forgot to add one from a week ago and want to change the date.
    When editing applied date we may or may not need to edit the backend when creating the application table. creation_date TIMESTAMPTZ DEFAULT Now(),
 
 Contacts:
