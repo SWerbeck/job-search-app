@@ -8,7 +8,7 @@ const Companiescard = ({ companyName, companyId }) => {
   const usersList = useSelector((state: RootState) => state.users.users);
   return (
     <>
-      {auth?.id?.length ? (
+      {auth?.id ? (
         <div className="bg-mainbody h-10 w-50 border-spacing-x-7 border border: mx-3 border-white">
           <Link to={`/home/${auth.id}/companies/${companyId}`}>
             <p className="text-white text-2xl mx-5">{companyName}</p>

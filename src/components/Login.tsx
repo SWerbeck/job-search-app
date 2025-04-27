@@ -1,10 +1,10 @@
-import axios from '../../server/api/axios';
-import { useEffect, useState } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
-import useAuth from '../custom-hooks/useAuth';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import axios from "../../server/api/axios";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import useAuth from "../custom-hooks/useAuth";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 // make a schema using zod
 const schema = z.object({
@@ -20,10 +20,10 @@ const Login = ({ grabUseId }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   // register, handleSubmit, and formState come from React HF
   const {
@@ -41,16 +41,18 @@ const Login = ({ grabUseId }) => {
     try {
       // alert('are you sure you want to login?')
 
-      const loggedInUser = await axios.post('/api/auth/login', {
+      const loggedInUser = await axios.post("/api/auth/login", {
         email: data.email,
         user_password: data.password,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
+      console.log("LOGGED IN DATA ON LOGIN", loggedInUser);
       const accessToken = loggedInUser?.data?.accessToken;
       //const refreshToken = loggedInUser?.data?.token?.refreshToken;
       const id = loggedInUser?.data?.id;
       const roles = loggedInUser?.data?.roles;
+      const email = loggedInUser?.data?.email;
 
       setAuth({ id, roles: [roles], email, password, accessToken });
       //console.log('LOGGED IN USER DATA', loggedInUser?.data);
@@ -63,15 +65,15 @@ const Login = ({ grabUseId }) => {
   };
 
   const logout = async () => {
-    const loggedOut = await axios.get('http://localhost:3000/api/auth/logout');
+    const loggedOut = await axios.get("http://localhost:3000/api/auth/logout");
     setAuth({});
-    setError('');
+    setError("");
     reset();
-    navigate('/');
+    navigate("/");
     console.log(loggedOut.data.message);
   };
 
-  console.log('from login', error);
+  console.log("from login", error);
 
   return (
     <div>
@@ -80,14 +82,14 @@ const Login = ({ grabUseId }) => {
         <form className="flex" onSubmit={handleSubmit(onSubmit)}>
           <input
             className="m-1 md:w-32 lg:w-40"
-            {...register('email')}
+            {...register("email")}
             type="text"
             placeholder="email"
           />
           {error && <p className="text-white text-xs">{error}</p>}
           <input
             className="m-1 md:w-32 lg:w-40"
-            {...register('password')}
+            {...register("password")}
             type="password"
             placeholder="password"
           />
@@ -95,7 +97,7 @@ const Login = ({ grabUseId }) => {
             disabled={isSubmitting}
             className="bg-button1 border-none px-2 py-1 m-1 text-white text-sm hover:shadow-lg hover:shadow-gray-800 hover:border-none transition-all duration-300 hover:scale-110"
           >
-            {isSubmitting ? 'Loading...' : 'Login'}
+            {isSubmitting ? "Loading..." : "Login"}
           </button>
         </form>
       ) : (
