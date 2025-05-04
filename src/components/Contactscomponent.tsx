@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { RootState } from "../store";
-import { setUserApps } from "../store/userAppsSlice";
 import { setContacts } from "../store/contactsSlice";
 import useRefreshToken from "../custom-hooks/useRefreshToken";
 import useAxiosPrivate from "../custom-hooks/useAxiosPrivate";
@@ -18,6 +17,7 @@ const Contacts = () => {
   const usersList = useSelector((state: RootState) => state.users.users);
   const contacts = useSelector((state: RootState) => state.contacts.contacts);
   const [loaded, setIsLoaded] = useState(false);
+  const [alphabatized, setAlphabatized] = useState([]);
   //const [fetchedUsers, setFetchedUsers] = useState('');
   const userId = usersList[0]?.user_id;
 
@@ -45,9 +45,6 @@ const Contacts = () => {
     }
   };
 
-  console.log("this should always be guest", usersList[0]);
-  console.log("this should always be logged in user", auth);
-
   const deleteContact = async (appId) => {
     try {
       const contactToDelete = await axiosPrivate.delete(
@@ -62,63 +59,137 @@ const Contacts = () => {
     }
   };
 
+  const alphOrganize = (arr) => {
+    let contObj = {};
+    if (!arr.length) {
+      setAlphabatized([]);
+      return;
+    }
+    for (let i = 0; i < arr.length; i++) {
+      const contactName = arr[i]?.contactname;
+      if (!contactName) continue; // skip if name is undefined/null
+      const splitNames = arr[i]?.contactname.split(" ");
+      const singleContactObj = arr[i];
+      if (contObj.hasOwnProperty(`${splitNames[1][0]}`)) {
+        contObj[splitNames[1][0]].push(singleContactObj);
+      } else {
+        contObj[splitNames[1][0]] = [];
+        contObj[splitNames[1][0]].push(singleContactObj);
+      }
+    }
+    console.log("our object ", contObj);
+    setAlphabatized([contObj]);
+  };
+
   useEffect(() => {
     fetchContacts();
   }, [userId]);
 
   useEffect(() => {
-    //console.log('dependency useEffect');
+    if (contacts.length) {
+      alphOrganize(contacts);
+    }
   }, [contacts]);
+
   if (!loaded) {
     return <div>LOADING...</div>;
   }
-  //console.log('for mapping ref in contacts ', contacts);
+  const newArrAplha = alphabatized.map((letter) => letter);
+  console.log("new returned arr", newArrAplha);
 
+  // const data = {
+  //   fruits: [
+  //     { name: 'Apple', color: 'Red' },
+  //     { name: 'Banana', color: 'Yellow' },
+  //   ],
+  //   vegetables: [
+  //     { name: 'Carrot', color: 'Orange' },
+  //     { name: 'Broccoli', color: 'Green' },
+  //   ],
+  // };
+  // JSX to display it
+  // jsx
+  // Copy
+  // Edit
+  // <div>
+  //   {Object.entries(data).map(([category, items]) => (
+  //     <div key={category}>
+  //       <h2>{category}</h2>
+  //       {items.map((item, index) => (
+  //         <div key={index}>
+  //           {/* Display all key-value pairs of the item */}
+  //           {Object.entries(item).map(([key, value]) => (
+  //             <p key={key}>
+  //               <strong>{key}:</strong> {value}
+  //             </p>
+  //           ))}
+  //         </div>
+  //       ))}
+  //     </div>
+  //   ))}
+  // </div>
+
+  console.log("ALPHA OUTSIDE FUNCTION ", alphabatized);
   return (
     <div>
       <>
-        <button onClick={refresh}>refresh token?</button>
+        <div className="h-20 w-50 border-spacing-x-5 border border: mx-3 border-white grid place-content-center mt-8 text-2xl sm:text-4xl">
+          CONTACTS
+        </div>
       </>
-      <>
-        <h1>CONTACTS</h1>
-      </>
-      <div>
+      <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 mx-3 mt-10 gap-x-4 gap-y-8">
+        {/* {alphabatized?[0].map((letter) => letter.map((cont) => cont?.contactname))} */}
+
         {contacts?.map((cont) => {
           return auth.id ? (
-            <Link
-              to={`/home/${auth.id}/contacts/${cont.contact_id}`}
-              key={cont.contact_id}
+            <div
+              key={auth.id}
+              className="bg-gray-100 border-spacing-x-5 mx-3 place-content-center p-20 drop-shadow-lg rounded-xl"
             >
-              <div className="m-10 bg-headline">
-                <h3>Name: {cont.contactname}</h3>
-                <h4>Current company: {cont.companyname}</h4>
-                {cont.past_jobs?.map((job, idx) => {
-                  return (
-                    <div key={idx}>
-                      <p>Used to work for: {job.COMPANY}</p>
-                    </div>
-                  );
-                })}
+              <div className="flex justify-center items-center pb-2 text-2xl sm:text-2xl md:text-3xl lg:text-4xl">
+                {/* Contact name */}
+                <p>{cont.contactname}</p>
               </div>
-            </Link>
+              <div className="flex justify-center items-center pb-4">
+                {/* Company name */}
+                <p className="sm:text-sm md:text-md lg:text-lg">
+                  {cont.companyname}
+                </p>
+              </div>
+              <div className="flex justify-center items-center">
+                <Link to={`/home/${auth.id}/contacts/${cont.contact_id}`}>
+                  <button className="bg-button2 text-white text-base p-2">
+                    More info
+                  </button>
+                </Link>
+              </div>
+            </div>
           ) : (
             <>
-              <Link
-                to={`/home/${usersList[0]?.user_id}/contacts/${cont.contact_id}`}
+              <div
                 key={cont.contact_id}
+                className="bg-gray-100 border-spacing-x-5 mx-3 place-content-center p-20 drop-shadow-lg rounded-xl"
               >
-                <div className="m-10 bg-headline">
-                  <h3>Name: {cont.contactname}</h3>
-                  <h4>Current company: {cont.companyname}</h4>
-                  {cont.past_jobs?.map((job, idx) => {
-                    return (
-                      <div key={idx}>
-                        <p>Used to work for: {job.COMPANY}</p>
-                      </div>
-                    );
-                  })}
+                <div className="flex justify-center items-center pb-2 text-2xl sm:text-2xl md:text-3xl lg:text-4xl">
+                  {/* Contact name */}
+                  <p>{cont.contactname}</p>
                 </div>
-              </Link>
+                <div className="flex justify-center items-center pb-4">
+                  {/* Company name */}
+                  <p className="sm:text-sm md:text-md lg:text-lg">
+                    {cont.companyname}
+                  </p>
+                </div>
+                <div className="flex justify-center items-center">
+                  <Link
+                    to={`/home/${usersList[0]?.user_id}/contacts/${cont.contact_id}`}
+                  >
+                    <button className="bg-button2 text-white text-base p-2">
+                      More info
+                    </button>
+                  </Link>
+                </div>
+              </div>
             </>
           );
         })}
