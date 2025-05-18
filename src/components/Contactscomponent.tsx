@@ -61,36 +61,50 @@ const Contacts = () => {
   };
 
   const alphOrganize = (arr) => {
-    let contObj = {};
-    if (!arr.length) {
-      setAlphabatized([]);
-      return;
+  if (!arr.length) {
+    setAlphabatized([]);
+    return;
+  }
+
+  const contObj = {};
+
+  for (let contact of arr) {
+    const contactName = contact.contactname;
+    if (!contactName) continue;
+
+    const nameParts = contactName.trim().split(" ");
+    const firstName = nameParts[0] || "";
+    const lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : "";
+
+    const letter = lastName[0]?.toUpperCase() || "#"; // fallback group for edge cases
+
+    if (!contObj[letter]) {
+      contObj[letter] = [];
     }
-    for (let i = 0; i < arr.length; i++) {
-      const contactName = arr[i]?.contactname;
-      if (!contactName) continue; // skip if name is undefined/null
-      const splitNames = arr[i]?.contactname.split(" ");
-      const singleContactObj = arr[i];
-      if (contObj.hasOwnProperty(`${splitNames[1][0]}`)) {
-        contObj[splitNames[1][0]].push(singleContactObj);
-      } else {
-        contObj[splitNames[1][0]] = [];
-        contObj[splitNames[1][0]].push(singleContactObj);
-      }
-    }
-    console.log("our object ", contObj);
 
-    const ordered = {}
-    Object.keys(contObj).sort().forEach(function(key) {ordered[key] = contObj[key]})
-    
-    setAlphabatized([ordered]);
-    let alphKeys = Object.keys(contObj)
-    setAllKeys(alphKeys)
-  };
+    contObj[letter].push({ ...contact, firstName, lastName });
+  }
 
+  // Sort each group by last name, then first name
+  Object.keys(contObj).forEach((key) => {
+    contObj[key].sort((a, b) => {
+      const firstCompare = a.lastName.toLowerCase().localeCompare(b.lastName.toLowerCase());
+      if (firstCompare !== 0) return firstCompare;
+      return a.firstName.toLowerCase().localeCompare(b.firstName.toLowerCase());
+    });
+  });
 
+  // Sort the letter groups A-Z
+  const ordered = {};
+  Object.keys(contObj)
+    .sort()
+    .forEach((key) => {
+      ordered[key] = contObj[key];
+    });
 
-
+  setAlphabatized([ordered]);
+  setAllKeys(Object.keys(ordered));
+};
 
   useEffect(() => {
     fetchContacts();
@@ -105,68 +119,41 @@ const Contacts = () => {
   if (!loaded) {
     return <div>LOADING...</div>;
   }
-  const newArrAplha = alphabatized.map((letter) => letter);
-  console.log("new returned arr", newArrAplha);
 
-  // const data = {
-  //   fruits: [
-  //     { name: 'Apple', color: 'Red' },
-  //     { name: 'Banana', color: 'Yellow' },
-  //   ],
-  //   vegetables: [
-  //     { name: 'Carrot', color: 'Orange' },
-  //     { name: 'Broccoli', color: 'Green' },
-  //   ],
-  // };
-  // JSX to display it
-  // jsx
-  // Copy
-  // Edit
-  // <div>
-  //   {Object.entries(data).map(([category, items]) => (
-  //     <div key={category}>
-  //       <h2>{category}</h2>
-  //       {items.map((item, index) => (
-  //         <div key={index}>
-  //           {/* Display all key-value pairs of the item */}
-  //           {Object.entries(item).map(([key, value]) => (
-  //             <p key={key}>
-  //               <strong>{key}:</strong> {value}
-  //             </p>
-  //           ))}
-  //         </div>
-  //       ))}
-  //     </div>
-  //   ))}
-  // </div>
+  console.log("Alphabatized",alphabatized)
+return (
+  <div>
+    {Object.entries(alphabatized[0]).map(([category, items]) => (
+      <div key={category}>
+        <h2 className="bg-headline text-white h-10 w-50 border-spacing-x-7 border mx-3 border-white grid place-content-left content-center p-10 mt-10 rounded-xl  text-center text-2xl xs:text-3xl sm:text-4xl md:text-left">{category}</h2>
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 mx-3 mt-10 gap-x-4 gap-y-8">
+        {items.map((item) => (
+          <div key={item.contact_id} >
+            <div className="bg-gray-100 border-spacing-x-5 mx-3 place-content-center p-20 drop-shadow-lg rounded-xl">
+              <div className="flex justify-center items-center pb-2 text-2xl sm:text-2xl md:text-3xl lg:text-4xl">
+                 {/* contact name */}
+                <p className="text-center">{item.contactname}</p>
+              </div>
+                {/* company name */}
+              <div className="flex justify-center items-center pb-4"> <p className="text-center">{item.companyname}</p></div>
+              <div className="flex justify-center items-center">
+                <Link to={`${location.pathname}/${item.contact_id}`}>
+                  <button className="bg-button1 text-white text-base p-2">
+                    More info
+                  </button>
+                </Link>
+              </div>
+          </div>
+          
+          </div>
+        ))}
+      </div>
+      </div>
+    ))}
+    
+  </div>
+);
 
-  console.log("ALPHA OUTSIDE FUNCTION ", alphabatized);
-  return (
-    <div>
-      {Object.entries(alphabatized[0]).map(([category, items]) => (
-    <div key={category}>
-      <h2>{category}</h2>
-      {items.map((item, index) => (
-        <div key={item.contact_id}>
-          {/* Display only the 'contactname' value */}
-          {item.contactname && (
-            <p>
-              {item.contactname}
-            </p>
-           
-          )}
-          {item.contactname && (
-            <p>
-             {item.companyname}
-            </p>
-           
-          )}
-        </div>
-      ))}
-    </div>
-  ))}
-    </div>
-  );
 };
 
 export default Contacts;
