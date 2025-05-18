@@ -18,6 +18,7 @@ const Contacts = () => {
   const contacts = useSelector((state: RootState) => state.contacts.contacts);
   const [loaded, setIsLoaded] = useState(false);
   const [alphabatized, setAlphabatized] = useState([]);
+  const [allKeys, setAllKeys] = useState([])
   //const [fetchedUsers, setFetchedUsers] = useState('');
   const userId = usersList[0]?.user_id;
 
@@ -78,8 +79,18 @@ const Contacts = () => {
       }
     }
     console.log("our object ", contObj);
-    setAlphabatized([contObj]);
+
+    const ordered = {}
+    Object.keys(contObj).sort().forEach(function(key) {ordered[key] = contObj[key]})
+    
+    setAlphabatized([ordered]);
+    let alphKeys = Object.keys(contObj)
+    setAllKeys(alphKeys)
   };
+
+
+
+
 
   useEffect(() => {
     fetchContacts();
@@ -132,68 +143,28 @@ const Contacts = () => {
   console.log("ALPHA OUTSIDE FUNCTION ", alphabatized);
   return (
     <div>
-      <>
-        <div className="h-20 w-50 border-spacing-x-5 border border: mx-3 border-white grid place-content-center mt-8 text-2xl sm:text-4xl">
-          CONTACTS
+      {Object.entries(alphabatized[0]).map(([category, items]) => (
+    <div key={category}>
+      <h2>{category}</h2>
+      {items.map((item, index) => (
+        <div key={item.contact_id}>
+          {/* Display only the 'contactname' value */}
+          {item.contactname && (
+            <p>
+              {item.contactname}
+            </p>
+           
+          )}
+          {item.contactname && (
+            <p>
+             {item.companyname}
+            </p>
+           
+          )}
         </div>
-      </>
-      <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 mx-3 mt-10 gap-x-4 gap-y-8">
-        {/* {alphabatized?[0].map((letter) => letter.map((cont) => cont?.contactname))} */}
-
-        {contacts?.map((cont) => {
-          return auth.id ? (
-            <div
-              key={auth.id}
-              className="bg-gray-100 border-spacing-x-5 mx-3 place-content-center p-20 drop-shadow-lg rounded-xl"
-            >
-              <div className="flex justify-center items-center pb-2 text-2xl sm:text-2xl md:text-3xl lg:text-4xl">
-                {/* Contact name */}
-                <p>{cont.contactname}</p>
-              </div>
-              <div className="flex justify-center items-center pb-4">
-                {/* Company name */}
-                <p className="sm:text-sm md:text-md lg:text-lg">
-                  {cont.companyname}
-                </p>
-              </div>
-              <div className="flex justify-center items-center">
-                <Link to={`/home/${auth.id}/contacts/${cont.contact_id}`}>
-                  <button className="bg-button2 text-white text-base p-2">
-                    More info
-                  </button>
-                </Link>
-              </div>
-            </div>
-          ) : (
-            <>
-              <div
-                key={cont.contact_id}
-                className="bg-gray-100 border-spacing-x-5 mx-3 place-content-center p-20 drop-shadow-lg rounded-xl"
-              >
-                <div className="flex justify-center items-center pb-2 text-2xl sm:text-2xl md:text-3xl lg:text-4xl">
-                  {/* Contact name */}
-                  <p>{cont.contactname}</p>
-                </div>
-                <div className="flex justify-center items-center pb-4">
-                  {/* Company name */}
-                  <p className="sm:text-sm md:text-md lg:text-lg">
-                    {cont.companyname}
-                  </p>
-                </div>
-                <div className="flex justify-center items-center">
-                  <Link
-                    to={`/home/${usersList[0]?.user_id}/contacts/${cont.contact_id}`}
-                  >
-                    <button className="bg-button2 text-white text-base p-2">
-                      More info
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            </>
-          );
-        })}
-      </div>
+      ))}
+    </div>
+  ))}
     </div>
   );
 };
