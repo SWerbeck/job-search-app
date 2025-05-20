@@ -1,6 +1,6 @@
-import express from 'express';
-import bcrypt from 'bcrypt';
-import pool from '../../db/db.js';
+import express from "express";
+import bcrypt from "bcrypt";
+import pool from "../../db/db.js";
 import {
   deleteUserById,
   editUserById,
@@ -8,12 +8,12 @@ import {
   selectAllUsers,
   selectSingleUserId,
   selectUserById,
-} from './queries/userqueries.js';
+} from "./queries/userqueries.js";
 
 const router = express.Router();
 
 // Get all users
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const users = await pool.query(selectAllUsers);
     res.json({ users: users.rows });
@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get user by id
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const singleUser = await pool.query(selectUserById, [id]);
@@ -34,7 +34,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // post new user to database
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { firstName, lastName, user_password, email, userName } = req.body;
     //hashed pw function
@@ -53,7 +53,7 @@ router.post('/', async (req, res) => {
 });
 
 // PUT route edit user already in database
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const { firstName, lastName, email, userName } = req.body;
@@ -73,7 +73,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // delete user route
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     //query to get id passed from req.params.id
@@ -86,7 +86,7 @@ router.delete('/:id', async (req, res) => {
       res.status(200).send(`User deleted with ID: ${id}`);
     }
   } catch (error) {
-    res.status(500).json({ error: 'no user in db with this id' });
+    res.status(500).json({ error: "no user in db with this id" });
   }
 });
 

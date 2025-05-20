@@ -1,12 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
-import { RootState } from '../store';
-import { deleteUserApps } from '../store/userAppsSlice';
-import useRefreshToken from '../custom-hooks/useRefreshToken';
-import useAxiosPrivate from '../custom-hooks/useAxiosPrivate';
-import useAuth from '../custom-hooks/useAuth';
-import axios from '../../server/api/axios';
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, Link } from "react-router-dom";
+import { RootState } from "../store";
+import { deleteUserApps } from "../store/userAppsSlice";
+import useRefreshToken from "../custom-hooks/useRefreshToken";
+import useAxiosPrivate from "../custom-hooks/useAxiosPrivate";
+import useAuth from "../custom-hooks/useAuth";
+import axios from "../../server/api/axios";
 
 const Applications = () => {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ const Applications = () => {
   const location = useLocation();
   const { auth, setAuth } = useAuth();
 
-  const from = location.state?.from?.pathname || '/login';
+  const from = location.state?.from?.pathname || "/login";
 
   const usersList = useSelector((state: RootState) => state.users.users);
   const userApplications = useSelector(
@@ -38,9 +38,9 @@ const Applications = () => {
   //   return <div>LOADING...</div>;
   // }
 
-  console.log('from aplications for adding', userId);
+  console.log("from aplications for adding", userId);
 
-  console.log('FROM ALL APPS', userApplications);
+  console.log("FROM ALL APPS", userApplications);
 
   const applicationData = sortUserApps?.map((userApp) => (
     <div key={userApp?.company_id}>
@@ -64,18 +64,18 @@ const Applications = () => {
               <div className="flex justify-center items-center pb-4">
                 <p className="sm:text-sm md:text-md lg:text-lg">
                   {/* Date applied*/}
-                  {appliedDate.toLocaleString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}{' '}
+                  {appliedDate.toLocaleString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}{" "}
                 </p>
                 <p className="text-xs pl-1">
-                  {appliedDate.toLocaleString('en-US', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    timeZoneName: 'short',
+                  {appliedDate.toLocaleString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    timeZoneName: "short",
                   })}
                 </p>
               </div>
@@ -115,7 +115,7 @@ const Applications = () => {
         <button className="bg-button1 text-white">Add new Application</button>
       </Link>
       <div className="h-20 w-50 border-spacing-x-5 border border: mx-3 border-white grid place-content-center mt-8 text-2xl sm:text-4xl">
-        APPLICATIONS
+        Applications
       </div>
       {applicationData}
       {/* {userApplications.map((userApp) => {
