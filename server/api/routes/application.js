@@ -37,7 +37,18 @@ router.get("/:id", async (req, res) => {
 });
 
 //Get all applications for user by user id
-router.get("/user/:id", verifyJWT, async (req, res) => {
+// router.get("/user/:id", verifyJWT, async (req, res) => {
+//   try {
+//     const id = req.params.id;
+
+//     const allUserApplications = await pool.query(getAllUserApplications, [id]);
+//     res.json({ userapplications: allUserApplications.rows });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// });
+
+router.get("/user/:id", async (req, res) => {
   try {
     const id = req.params.id;
 

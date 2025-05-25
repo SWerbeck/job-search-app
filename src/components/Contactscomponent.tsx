@@ -129,14 +129,14 @@ return (
         <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 mx-3 mt-10 gap-x-4 gap-y-8">
         {items.map((item) => (
           <div key={item.contact_id} >
-            <div className="bg-gray-100 border-spacing-x-5 mx-3 place-content-center p-20 drop-shadow-lg rounded-xl">
+            <div className="bg-gray-100 h-full border-spacing-x-5 mx-3 place-content-center p-20 drop-shadow-lg rounded-xl">
               <div className="flex justify-center items-center pb-2 text-2xl sm:text-2xl md:text-3xl lg:text-4xl">
                  {/* contact name */}
                 <p className="text-center">{item.contactname}</p>
               </div>
                 {/* company name */}
               <div className="flex justify-center items-center pb-4"> <p className="text-center">{item.companyname}</p></div>
-              <div className="flex justify-center items-center">
+              <div className="flex justify-center items-center fixed bottom-8 left-0 right-0">
                 <Link to={`${location.pathname}/${item.contact_id}`}>
                   <button className="bg-button1 text-white text-base p-2">
                     More info

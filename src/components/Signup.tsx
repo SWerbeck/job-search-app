@@ -64,15 +64,15 @@ const Signup = () => {
   };
   return (
     <div className="flex justify-center items-center mb-20 mt-20">
-      <div className="justify-center items-center w-1/3">
+      <div className="justify-center items-center xs:w-full xs:ml-7 xs:mr-7 sm:w-full sm:ml-14 sm:mr-14 md:ml-28 md:mr-28 lg:ml-48 lg:mr-48 xl:ml-96 xl:mr-96">
         <div className="bg-button2 rounded-tl-xl rounded-tr-xl rounded-br-sm rounded-bl-sm h-16 flex justify-center items-center drop-shadow-lg">
-          <h1 className="text-xl text-white">Sign up below</h1>
+          <h1 className="text-xl text-white">Sign up</h1>
         </div>
         {/* className="flex items-center flex-col justify-center text-center" */}
-        <div className="bg-mainbody rounded-br-xl rounded-bl-xl pb-10">
+        <div className="rounded-br-xl rounded-bl-xl pb-10 drop-shadow-lg bg-gray-100">
           <form className="h-96" onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex justify-center items-center pt-6">
-              <input
+            <div className="flex justify-center items-center pt-12 xl:pl-10 xl:pr-10">
+              <input className="md:w-80"
                 {...register("firstName")}
                 type="text"
                 placeholder="first name"
@@ -80,11 +80,11 @@ const Signup = () => {
             </div>
             {errors.firstName && (
               <div className="flex justify-center items-center">
-                <p className="text-xs">{errors.firstName.message}</p>
+                <p className="text-xs text-button4">{errors.firstName.message}</p>
               </div>
             )}
-            <div className="flex justify-center items-center mt-6">
-              <input
+            <div className="flex justify-center items-center mt-6 xl:pl-10 xl:pr-10">
+              <input className="md:w-80"
                 {...register("lastName")}
                 type="text"
                 placeholder="last name"
@@ -92,11 +92,11 @@ const Signup = () => {
             </div>
             {errors.lastName && (
               <div className="flex justify-center items-center">
-                <p className="text-xs">{errors.lastName.message}</p>
+                <p className="text-xs text-button4">{errors.lastName.message}</p>
               </div>
             )}
-            <div className="flex justify-center items-center mt-6">
-              <input
+            <div className="flex justify-center items-center mt-6 xl:pl-10 xl:pr-10">
+              <input className="md:w-80"
                 {...register("password")}
                 type="password"
                 placeholder="password"
@@ -104,19 +104,19 @@ const Signup = () => {
             </div>
             <div className="flex justify-center items-center">
               {errors.password && (
-                <p className="text-xs">{errors.password.message}</p>
+                <p className="text-xs text-button4">{errors.password.message}</p>
               )}
             </div>
-            <div className="flex justify-center items-center mt-6">
-              <input {...register("email")} type="text" placeholder="email" />
+            <div className="flex justify-center items-center mt-6 xl:pl-10 xl:pr-10">
+              <input {...register("email")} type="text" placeholder="email"className="md:w-80" />
             </div>
             {errors.email && (
               <div className="flex justify-center items-center">
-                <p className="text-xs">{errors.email.message}</p>
+                <p className="text-xs text-button4">{errors.email.message}</p>
               </div>
             )}
-            <div className="flex justify-center items-center mt-6">
-              <input
+            <div className="flex justify-center items-center mt-6 xl:pl-10 xl:pr-10">
+              <input className="md:w-80"
                 {...register("userName")}
                 type="text"
                 placeholder="username"
@@ -124,7 +124,7 @@ const Signup = () => {
             </div>
             {errors.userName && (
               <div className="flex justify-center items-center">
-                <p className="text-xs">{errors.userName.message}</p>
+                <p className="text-xs text-button4">{errors.userName.message}</p>
               </div>
             )}
             {errors.root && (
