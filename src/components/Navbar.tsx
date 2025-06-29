@@ -52,9 +52,9 @@ const Navbar = () => {
   //     }
   //   }
   // };
-  console.log("USER APP FROM NAV", userApplications);
-  console.log("Auth FROM NAV", auth);
-  console.log("list of users from nav", usersList);
+  // console.log("USER APP FROM NAV", userApplications);
+  // console.log("Auth FROM NAV", auth);
+  // console.log("list of users from nav", usersList);
 
   // all applications not protected
   // http://localhost:5173/home/3fa575b3-cff6-4275-821b-94ae28225620/applications
