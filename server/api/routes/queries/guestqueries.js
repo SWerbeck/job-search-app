@@ -66,3 +66,25 @@ _contact.user_id,
 contact_past_job.company_id,
 contact_past_job.user_id
 `;
+
+export const getGuestContacts = `
+SELECT CONTACT.*, 
+(SELECT COMPANYNAME 
+    FROM _COMPANY 
+    WHERE CONTACT.company_id = _COMPANY.company_id) AS Companyname,
+CASE 
+WHEN past_job.contact_id = CONTACT.contact_id 
+THEN
+json_agg(
+    DISTINCT jsonb_build_object(
+    'COMPANY', 
+    (SELECT COMPANYNAME 
+    FROM _COMPANY 
+    WHERE _COMPANY.company_id = past_job.company_id),
+    'COMPANY ID', past_job.company_id)) 
+END as Past_Jobs
+FROM _CONTACT AS CONTACT
+LEFT JOIN CONTACT_PAST_JOB AS past_job 
+ON CONTACT.contact_id = past_job.contact_id
+WHERE CONTACT.user_id = $1
+GROUP BY contact.contact_id, past_job.contact_id`;

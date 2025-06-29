@@ -3,6 +3,7 @@ import pool from "../../db/db.js";
 import {
   selectIdForGuest,
   getAllGuestApplications,
+  getGuestContacts,
 } from "./queries/guestqueries.js";
 
 const router = express.Router();
@@ -25,6 +26,18 @@ router.get("/applications", async (req, res) => {
       guest.rows[0].user_id,
     ]);
     res.json({ userapplications: allUserApplications.rows });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/contacts", async (req, res) => {
+  try {
+    const guest = await pool.query(selectIdForGuest);
+    const allUserContacts = await pool.query(getGuestContacts, [
+      guest.rows[0].user_id,
+    ]);
+    res.json({ userContacts: allUserContacts.rows });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
