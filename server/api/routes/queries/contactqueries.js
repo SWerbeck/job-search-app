@@ -1,6 +1,6 @@
-export const selectAllContacts = 'SELECT * FROM _CONTACT';
+export const selectAllContacts = "SELECT * FROM _CONTACT";
 
-export const selectContactById = 'SELECT * FROM _CONTACT WHERE contact_id = $1';
+export const selectContactById = "SELECT * FROM _CONTACT WHERE contact_id = $1";
 
 export const getContactByUserId = `
 SELECT CONTACT.*, 
@@ -41,15 +41,23 @@ export const postNewContact = `INSERT INTO _CONTACT (
         $6, 
         $7 ) RETURNING *`;
 
+// export const editContactById = `UPDATE _CONTACT SET
+//  company_id = $1,
+//  CONTACTNAME = $2,
+//  CONTACT_LINKEDIN = $3,
+//  CONTACT_PHONE = $4,
+//  CONTACT_EMAIL = $5,
+//  FOLLOWUP = $6
+//  WHERE contact_id = $7`;
+
 export const editContactById = `UPDATE _CONTACT SET 
- company_id = $1, 
- CONTACTNAME = $2, 
- CONTACT_LINKEDIN = $3, 
- CONTACT_PHONE = $4, 
- CONTACT_EMAIL = $5, 
- FOLLOWUP = $6
- WHERE contact_id = $7`;
+ CONTACTNAME = $1,
+ CONTACT_LINKEDIN = $2,
+ CONTACT_PHONE = $3,
+ CONTACT_EMAIL = $4,
+ reply_status = $5
+ WHERE contact_id = $6`;
 
 export const selectSingleByContactId = `SELECT contact_id FROM _CONTACT WHERE contact_id = $1`;
 
-export const deleteContactById = 'DELETE FROM _CONTACT WHERE contact_id = $1';
+export const deleteContactById = "DELETE FROM _CONTACT WHERE contact_id = $1";

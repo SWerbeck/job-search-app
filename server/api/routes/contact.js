@@ -1,5 +1,5 @@
-import express from 'express';
-import pool from '../../db/db.js';
+import express from "express";
+import pool from "../../db/db.js";
 import {
   deleteContactById,
   editContactById,
@@ -8,13 +8,13 @@ import {
   selectAllContacts,
   selectContactById,
   selectSingleByContactId,
-} from './queries/contactqueries.js';
+} from "./queries/contactqueries.js";
 
 const router = express.Router();
 
 //Get all contacts
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const contacts = await pool.query(selectAllContacts);
     res.json({ contacts: contacts.rows });
@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get contact by contact id
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const singleContact = await pool.query(selectContactById, [id]);
@@ -35,7 +35,7 @@ router.get('/:id', async (req, res) => {
 });
 
 //Get all contacts for user by user id
-router.get('/user/:id', async (req, res) => {
+router.get("/user/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const allUserContacts = await pool.query(getContactByUserId, [id]);
@@ -46,7 +46,7 @@ router.get('/user/:id', async (req, res) => {
 });
 
 // create contact information
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const {
       company_id,
@@ -75,10 +75,10 @@ router.post('/', async (req, res) => {
 
 //update contact info
 // reply_status needs to be updated for the put request to go through
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const {
+    let {
       company_id,
       CONTACTNAME,
       CONTACT_LINKEDIN,
@@ -88,14 +88,18 @@ router.put('/:id', async (req, res) => {
       FOLLOWUP,
     } = req.body;
 
+    CONTACT_LINKEDIN = CONTACT_LINKEDIN?.trim() || null;
+    CONTACT_PHONE = CONTACT_PHONE?.trim() || null;
+    CONTACT_EMAIL = CONTACT_EMAIL?.trim() || null;
+
     const updatedContact = await pool.query(editContactById, [
-      company_id,
+      //company_id,
       CONTACTNAME,
       CONTACT_LINKEDIN,
       CONTACT_PHONE,
       CONTACT_EMAIL,
-      //reply_status,
-      FOLLOWUP,
+      reply_status,
+      //FOLLOWUP,
       id,
     ]);
     res.status(200).send(`Updated info for: ${updatedContact}`);
@@ -105,7 +109,7 @@ router.put('/:id', async (req, res) => {
 });
 
 //Delete constact by contact id
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     //query to get id passed from req.params.id
@@ -118,7 +122,7 @@ router.delete('/:id', async (req, res) => {
       res.status(200).send(`Contact deleted with ID: ${id}`);
     }
   } catch (error) {
-    res.status(500).json({ error: 'no contact in db with this id' });
+    res.status(500).json({ error: "no contact in db with this id" });
   }
 });
 

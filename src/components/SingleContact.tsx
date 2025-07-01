@@ -18,6 +18,8 @@ const SingleContact = () => {
   const [editMode, setEditMode] = useState(false);
   const [singleContact, setSingleContact] = useState([]);
 
+  //useEffect(() => {}, [singleContact]);
+  console.log(singleContact);
   const fetchContacts = async () => {
     if (auth?.id?.length) {
       try {
@@ -51,7 +53,13 @@ const SingleContact = () => {
   return (
     <>
       {editMode ? (
-        <EditContactCard editMode={editMode} setEditMode={setEditMode} />
+        <EditContactCard
+          editMode={editMode}
+          setEditMode={setEditMode}
+          filteredContact={filteredContact}
+          setSingleContact={setSingleContact}
+          singleContact={singleContact}
+        />
       ) : (
         <SingleContactCard
           setEditMode={setEditMode}
