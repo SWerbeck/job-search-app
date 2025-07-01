@@ -1,9 +1,9 @@
-import { Link, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store';
-import SingleCompanyCard from './cards/SingleCompanyCard';
-import EditCompanyCard from './cards/EditCompanyCard';
-import { useEffect, useState } from 'react';
+import { Link, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
+import SingleCompanyCard from "./cards/SingleCompanyCard";
+import EditCompanyCard from "./cards/EditCompanyCard";
+import { useEffect, useState } from "react";
 
 const SingleCompany = () => {
   const { company_id } = useParams();
@@ -11,7 +11,6 @@ const SingleCompany = () => {
     (state: RootState) => state.userApps.userApps
   );
 
-  console.log('from single copany userApplications', userApplications);
   //will toggle between edit mode and read
   const [editMode, setEditMode] = useState(false);
 
@@ -26,8 +25,8 @@ const SingleCompany = () => {
   //   (application) => application
   // );
 
-  const singleApplication = singleCompany?.applications
-  
+  const singleApplication = singleCompany?.applications;
+
   // gets the contatcs if any the user has for the company
   const contactsDisplay = singleCompany?.contacts?.map(
     (contact) => contact.CONTACT_NAME
@@ -35,12 +34,9 @@ const SingleCompany = () => {
 
   const companyId = singleCompanyFilter[0].company_id;
 
-
   const applicationId = singleCompanyFilter[0]?.applications[0]?.Application_ID;
 
-  const contacts = singleCompany?.contacts?.map(
-    (contact) => contact
-  );
+  const contacts = singleCompany?.contacts?.map((contact) => contact);
 
   return (
     <>
