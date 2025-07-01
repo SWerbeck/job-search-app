@@ -1,66 +1,57 @@
+import { Link } from "react-router-dom";
 import useAuth from "../../custom-hooks/useAuth";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store";
-import { Link } from "react-router-dom";
 
-type Contacts = {
-  COMPANY_ID: string;
-  CONTACT_ID: string;
-  CONTACT_NAME: string;
-};
-
-const SingleApplicationCard = ({
-  singleApp,
-  contactsList,
-  editMode,
-  setEditMode,
-}) => {
+const SingleContactCard = ({ singleContact, setEditMode, filteredContact }) => {
   const { auth, setAuth } = useAuth();
 
   const usersList = useSelector((state: RootState) => state.users.users);
-  console.log("this is from the singleApp card", singleApp);
-
-  const userApplications = useSelector(
-    (state: RootState) => state.userApps.userApps
-  );
 
   // DATE FORMATTING
-  const appliedDate = new Date(singleApp?.Applied_Date);
-  const lastUpdatedDate = new Date(singleApp?.Last_Updated_Date);
+  const appliedDate = new Date(filteredContact[0]?.last_contacted);
+  const lastUpdatedDate = new Date(filteredContact[0]?.last_updated);
 
-  // useEffect(() => {
-  //   console.log('useEffect triggered fromt he form');
-  // }, [userApplications]);
-  // Map over the contacts for each application otherwise it breaks :(
+  console.log("fileterd contact from CARDDD", filteredContact);
 
-  const contactsMap = contactsList?.map((contact: Contacts) => (
-    <p key={contact.CONTACT_ID} className="ml-4">
-      <Link>{contact?.CONTACT_NAME}</Link>
-    </p>
-  ));
-  // const contactsMap = contactsList?.map((contact: Contacts) => (
-  //   <p>{contact?.CONTACT_NAME}</p>
-  // ));
-
-  console.log("contactsList from card", contactsList);
-  console.log("mapped contacts in card", contactsMap);
   return (
     <div className="flex justify-center items-center">
       <div className="m-10 bg-gray-100 border-spacing-x-5 mx-5 place-content-center p-20 drop-shadow-lg rounded-xl">
         <div className="bg-button2 rounded-tl-xl rounded-tr-xl rounded-br-sm rounded-bl-sm absolute inset-x-0 top-0 h-16 flex justify-center items-center drop-shadow-lg">
-          <p className="text-xl text-white">{singleApp?.Position}</p>
+          <p className="text-xl text-white">
+            {filteredContact[0]?.contactname}
+          </p>
         </div>
-        <p className="text-lg">Company: {singleApp?.company_name}</p>
+        <p className="text-lg">Company: {filteredContact[0]?.companyname}</p>
         <p className="text-sm">
-          Website:{" "}
-          {singleApp?.Company_Website
-            ? singleApp?.Company_Website
-            : "No website plz add"}{" "}
+          Email:{" "}
+          {filteredContact[0]?.contact_email
+            ? filteredContact[0]?.contact_email
+            : "No email address was provided"}{" "}
         </p>
-        <p className="text-sm">Status: {singleApp?.Status}</p>
+        <p className="text-sm">
+          Linkedin:{" "}
+          {filteredContact[0]?.contact_linkedin
+            ? filteredContact[0]?.contact_linkedin
+            : "Linkedin was not provided"}{" "}
+        </p>
+        <p className="text-sm">
+          Phone number:{" "}
+          {filteredContact[0]?.contact_phone
+            ? filteredContact[0]?.contact_phone
+            : "No phone number was provided"}{" "}
+        </p>
+        <p className="text-sm">
+          Past companies:{" "}
+          {filteredContact[0]?.past_jobs
+            ? filteredContact[0]?.past_jobs.map((contact) => contact.COMPANY)
+            : `No past companies for ${filteredContact[0]?.contactname}`}{" "}
+        </p>
+        <p className="text-sm">
+          reply status: {filteredContact[0]?.reply_status}
+        </p>
         <div className="flex items-center">
           <p className="text-sm">
-            Applied Date:{" "}
+            Message last sent:{" "}
             {appliedDate.toLocaleString("en-US", {
               year: "numeric",
               month: "long",
@@ -78,7 +69,7 @@ const SingleApplicationCard = ({
         </div>
         <div className="flex justify-center items-center">
           <p className="text-sm">
-            Last updated date:{" "}
+            Last update:{" "}
             {lastUpdatedDate.toLocaleString("en-US", {
               year: "numeric",
               month: "long",
@@ -94,7 +85,7 @@ const SingleApplicationCard = ({
             })}
           </p>
         </div>
-        <p className="text-sm">
+        {/* <p className="text-sm">
           Application Info:{" "}
           {singleApp?.application_info
             ? singleApp?.application_info
@@ -107,7 +98,7 @@ const SingleApplicationCard = ({
           ) : (
             <p className="ml-4">No Contacts</p>
           )}
-        </div>
+        </div> */}
         <div className="flex justify-center items-center mt-6">
           <button
             onClick={() => setEditMode(true)}
@@ -121,4 +112,4 @@ const SingleApplicationCard = ({
   );
 };
 
-export default SingleApplicationCard;
+export default SingleContactCard;
