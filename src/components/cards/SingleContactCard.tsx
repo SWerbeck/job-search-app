@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import useAuth from "../../custom-hooks/useAuth";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const SingleContactCard = ({ singleContact, setEditMode, filteredContact }) => {
   const { auth, setAuth } = useAuth();
@@ -11,6 +12,7 @@ const SingleContactCard = ({ singleContact, setEditMode, filteredContact }) => {
   const appliedDate = new Date(filteredContact[0]?.last_contacted);
   const lastUpdatedDate = new Date(filteredContact[0]?.last_updated);
 
+  useEffect(() => {}, [filteredContact]);
   console.log("fileterd contact from CARDDD", filteredContact);
 
   return (

@@ -1,22 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
 export interface contactsInitialStateType {
   contacts: [
     {
       contact_id: string;
       contactname: string;
-      
     }
   ];
 }
 const initialState: contactsInitialStateType = {
-    contacts: [
-        {
-            contact_id: "",
-            contactname: ""
-        }
-      ],
+  contacts: [
+    {
+      contact_id: "",
+      contactname: "",
+    },
+  ],
 };
 
 export const contactsSlice = createSlice({
@@ -29,15 +27,13 @@ export const contactsSlice = createSlice({
     resetContacts: (state, action) => {
       state.contacts = [
         {
-         contact_id: "",
-            contactname: ""
-        }
+          contact_id: "",
+          contactname: "",
+        },
       ];
     },
-  
   },
 });
-
 
 export const { setContacts, resetContacts } = contactsSlice.actions;
 export default contactsSlice.reducer;
