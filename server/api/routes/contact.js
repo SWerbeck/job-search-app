@@ -9,6 +9,7 @@ import {
   selectContactById,
   selectSingleByContactId,
 } from "./queries/contactqueries.js";
+import { postNewCompany } from "./queries/companyqueries.js";
 
 const router = express.Router();
 
@@ -57,17 +58,35 @@ router.post("/", async (req, res) => {
       CONTACT_EMAIL,
       reply_status,
       FOLLOWUP,
+      companyName,
     } = req.body;
-    const newContact = await pool.query(postNewContact, [
-      company_id,
-      user_id,
-      CONTACTNAME,
-      CONTACT_LINKEDIN,
-      CONTACT_PHONE,
-      CONTACT_EMAIL,
-      FOLLOWUP,
-    ]);
-    res.json({ newCont: newContact.rows[0] });
+    if (company_id === "0") {
+      let createdCompanyId;
+      const newInsertCompany = await pool.query(postNewCompany, [companyName]);
+      createdCompanyId = newInsertCompany.rows[0].company_id;
+      console.log("createdCompanyId?", createdCompanyId);
+      const newContact = await pool.query(postNewContact, [
+        createdCompanyId,
+        user_id,
+        CONTACTNAME,
+        CONTACT_LINKEDIN,
+        CONTACT_PHONE,
+        CONTACT_EMAIL,
+        FOLLOWUP,
+      ]);
+      res.json({ newCont: newContact.rows[0] });
+    } else {
+      const newContact = await pool.query(postNewContact, [
+        company_id,
+        user_id,
+        CONTACTNAME,
+        CONTACT_LINKEDIN,
+        CONTACT_PHONE,
+        CONTACT_EMAIL,
+        FOLLOWUP,
+      ]);
+      res.json({ newCont: newContact.rows[0] });
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
