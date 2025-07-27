@@ -19,7 +19,7 @@ const SingleContact = () => {
   const [singleContact, setSingleContact] = useState([]);
 
   //useEffect(() => {}, [singleContact]);
-  console.log(singleContact);
+  console.log("From single contact just now", singleContact);
   const fetchContacts = async () => {
     if (auth?.id?.length) {
       try {

@@ -21,6 +21,7 @@ import ApplicationForm from "./components/ApplicationForm";
 import { ToastContainer, toast } from "react-toastify";
 import { useDisable } from "./context/DisableContext";
 import SingleContact from "./components/SingleContact";
+import ContactForm from "./components/ContactForm";
 
 function App() {
   const { isDisabled, setIsDisabled } = useDisable();
@@ -50,6 +51,10 @@ function App() {
           <Route
             path="/home/:user_id/applications/addapplications"
             element={<ApplicationForm />}
+          />
+          <Route
+            path="/home/:user_id/contacts/addcontacts"
+            element={<ContactForm />}
           />
           <Route path="/unauthorized" element={<Unauthorized />} />
           {/* These are protected routes */}
@@ -81,6 +86,10 @@ function App() {
                 element={<SingleContact />}
               />
             </Route>
+            <Route
+              path="/home/:user_id/contacts/addcontacts"
+              element={<ContactForm />}
+            />
           </Route>
 
           {/* catch all */}
