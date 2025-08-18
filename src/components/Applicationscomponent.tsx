@@ -21,6 +21,7 @@ const Applications = () => {
     (state: RootState) => state.userApps.userApps
   );
 
+  console.log("FROM ALL USERS", userApplications);
   //sorting alphabetically by company name
   const sortUserApps = [...userApplications].sort((a, b) =>
     a.company.localeCompare(b.company)
@@ -97,10 +98,6 @@ const Applications = () => {
   const appData = userApplications?.map((userApp) =>
     userApp?.applications?.map((app) => app.Position)
   );
-
-  const displayData = appData?.map((data) => data);
-
-  //console.log('DATA from applications', displayData);
 
   return (
     <div className="grid place-content-center">

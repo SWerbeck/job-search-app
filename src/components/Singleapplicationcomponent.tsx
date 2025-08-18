@@ -1,11 +1,11 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import useAxiosPrivate from '../custom-hooks/useAxiosPrivate';
-import { RootState } from '../store';
-import SingleApplicationCard from './cards/SingleApplicationCard';
-import { deleteUserApps } from '../store/userAppsSlice';
-import EditApplicationCard from './cards/EditApplicationCard';
+import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import useAxiosPrivate from "../custom-hooks/useAxiosPrivate";
+import { RootState } from "../store";
+import SingleApplicationCard from "./cards/SingleApplicationCard";
+import { deleteUserApps } from "../store/userAppsSlice";
+import EditApplicationCard from "./cards/EditApplicationCard";
 
 const Singleapplicationcomponent = () => {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const Singleapplicationcomponent = () => {
   const userApplications = useSelector(
     (state: RootState) => state.userApps.userApps
   );
-
+  console.log("from comp NT CARD", singleApp);
   const usersList = useSelector((state: RootState) => state.users.users);
   const userId = usersList[0]?.user_id;
 
@@ -34,7 +34,7 @@ const Singleapplicationcomponent = () => {
       setIsLoaded(true);
     } catch (err) {
       console.log(err.response.data);
-      navigate('/', { state: { from: location }, replace: true });
+      navigate("/", { state: { from: location }, replace: true });
     }
   };
 
@@ -57,7 +57,7 @@ const Singleapplicationcomponent = () => {
 
   return (
     <>
-      {' '}
+      {" "}
       {editMode ? (
         <EditApplicationCard
           singleApp={singleApp}

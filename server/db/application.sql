@@ -12,7 +12,7 @@ CREATE TABLE _APPLICATION(
  user_id uuid NOT NULL,
  application_info VARCHAR(8000)DEFAULT NULL,
  application_status applicationstat DEFAULT 'active',
- WEBSITE VARCHAR(255),
+ Listing_WEBSITE VARCHAR(255),
  FOREIGN KEY (company_id) REFERENCES _COMPANY(company_id)
  ON DELETE CASCADE,
  FOREIGN KEY (user_id) REFERENCES _USER(user_id)
@@ -29,88 +29,88 @@ CREATE TABLE _APPLICATION(
 
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id )
-VALUES ('software engineer', (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123') );
+VALUES ('software engineer', (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123')), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123') );
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('front end devloper', (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'));
+VALUES ('front end devloper', (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123')), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('software engineer',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'X'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'));
+VALUES ('software engineer',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'X' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123')), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('front end devloper',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Data-Dog'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'));
+VALUES ('front end devloper',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Data-Dog' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123')), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('back end developer', (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'));
+VALUES ('back end developer', (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'SWerb')), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('front end devloper',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'));
+VALUES ('front end devloper',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'SWerb')), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('software engineer',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'));
+VALUES ('software engineer',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'SWerb')), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('front end devloper',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'));
+VALUES ('front end devloper',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'SWerb')), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('software engineer',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('software engineer',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('Sales rep',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('Sales rep',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('Database manager',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('Database manager',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('Program manager',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('Program manager',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('Tech Team Lead',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('Tech Team Lead',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('Bug tester',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('Bug tester',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('front end devloper',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'X'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('front end devloper',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'X' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('Program manager',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'X'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('Program manager',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'X' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('back end developer',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('back end developer',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('software engineer',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('software engineer',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('Manager',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('Manager',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('Sales rep',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('Sales rep',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('back end developer',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('back end developer',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('front end developer',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('front end developer',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('Technical support engineer',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('Technical support engineer',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('production support specialist',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'META'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('production support specialist',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'META' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('software engineer',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'META'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('software engineer',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'META' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('project manager',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'META'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('project manager',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'META' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('UI/UX design',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'META'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('UI/UX design',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'META' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('Platform engineer',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'META'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('Platform engineer',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'META' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _APPLICATION(job_title, company_id, user_id)
-VALUES ('Head of cyber security',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'META'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('Head of cyber security',(SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'META' AND user_id =  (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));

@@ -138,37 +138,39 @@ const Contacts = () => {
           <button className="bg-button1 text-white">Add new Contact</button>
         </Link>
       </div>
-      {Object.entries(alphabatized[0]).map(([category, items]) => (
-        <div key={category}>
-          <h2 className="bg-headline text-white h-10 w-50 border-spacing-x-7 border mx-3 border-white grid place-content-left content-center p-10 mt-10 rounded-xl  text-center text-2xl xs:text-3xl sm:text-4xl md:text-left">
-            {category}
-          </h2>
-          <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 mx-3 mt-10 gap-x-4 gap-y-8">
-            {items.map((item) => (
-              <div key={item.contact_id}>
-                <div className="bg-gray-100 h-full border-spacing-x-5 mx-3 place-content-center p-20 drop-shadow-lg rounded-xl">
-                  <div className="flex justify-center items-center pb-2 text-2xl sm:text-2xl md:text-3xl lg:text-4xl">
-                    {/* contact name */}
-                    <p className="text-center">{item.contactname}</p>
+      {alphabatized.length
+        ? Object.entries(alphabatized[0]).map(([category, items]) => (
+            <div key={category}>
+              <h2 className="bg-headline text-white h-10 w-50 border-spacing-x-7 border mx-3 border-white grid place-content-left content-center p-10 mt-10 rounded-xl  text-center text-2xl xs:text-3xl sm:text-4xl md:text-left">
+                {category}
+              </h2>
+              <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 mx-3 mt-10 gap-x-4 gap-y-8">
+                {items.map((item) => (
+                  <div key={item.contact_id}>
+                    <div className="bg-gray-100 h-full border-spacing-x-5 mx-3 place-content-center p-20 drop-shadow-lg rounded-xl">
+                      <div className="flex justify-center items-center pb-2 text-2xl sm:text-2xl md:text-3xl lg:text-4xl">
+                        {/* contact name */}
+                        <p className="text-center">{item.contactname}</p>
+                      </div>
+                      {/* company name */}
+                      <div className="flex justify-center items-center pb-4">
+                        {" "}
+                        <p className="text-center">{item.companyname}</p>
+                      </div>
+                      <div className="flex justify-center items-center fixed bottom-8 left-0 right-0">
+                        <Link to={`${location.pathname}/${item.contact_id}`}>
+                          <button className="bg-button1 text-white text-base p-2">
+                            More info
+                          </button>
+                        </Link>
+                      </div>
+                    </div>
                   </div>
-                  {/* company name */}
-                  <div className="flex justify-center items-center pb-4">
-                    {" "}
-                    <p className="text-center">{item.companyname}</p>
-                  </div>
-                  <div className="flex justify-center items-center fixed bottom-8 left-0 right-0">
-                    <Link to={`${location.pathname}/${item.contact_id}`}>
-                      <button className="bg-button1 text-white text-base p-2">
-                        More info
-                      </button>
-                    </Link>
-                  </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-      ))}
+            </div>
+          ))
+        : "No contacts"}
     </div>
   );
 };

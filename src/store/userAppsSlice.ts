@@ -1,10 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 export interface userAppsInitialStateType {
   userApps: [
     {
       company_id: string;
       COMPANYNAME: string;
+      COMPANY_WEBSITE: string;
       applications: [];
       contacts: [];
       past_job_contacts: [];
@@ -14,8 +15,9 @@ export interface userAppsInitialStateType {
 const initialState: userAppsInitialStateType = {
   userApps: [
     {
-      company_id: '',
-      COMPANYNAME: '',
+      company_id: "",
+      COMPANYNAME: "",
+      COMPANY_WEBSITE: "",
       applications: [],
       contacts: [],
       past_job_contacts: [],
@@ -24,7 +26,7 @@ const initialState: userAppsInitialStateType = {
 };
 
 export const userAppsSlice = createSlice({
-  name: 'userApps',
+  name: "userApps",
   initialState,
   reducers: {
     setUserApps: (state, action) => {
@@ -33,8 +35,9 @@ export const userAppsSlice = createSlice({
     resetUserApps: (state, action) => {
       state.userApps = [
         {
-          company_id: '',
-          COMPANYNAME: '',
+          company_id: "",
+          COMPANYNAME: "",
+          COMPANY_WEBSITE: "",
           applications: [],
           contacts: [],
           past_job_contacts: [],
@@ -44,15 +47,15 @@ export const userAppsSlice = createSlice({
 
     addUserApp: (state, action) => {
       const { appData, data } = action.payload;
-      console.log('data from add user APP', data);
-      console.log('heres the app data', appData);
+      console.log("data from add user APP", data);
+      console.log("heres the app data", appData);
       // Check if the company already exists
       const existingCompany = state.userApps.find(
         (app) => app.company_id === appData.company_id
       );
 
       if (existingCompany) {
-        console.log('Company already exists, adding new application.');
+        console.log("Company already exists, adding new application.");
         // Make copies to avoid Proxy issues due to Immer.js, which is used under the hood by Redux Toolkit.
         // Immer allows you to work with state immutably while using mutable syntax, but
         //      (Proxy(Object), [[Handler]], [[Target]], [[IsRevoked]]) indicates that attempting to access a value in a draft state outside of where Immer manages it.
@@ -62,10 +65,10 @@ export const userAppsSlice = createSlice({
           [];
         console.log(
           existingCompany,
-          'existing company from redux. Should be proxy and all that shit'
+          "existing company from redux. Should be proxy and all that shit"
         );
-        console.log(existingCompanyCopy, 'COPY from redux');
-        console.log(contactsCopy, 'contacts copy from redux');
+        console.log(existingCompanyCopy, "COPY from redux");
+        console.log(contactsCopy, "contacts copy from redux");
 
         existingCompany.applications.push({
           Status: appData.application_status,
@@ -73,13 +76,13 @@ export const userAppsSlice = createSlice({
           Applied_Date: appData.creation_date,
           Application_ID: appData.applied_id,
           application_info: appData.application_info,
-          Company_Website: appData.website,
+          Listing_WEBSITE: appData.Listing_WEBSITE,
           company_name: existingCompanyCopy.company,
           company_id: appData.company_id,
           Last_Updated_Date: appData.last_updated,
         });
       } else {
-        console.log('Company does not exist, creating new entry.');
+        console.log("Company does not exist, creating new entry.");
 
         state.userApps = [
           ...state.userApps,
@@ -93,7 +96,7 @@ export const userAppsSlice = createSlice({
                 Applied_Date: appData.creation_date,
                 Application_ID: appData.applied_id,
                 application_info: appData.application_info,
-                Company_Website: appData.website,
+                Listing_WEBSITE: appData.Listing_WEBSITE,
                 company_name: data.newCompanyName,
                 Last_Updated_Date: appData.last_updated,
               },
@@ -134,8 +137,8 @@ export const userAppsSlice = createSlice({
       let job_title = action.payload.data.job_title;
       let companyName = action.payload.data.companyName;
       if (found) {
-        console.log('from redux copnayname', companyName);
-        console.log('data from redux', action.payload.data);
+        console.log("from redux copnayname", companyName);
+        console.log("data from redux", action.payload.data);
         // if found, ie we have a match then reassign the position on the front end
         found.company = companyName;
         found.applications[0].Position = job_title;
@@ -154,12 +157,24 @@ export const userAppsSlice = createSlice({
               Position: data.job_title, // Example: updating job title
               Status: data.Status, // Example: updating status
               application_info: data.application_info,
-              Company_Website: data.Company_Website,
+              Listing_WEBSITE: data.Listing_WEBSITE,
+              company_name: data.Company_name,
+              COMPANY_WEBSITE: data.COMPANY_WEBSITE,
             };
           }
           return app;
         });
-
+        const containsApp = company.applications.some(
+          (app) => app.Application_ID === appId
+        );
+        if (containsApp) {
+          return {
+            ...company,
+            company: data.Company_name, // <-- this updates the top-level company field
+            applications: updatedApplications,
+          };
+        }
+        console.log("company from redux", company);
         // Return the company with updated applications
         return { ...company, applications: updatedApplications };
       });

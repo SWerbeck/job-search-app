@@ -42,8 +42,9 @@ const SingleApplicationCard = ({
   //   <p>{contact?.CONTACT_NAME}</p>
   // ));
 
-  console.log("contactsList from card", contactsList);
-  console.log("mapped contacts in card", contactsMap);
+  // console.log("contactsList from card", contactsList);
+  // console.log("mapped contacts in card", contactsMap);
+
   return (
     <div className="flex justify-center items-center">
       <div className="m-10 bg-gray-100 border-spacing-x-5 mx-5 place-content-center p-20 drop-shadow-lg rounded-xl">
@@ -52,9 +53,9 @@ const SingleApplicationCard = ({
         </div>
         <p className="text-lg">Company: {singleApp?.company_name}</p>
         <p className="text-sm">
-          Website:{" "}
-          {singleApp?.Company_Website
-            ? singleApp?.Company_Website
+          Listing Website:{" "}
+          {singleApp?.Listing_WEBSITE
+            ? singleApp?.Listing_WEBSITE
             : "No website plz add"}{" "}
         </p>
         <p className="text-sm">Status: {singleApp?.Status}</p>
@@ -99,6 +100,12 @@ const SingleApplicationCard = ({
           {singleApp?.application_info
             ? singleApp?.application_info
             : "No info plz update"}
+        </p>
+        <p className="text-sm">
+          Company Website:{" "}
+          {singleApp?.COMPANY_WEBSITE
+            ? singleApp?.COMPANY_WEBSITE
+            : "Website needs to be updated"}
         </p>
         <div>
           Contacts:

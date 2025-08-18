@@ -107,21 +107,28 @@ router.put("/:id", async (req, res) => {
     const id = req.params.id;
     const {
       job_title,
-      //company_id,
+      company_id,
       application_info,
       application_status,
-      WEBSITE,
-      //companyName,
+      Listing_WEBSITE,
+      companyName,
+      COMPANY_WEBSITE,
     } = req.body;
+
     await pool.query(editApplicationById, [
       job_title,
-      // company_id,
+      company_id,
       application_info,
       application_status,
-      WEBSITE,
+      Listing_WEBSITE,
       id,
     ]);
-    //await pool.query(editCompanyById, [companyName, company_id]);
+
+    await pool.query(editCompanyById, [
+      companyName,
+      COMPANY_WEBSITE,
+      company_id,
+    ]);
     res.status(200).send(`Updated info for: ${job_title} with id of ${id}`);
   } catch (error) {
     res.status(500).json({ error: error.message });
