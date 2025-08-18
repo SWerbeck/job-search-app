@@ -27,45 +27,45 @@ CREATE TABLE _CONTACT(
   );
 
 INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
-VALUES ('James Smith', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123') );
+VALUES ('James Smith', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123')), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'));
 
 INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
-VALUES ('Frank Jones', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'));
+VALUES ('Frank Jones', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123')), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'));
 
 INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
-VALUES ('Judd Paul', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'));
+VALUES ('Judd Paul', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123')), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'));
 
 INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
-VALUES ('Dave Wilson', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'));
+VALUES ('Dave Wilson', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123')), (SELECT user_id FROM _USER WHERE UserName = 'louisiscool123'));
 
 INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
-VALUES ('Sara Jackson', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb') );
+VALUES ('Sara Jackson', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'SWerb')), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'));
 
 INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
-VALUES ('Dave Lee', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb') );
+VALUES ('Dave Lee', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'SWerb')), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'));
 
 INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
-VALUES ('Bob Davis', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'));
+VALUES ('Bob Davis', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'SWerb')), (SELECT user_id FROM _USER WHERE UserName = 'SWerb'));
 
 INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
-VALUES ('Bob Davis', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('Bob Davis', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 
 INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
-VALUES ('James Smith', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE'), (SELECT user_id FROM _USER WHERE UserName = 'guest') );
+VALUES ('James Smith', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'GOOGLE' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest') );
 
 INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
-VALUES ('Frank Jones', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify'), (SELECT user_id FROM _USER WHERE UserName = 'guest') );
+VALUES ('Frank Jones', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Spotify' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest') );
 
 INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
-VALUES ('Sara Jackson', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('Sara Jackson', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
-VALUES ('Anna Jackson', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('Anna Jackson', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
-VALUES ('Chad Johnson', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('Chad Johnson', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Pinterest' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 
 INSERT INTO _CONTACT (CONTACTNAME, isprimary, company_id, user_id)
-VALUES ('Dave Lee', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble'), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
+VALUES ('Dave Lee', true, (SELECT company_id FROM _COMPANY WHERE COMPANYNAME = 'Rumble' AND user_id = (SELECT user_id FROM _USER WHERE UserName = 'guest')), (SELECT user_id FROM _USER WHERE UserName = 'guest'));
 

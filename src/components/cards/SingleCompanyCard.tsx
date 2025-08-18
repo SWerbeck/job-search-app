@@ -51,7 +51,7 @@ const SingleCompanyCard = ({
             onClick={() => setEditMode(true)}
             className="bg-button1 text-mainbody"
           >
-            Edit
+            Edit Company info
           </button>
 
           {/* <Link to={`/home/${auth.id}/companies/${companyId}`}>

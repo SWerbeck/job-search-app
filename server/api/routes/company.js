@@ -1,5 +1,5 @@
-import express from 'express';
-import pool from '../../db/db.js';
+import express from "express";
+import pool from "../../db/db.js";
 import {
   deleteSingleCompanyById,
   editCompanyById,
@@ -7,12 +7,13 @@ import {
   selectAllCompanies,
   selectCompanyById,
   selectSingleCompanyId,
-} from './queries/companyqueries.js';
+  selectUsersCompanies,
+} from "./queries/companyqueries.js";
 
 const router = express.Router();
 
 // Get all companies
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const companies = await pool.query(selectAllCompanies);
     res.json({ companies: companies.rows });
@@ -21,8 +22,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get company by id
-router.get('/:id', async (req, res) => {
+// Get single company by id
+router.get("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const singleCompany = await pool.query(selectCompanyById, [id]);
@@ -32,8 +33,20 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// Get all companies for a specific user
+
+router.get("/usercompanies/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const singleCompany = await pool.query(selectUsersCompanies, [id]);
+    res.json({ users: singleCompany.rows });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Post new company to database
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { companyName } = req.body;
     const newUser = await pool.query(postNewCompany, [companyName]);
@@ -44,7 +57,7 @@ router.post('/', async (req, res) => {
 });
 
 // Put route edit company already in database
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const { companyName } = req.body;
@@ -56,7 +69,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // delete company route
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     //query to get id passed from req.params.id
@@ -69,7 +82,7 @@ router.delete('/:id', async (req, res) => {
       res.status(200).send(`company deleted with ID: ${id}`);
     }
   } catch (error) {
-    res.status(500).json({ error: 'no company in db with this id' });
+    res.status(500).json({ error: "no company in db with this id" });
   }
 });
 

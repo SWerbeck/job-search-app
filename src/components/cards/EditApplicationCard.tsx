@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "../../../server/api/axios";
 import { RootState } from "../../store";
 import { useNavigate } from "react-router-dom";
-import { editAppInfo } from "../../store/userAppsSlice";
+import { editAppInfo, editCompanyName } from "../../store/userAppsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { deleteUserApps } from "../../store/userAppsSlice";
@@ -18,13 +18,13 @@ const schema = z.object({
   job_title: z.string().min(1, {
     message: "Please edit job title",
   }),
-  application_info: z.string().min(1, {
-    message: "Please edit info title",
-  }),
+  application_info: z.string(),
   Status: z.string().min(1, {
     message: "Please select a status",
   }),
-  Company_Website: z.string(),
+  Listing_WEBSITE: z.string(),
+  Company_name: z.string(),
+  COMPANY_WEBSITE: z.string(),
 });
 
 type FormFields = z.infer<typeof schema>;
@@ -123,13 +123,17 @@ const EditApplicationCard = ({
     try {
       const editJobTitle = await axios.put(`/api/applications/${appId}`, {
         job_title: data.job_title,
+        company_id: singleApp.company_id,
         applicationId: singleApp.Application_ID,
         application_info: data.application_info,
         application_status: data.Status,
-        WEBSITE: data.Company_Website,
+        Listing_WEBSITE: data.Listing_WEBSITE,
+        companyName: data.Company_name,
+        COMPANY_WEBSITE: data.COMPANY_WEBSITE,
       });
       console.log("DATA FROM EDIT", data);
       dispatch(editAppInfo({ appId, data }));
+      //dispatch(editCompanyName(appId));
       setEditMode(false);
     } catch (error) {
       setError("root", {
@@ -220,19 +224,61 @@ const EditApplicationCard = ({
             {/* Label-Input Pair */}
             <div className="flex items-center justify-center">
               <label className="text-gray-700 text-md font-bold w-32 text-center">
+                Listing Website:
+              </label>
+              <div className="flex flex-col w-64">
+                <input
+                  className="bg-mainbody p-2 border rounded-md w-64"
+                  {...register("Listing_WEBSITE")}
+                  type="text"
+                  placeholder={singleApp?.Listing_WEBSITE}
+                  defaultValue={singleApp?.Listing_WEBSITE}
+                />
+                {errors.Listing_WEBSITE && (
+                  <p className="text-red-500 text-xs">
+                    {errors.Listing_WEBSITE.message}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Label-Input Pair */}
+            <div className="flex items-center justify-center">
+              <label className="text-gray-700 text-md font-bold w-32 text-center">
+                Company Name:
+              </label>
+              <div className="flex flex-col w-64">
+                <input
+                  className="bg-mainbody p-2 border rounded-md w-64"
+                  {...register("Company_name")}
+                  type="text"
+                  placeholder={singleApp?.company_name}
+                  defaultValue={singleApp?.company_name}
+                />
+                {errors.Company_name && (
+                  <p className="text-red-500 text-xs">
+                    {errors.Company_name.message}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Company website Label-Input Pair */}
+            <div className="flex items-center justify-center">
+              <label className="text-gray-700 text-md font-bold w-32 text-center">
                 Company Website:
               </label>
               <div className="flex flex-col w-64">
                 <input
                   className="bg-mainbody p-2 border rounded-md w-64"
-                  {...register("Company_Website")}
+                  {...register("COMPANY_WEBSITE")}
                   type="text"
-                  placeholder={singleApp?.Company_Website}
-                  defaultValue={singleApp?.Company_Website}
+                  placeholder={singleApp?.COMPANY_WEBSITE}
+                  defaultValue={singleApp?.COMPANY_WEBSITE}
                 />
-                {errors.Company_Website && (
+                {errors.COMPANY_WEBSITE && (
                   <p className="text-red-500 text-xs">
-                    {errors.Company_Website.message}
+                    {errors.COMPANY_WEBSITE.message}
                   </p>
                 )}
               </div>
