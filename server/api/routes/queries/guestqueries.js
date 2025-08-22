@@ -2,7 +2,7 @@ export const selectIdForGuest =
   "SELECT user_id, FIRST_NAME, LAST_NAME, User_email, UserName FROM _USER WHERE USERNAME = 'guest'";
 
 export const getAllGuestApplications = `
-SELECT _COMPANY.company_id, _COMPANY.companyname as COMPANY,_COMPANY.COMPANY_WEBSITE,
+SELECT _COMPANY.company_id, _COMPANY.companyname as "COMPANYNAME",_COMPANY.COMPANY_WEBSITE,
 json_agg(
 DISTINCT
 jsonb_build_object(
@@ -10,7 +10,7 @@ jsonb_build_object(
     _APPLICATION.job_title,
     'company_id',
     _COMPANY.company_id,
-    'company_name',
+    'COMPANYNAME',
     _COMPANY.companyname,
     'COMPANY_WEBSITE',
     _COMPANY.COMPANY_WEBSITE,

@@ -1,14 +1,14 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
-import { RootState } from '../store';
-import { SubmitHandler, useForm, Controller } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import useAxiosPrivate from '../custom-hooks/useAxiosPrivate';
-import useAuth from '../custom-hooks/useAuth';
-import { addUserApp } from '../store/userAppsSlice';
-import axios from '../../server/api/axios';
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, Link } from "react-router-dom";
+import { RootState } from "../store";
+import { SubmitHandler, useForm, Controller } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import useAxiosPrivate from "../custom-hooks/useAxiosPrivate";
+import useAuth from "../custom-hooks/useAuth";
+import { addUserApp } from "../store/userAppsSlice";
+import axios from "../../server/api/axios";
 
 // //Needed for api route
 // //job_title,
@@ -18,16 +18,16 @@ import axios from '../../server/api/axios';
 
 const schema = z.object({
   job_title: z.string().min(2, {
-    message: 'Job title is required and must be at least 2 characters',
+    message: "Job title is required and must be at least 2 characters",
   }),
   company_id: z.nullable(z.string()),
   application_info: z.string().min(2, {
-    message: 'Application info is required and must be at least 2 characters',
+    message: "Application info is required and must be at least 2 characters",
   }),
   newCompanyName: z
     .string()
     .min(1, {
-      message: 'New company name is required',
+      message: "New company name is required",
     })
     .optional(),
 });
@@ -39,70 +39,118 @@ const ApplicationForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { auth, setAuth } = useAuth();
-  const [newCompany, setNewCompany] = useState('');
+  //const [newCompany, setNewCompany] = useState("");
 
   const {
     register,
     handleSubmit,
     setError,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({ resolver: zodResolver(schema) });
 
-  const from = location.state?.from?.pathname || '/login';
+  const selectedCompanyId = watch("company_id");
+  const from = location.state?.from?.pathname || "/login";
 
   const usersList = useSelector((state: RootState) => state.users.users);
   const userApplications = useSelector(
     (state: RootState) => state.userApps.userApps
   );
 
-  console.log('who this user from add app form?', usersList);
+  console.log("who this user from add app form?", usersList);
 
   const axiosPrivate = useAxiosPrivate();
 
-  if (usersList[0].user_email === 'guest@guestmail.com') {
-    console.log('hey we got the guest');
+  if (usersList[0].user_email === "guest@guestmail.com") {
+    console.log("hey we got the guest");
   }
-
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    // Probably need an if statement here for company_id
     try {
-      if (usersList[0].user_email === 'guest@guestmail.com') {
-        console.log('guest data from onsubmit', data);
-        const createApp = await axios.post('/api/applications', {
-          job_title: data.job_title,
-          companyName: data.newCompanyName,
-          company_id: data.company_id,
-          //company_id: data.company_id || null,
-          user_id: usersList[0].user_id,
-          application_info: data.application_info,
-        });
-        dispatch(
-          addUserApp({
-            appData: createApp.data.newApp,
-            data,
-          })
-        );
-        navigate(`/home/${usersList[0].user_id}/applications`);
-      } else {
-        const createApp = await axios.post('/api/applications', {
-          job_title: data.job_title,
-          companyName: data.newCompanyName,
-          company_id: data.company_id || null,
-          user_id: auth.id,
-          application_info: data.application_info,
-        });
-        dispatch(addUserApp({ appData: createApp.data.newApp, data }));
-        navigate(`/home/${auth.id}/applications`);
-      }
+      const selectedCompany = userApplications.find(
+        (app) => app.company_id === data.company_id
+      );
+
+      // ✅ Guarantee a proper company name
+      const companyNameForPayload =
+        selectedCompany?.COMPANYNAME ||
+        selectedCompany?.applications?.[0]?.company_name ||
+        data.newCompanyName ||
+        "Unknown Company";
+
+      console.log("companyNameForPayload (final):", companyNameForPayload);
+
+      const createApp = await axios.post("/api/applications", {
+        job_title: data.job_title,
+        companyName: companyNameForPayload,
+        company_id: data.company_id || null,
+        user_id:
+          usersList[0].user_email === "guest@guestmail.com"
+            ? usersList[0].user_id
+            : auth.id,
+        application_info: data.application_info,
+      });
+
+      dispatch(
+        addUserApp({
+          appData: createApp.data.newApp,
+          data: { ...data, companyNameForPayload },
+        })
+      );
+
+      navigate(
+        `/home/${
+          usersList[0].user_email === "guest@guestmail.com"
+            ? usersList[0].user_id
+            : auth.id
+        }/applications`
+      );
     } catch (error) {
-      setError('root', {
-        message: 'Oops please try again',
+      setError("root", {
+        message: "Oops please try again",
       });
     }
   };
 
+  // const onSubmit: SubmitHandler<FormFields> = async (data) => {
+  //   // Probably need an if statement here for company_id
+  //   try {
+  //     if (usersList[0].user_email === "guest@guestmail.com") {
+  //       console.log("guest data from onsubmit", data);
+  //       const createApp = await axios.post("/api/applications", {
+  //         job_title: data.job_title,
+  //         companyName: data.newCompanyName,
+  //         company_id: data.company_id,
+  //         //company_id: data.company_id || null,
+  //         user_id: usersList[0].user_id,
+  //         application_info: data.application_info,
+  //       });
+  //       dispatch(
+  //         addUserApp({
+  //           appData: createApp.data.newApp,
+  //           data,
+  //         })
+  //       );
+  //       navigate(`/home/${usersList[0].user_id}/applications`);
+  //     } else {
+  //       const createApp = await axios.post("/api/applications", {
+  //         job_title: data.job_title,
+  //         companyName: data.newCompanyName,
+  //         company_id: data.company_id || null,
+  //         user_id: auth.id,
+  //         application_info: data.application_info,
+  //       });
+  //       dispatch(addUserApp({ appData: createApp.data.newApp, data }));
+  //       navigate(`/home/${auth.id}/applications`);
+  //     }
+  //   } catch (error) {
+  //     setError("root", {
+  //       message: "Oops please try again",
+  //     });
+  //   }
+  // };
+
   useEffect(() => {
-    console.log('useEffect triggered fromt he form');
+    console.log("useEffect triggered fromt he form");
   }, [userApplications]);
 
   return (
@@ -110,10 +158,10 @@ const ApplicationForm = () => {
       <h1>Application form page</h1>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input {...register('job_title')} type="text" placeholder="job title" />
+        <input {...register("job_title")} type="text" placeholder="job title" />
         {errors.job_title && <div>{errors.job_title.message}</div>}
-        <select
-          {...register('company_id')}
+        {/* <select
+          {...register("company_id")}
           onChange={(event) => {
             setNewCompany(event.target.value);
           }}
@@ -123,20 +171,52 @@ const ApplicationForm = () => {
               {app.company}
             </option>
           ))}
-          {<option value={'0'}> add new</option>}
+          {<option value={"0"}> add new</option>}
+        </select> */}
+        {/* <select
+          {...register("company_id")}
+          value={newCompany || ""}
+          onChange={(event) => setNewCompany(event.target.value)}
+        >
+          {userApplications?.map((app, idx) => (
+            <option key={idx} value={app.company_id}>
+              {app.COMPANYNAME ||
+                app.applications[0]?.company_name ||
+                "Unknown Company"}
+            </option>
+          ))}
+          <option value="0">Add new</option>
         </select>
-        {newCompany === '0' ? (
+        {newCompany === "0" ? (
           <input
-            {...register('newCompanyName', { required: true })}
+            {...register("newCompanyName", { required: true })}
             type="text"
             placeholder="New Company Name"
           />
         ) : (
           <></>
-        )}{' '}
+        )}{" "} */}
+        <select {...register("company_id")}>
+          {userApplications?.map((app, idx) => (
+            <option key={idx} value={app.company_id}>
+              {app.COMPANYNAME ||
+                app.applications[0]?.company_name ||
+                "Unknown Company"}
+            </option>
+          ))}
+          <option value="0">Add new</option>
+        </select>
+
+        {selectedCompanyId === "0" && (
+          <input
+            {...register("newCompanyName", { required: true })}
+            type="text"
+            placeholder="New Company Name"
+          />
+        )}
         {errors.newCompanyName && <div>{errors.newCompanyName.message}</div>}
         <input
-          {...register('application_info')}
+          {...register("application_info")}
           type="text"
           placeholder="Application info"
         />
@@ -148,7 +228,7 @@ const ApplicationForm = () => {
           type="submit"
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Loading...' : 'Submit'}
+          {isSubmitting ? "Loading..." : "Submit"}
         </button>
       </form>
     </div>

@@ -62,7 +62,10 @@ router.post("/", async (req, res) => {
     } = req.body;
     if (company_id === "0") {
       let createdCompanyId;
-      const newInsertCompany = await pool.query(postNewCompany, [companyName]);
+      const newInsertCompany = await pool.query(
+        postNewCompany,
+        user_id[companyName]
+      );
       createdCompanyId = newInsertCompany.rows[0].company_id;
       console.log("createdCompanyId?", createdCompanyId);
       const newContact = await pool.query(postNewContact, [

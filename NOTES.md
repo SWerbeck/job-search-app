@@ -1,10 +1,11 @@
 React router still keeps guest id in url on login -> need to fix
 
-MAJOR TODO
-Need to associate user with company for editing and getting api routes for a users company. Currently if you edit a company name like google it will edit for every user. - 7/27/25
+MAJOR ISSUE
+post new contact is completely broken with changes.
+EDIT contact works but when you look on the front end of the single application there is a mismatch without a hard refresh.
 
 Bugs to fix:
-When editing a company name for a logged in user the single application data does not load for the company we edited. - 7/27/25
+When editing a company name for a logged in user the single application data does not load for the company we edited. - 8/22/25
 
 Applications:
 

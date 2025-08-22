@@ -75,31 +75,63 @@ router.post("/", async (req, res) => {
   try {
     const { job_title, companyName, company_id, user_id, application_info } =
       req.body;
-    if (company_id === "0") {
-      let createdCompanyId;
-      const newInsertCompany = await pool.query(postNewCompany, [companyName]);
-      createdCompanyId = newInsertCompany.rows[0].company_id;
-      console.log("createdCompanyId?", createdCompanyId);
-      const newApplication = await pool.query(postNewApplication, [
-        job_title,
-        createdCompanyId,
+
+    let finalCompanyId = company_id;
+
+    if (company_id === "0" || company_id === null) {
+      const newInsertCompany = await pool.query(postNewCompany, [
+        companyName,
         user_id,
-        application_info,
       ]);
-      res.json({ newApp: newApplication.rows[0] });
-    } else {
-      const newApplication = await pool.query(postNewApplication, [
-        job_title,
-        company_id,
-        user_id,
-        application_info,
-      ]);
-      res.json({ newApp: newApplication.rows[0] });
+      finalCompanyId = newInsertCompany.rows[0].company_id;
+      console.log("Created company ID:", finalCompanyId);
     }
+
+    const newApplication = await pool.query(postNewApplication, [
+      job_title,
+      finalCompanyId,
+      user_id,
+      application_info,
+    ]);
+
+    res.json({ newApp: newApplication.rows[0] });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: error.message });
   }
 });
+
+// router.post("/", async (req, res) => {
+//   try {
+//     const { job_title, companyName, company_id, user_id, application_info } =
+//       req.body;
+//     console.log("POST /api/applications body:", req.body);
+
+//     if (company_id === "0" || company_id === null) {
+//       let createdCompanyId;
+//       const newInsertCompany = await pool.query(postNewCompany, [companyName]);
+//       createdCompanyId = newInsertCompany.rows[0].company_id;
+//       console.log("createdCompanyId?", createdCompanyId);
+//       const newApplication = await pool.query(postNewApplication, [
+//         job_title,
+//         createdCompanyId,
+//         user_id,
+//         application_info,
+//       ]);
+//       res.json({ newApp: newApplication.rows[0] });
+//     } else {
+//       const newApplication = await pool.query(postNewApplication, [
+//         job_title,
+//         company_id,
+//         user_id,
+//         application_info,
+//       ]);
+//       res.json({ newApp: newApplication.rows[0] });
+//     }
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// });
 
 //update application info
 router.put("/:id", async (req, res) => {

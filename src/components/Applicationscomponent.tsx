@@ -21,10 +21,9 @@ const Applications = () => {
     (state: RootState) => state.userApps.userApps
   );
 
-  console.log("FROM ALL USERS", userApplications);
   //sorting alphabetically by company name
   const sortUserApps = [...userApplications].sort((a, b) =>
-    a.company.localeCompare(b.company)
+    a.COMPANYNAME.localeCompare(b.COMPANYNAME)
   );
 
   const [loaded, setIsLoaded] = useState(false);
@@ -46,7 +45,7 @@ const Applications = () => {
   const applicationData = sortUserApps?.map((userApp) => (
     <div key={userApp?.company_id}>
       <ul className=" bg-headline text-white h-10 w-50 border-spacing-x-7 border mx-3 border-white grid place-content-left content-center p-10 mt-10 rounded-xl  text-center text-2xl xs:text-3xl sm:text-4xl md:text-left">
-        {userApp?.company}
+        {userApp?.COMPANYNAME}
       </ul>
 
       <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 mx-3 mt-10 gap-x-4 gap-y-8">

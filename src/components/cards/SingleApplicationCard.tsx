@@ -32,7 +32,7 @@ const SingleApplicationCard = ({
   //   console.log('useEffect triggered fromt he form');
   // }, [userApplications]);
   // Map over the contacts for each application otherwise it breaks :(
-
+  //console.log("LOUIS NEED", singleApp.COMPANYNAME);
   const contactsMap = contactsList?.map((contact: Contacts) => (
     <p key={contact.CONTACT_ID} className="ml-4">
       <Link>{contact?.CONTACT_NAME}</Link>
@@ -51,7 +51,7 @@ const SingleApplicationCard = ({
         <div className="bg-button2 rounded-tl-xl rounded-tr-xl rounded-br-sm rounded-bl-sm absolute inset-x-0 top-0 h-16 flex justify-center items-center drop-shadow-lg">
           <p className="text-xl text-white">{singleApp?.Position}</p>
         </div>
-        <p className="text-lg">Company: {singleApp?.company_name}</p>
+        <p className="text-lg">Company: {singleApp?.COMPANYNAME}</p>
         <p className="text-sm">
           Listing Website:{" "}
           {singleApp?.Listing_WEBSITE

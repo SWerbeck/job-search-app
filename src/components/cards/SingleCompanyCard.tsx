@@ -13,7 +13,7 @@ const SingleCompanyCard = ({
   const { auth, setAuth } = useAuth();
 
   const usersList = useSelector((state: RootState) => state.users.users);
-  const jobPosition = singleApplication.map((app) =>
+  const jobPosition = singleApplication?.map((app) =>
     auth.id ? (
       <div className="bg-gray-100 border-spacing-x-5 mx-3 place-content-center p-20 drop-shadow-lg rounded-xl m-10">
         <Link to={`/home/${auth.id}/applications/${app.Application_ID}`}>
@@ -40,7 +40,7 @@ const SingleCompanyCard = ({
   return (
     <>
       <div className="h-20 w-50 border-spacing-x-5 border border: mx-3 border-white grid place-content-center mt-8 text-2xl sm:text-4xl">
-        {singleCompany?.company}
+        {singleCompany?.COMPANYNAME}
       </div>
       <h1 className=" bg-headline text-white h-10 w-50 border-spacing-x-7 border mx-3 border-white grid place-content-left content-center p-10 mt-10 rounded-xl  text-center text-2xl xs:text-3xl sm:text-4xl md:text-left mb-10">
         Applications
@@ -75,7 +75,7 @@ const SingleCompanyCard = ({
             </div>
           ) : (
             <p className="text-black text-2xl mx-5">
-              No Contacts for {singleCompany?.company}
+              No Contacts for {singleCompany?.COMPANYNAME}
             </p>
           )}
           <div className="flex-auto"></div>
@@ -95,7 +95,7 @@ const SingleCompanyCard = ({
             </p>
           ) : (
             <p className="text-black text-2xl mx-5">
-              No Contacts for {singleCompany?.company}
+              No Contacts for {singleCompany?.COMPANYNAME}
             </p>
           )}
           <div className="flex-auto items-end"></div>

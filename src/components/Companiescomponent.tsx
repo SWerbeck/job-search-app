@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { setUsers } from "../store/userSlice";
 import { RootState } from "../store";
 import { setCompanies } from "../store/companiesSlice";
 import Companiescard from "./cards/Companiescard";
@@ -47,7 +46,7 @@ const Companies = () => {
         return (
           <Companiescard
             key={userApp.company_id}
-            companyName={userApp.company}
+            companyName={userApp.COMPANYNAME}
             companyId={userApp.company_id}
           />
         );

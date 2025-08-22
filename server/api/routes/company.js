@@ -60,8 +60,8 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const { companyName } = req.body;
-    await pool.query(editCompanyById, [companyName, id]);
+    const { companyName, company_website } = req.body;
+    await pool.query(editCompanyById, [companyName, company_website, id]);
     res.status(200).send(`Updated info for: ${companyName}`);
   } catch (error) {
     res.status(500).json({ error: error.message });

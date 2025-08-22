@@ -1,16 +1,17 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import axios from '../../../server/api/axios';
-import { useNavigate } from 'react-router-dom';
-import { editCompanyName } from '../../store/userAppsSlice';
-import { useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "../../../server/api/axios";
+import { useNavigate } from "react-router-dom";
+import { editCompanyName } from "../../store/userAppsSlice";
+import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 // make a schema using zod
 const schema = z.object({
   companyName: z.string().min(1, {
-    message: 'Please edit company name',
+    message: "Please edit company name",
   }),
 });
 
@@ -28,6 +29,7 @@ const EditCompanyCard = ({
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const jobPosition = singleApplication.map((app) => app.Position);
+  const usersList = useSelector((state: RootState) => state.users.users);
 
   const [contactsLocalHook, setContactsLocalHook] = useState([]);
 
@@ -45,7 +47,6 @@ const EditCompanyCard = ({
     grabContInfoFromRedux();
   }, []);
 
-  
   const {
     register,
     handleSubmit,
@@ -55,24 +56,22 @@ const EditCompanyCard = ({
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      const editJobTitle = await axios.put(
-        `/api/companies/${companyId}`,
-        {
-          companyName: data.companyName,
-          company_id: companyId,
-        }
-      );
-      console.log('DATA FROM EDIT', data);
+      console.log("DATA FROM EDIT COMPANY", data);
+      const editJobTitle = await axios.put(`/api/companies/${companyId}`, {
+        companyName: data.companyName,
+        company_id: companyId,
+        company_website: data.company_website,
+      });
       dispatch(editCompanyName({ applicationId, data }));
       setEditMode(false);
     } catch (error) {
-      setError('root', {
-        message: 'No application exists',
+      setError("root", {
+        message: "No application exists",
       });
     }
   };
 
-  console.log('edit mode from editCompanycard', editMode);
+  console.log("edit mode from editCompanycard", editMode);
   return (
     <>
       <button
@@ -84,12 +83,12 @@ const EditCompanyCard = ({
       <h1>edit mode</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <input
-          {...register('companyName')}
+          {...register("companyName")}
           type="text"
           placeholder={singleCompany.company}
         />
         <button disabled={isSubmitting}>
-          {isSubmitting ? 'Loading...' : 'Submit'}
+          {isSubmitting ? "Loading..." : "Submit"}
         </button>
       </form>
     </>

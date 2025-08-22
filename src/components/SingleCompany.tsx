@@ -25,6 +25,10 @@ const SingleCompany = () => {
   //   (application) => application
   // );
 
+  useEffect(() => {
+    console.log("triggered from single comp NOT CARD", singleCompany);
+  }, [singleCompany]);
+
   const singleApplication = singleCompany?.applications;
 
   // gets the contatcs if any the user has for the company
@@ -32,7 +36,7 @@ const SingleCompany = () => {
     (contact) => contact.CONTACT_NAME
   );
 
-  const companyId = singleCompanyFilter[0].company_id;
+  const companyId = singleCompanyFilter[0]?.company_id;
 
   const applicationId = singleCompanyFilter[0]?.applications[0]?.Application_ID;
 
